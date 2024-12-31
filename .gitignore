@@ -1,1 +1,4 @@
 image/
+*.o
+*.elf
+*.bin
