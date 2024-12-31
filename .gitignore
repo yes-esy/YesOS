@@ -2,3 +2,4 @@ image/
 *.o
 *.elf
 *.bin
+.txt
