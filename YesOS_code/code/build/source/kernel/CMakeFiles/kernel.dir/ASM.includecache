@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h
+
+E:/OS/MyOs/YesOS_code/code/source/kernel/init/start.S
+os_cfg.h
+E:/OS/MyOs/YesOS_code/code/source/kernel/init/os_cfg.h
+
