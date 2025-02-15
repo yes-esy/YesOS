@@ -22,58 +22,12 @@ _start:
 	mov $0, %ax
 	mov %ax, %ds
 	mov %ax, %ss
+	
 	mov %ax, %es
 	mov %ax, %fs
 	mov %ax, %gs
 
 	mov $_start,%esp // _start即为0x7c00
-
-	// 显示 "WELCOME"
-	mov $0xe, %ah
-	mov $'L', %al
-	int $0x10
-	//mov $0xe, %ah
-	//mov $'W', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'E', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'L', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'C', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'O', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'M', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'E', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $' ', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'Y', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'E', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'S', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'O', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'S', %al
-	//int $0x10
-	//mov $0xe, %ah
-	//mov $'!', %al
-	//int $0x10
 
 
 // 读取loader到内存

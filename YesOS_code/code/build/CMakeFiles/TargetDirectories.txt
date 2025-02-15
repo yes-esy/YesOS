@@ -9,3 +9,9 @@ E:/OS/MyOs/YesOS_code/code/build/source/loader/CMakeFiles/rebuild_cache.dir
 E:/OS/MyOs/YesOS_code/code/build/source/kernel/CMakeFiles/kernel.dir
 E:/OS/MyOs/YesOS_code/code/build/source/kernel/CMakeFiles/edit_cache.dir
 E:/OS/MyOs/YesOS_code/code/build/source/kernel/CMakeFiles/rebuild_cache.dir
+E:/OS/MyOs/YesOS_code/code/build/source/applib/CMakeFiles/app.dir
+E:/OS/MyOs/YesOS_code/code/build/source/applib/CMakeFiles/edit_cache.dir
+E:/OS/MyOs/YesOS_code/code/build/source/applib/CMakeFiles/rebuild_cache.dir
+E:/OS/MyOs/YesOS_code/code/build/source/shell/CMakeFiles/shell.dir
+E:/OS/MyOs/YesOS_code/code/build/source/shell/CMakeFiles/edit_cache.dir
+E:/OS/MyOs/YesOS_code/code/build/source/shell/CMakeFiles/rebuild_cache.dir

@@ -16,11 +16,14 @@ typedef uint32_t Elf32_Off;
 typedef uint32_t Elf32_Sword;
 typedef uint32_t Elf32_Word;
 
-#pragma pack(1)
-
 // ELF Header
 #define EI_NIDENT 16
 #define ELF_MAGIC 0x7F
+
+#define ET_EXEC 2 // 可执行文件
+#define ET_386 3  // 80386处理器
+
+#define PT_LOAD 1 // 可加载类型
 
 typedef struct
 {

@@ -42,6 +42,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("E:/OS/MyOs/YesOS_code/code/build/source/boot/cmake_install.cmake")
   include("E:/OS/MyOs/YesOS_code/code/build/source/loader/cmake_install.cmake")
   include("E:/OS/MyOs/YesOS_code/code/build/source/kernel/cmake_install.cmake")
+  include("E:/OS/MyOs/YesOS_code/code/build/source/applib/cmake_install.cmake")
+  include("E:/OS/MyOs/YesOS_code/code/build/source/shell/cmake_install.cmake")
 
 endif()
 

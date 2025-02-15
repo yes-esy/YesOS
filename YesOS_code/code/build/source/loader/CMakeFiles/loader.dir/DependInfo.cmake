@@ -16,6 +16,7 @@ set(CMAKE_ASM_COMPILER_ID "GNU")
 set(CMAKE_ASM_TARGET_INCLUDE_PATH
   "E:/OS/MyOs/YesOS_code/code/source"
   "E:/OS/MyOs/YesOS_code/code/source/kernel/include"
+  "E:/OS/MyOs/YesOS_code/code/../newlib/i686-elf/include"
   )
 
 # The set of dependency files which are needed:

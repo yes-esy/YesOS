@@ -19,7 +19,6 @@ typedef struct SMAP_entry
 
 } __attribute__((packed)) SMAP_entry_t;
 
-#define SECTOR_SIZE 512
-#define SYS_KERNAL_ADDR (1024 * 1024)
+
 extern boot_info_t boot_info;
 #endif
