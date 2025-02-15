@@ -3,3 +3,4 @@ image/
 *.elf
 *.bin
 .txt
+YesOS_code/code/build/
