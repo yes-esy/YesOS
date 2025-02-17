@@ -3,13 +3,17 @@
 
 source/shell/CMakeFiles/shell.dir/main.c.obj
  E:/OS/MyOs/YesOS_code/code/source/shell/main.c
- E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h
  E:/OS/MyOs/YesOS_code/code/source/comm/types.h
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/file.h
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h
  E:/OS/MyOs/YesOS_code/code/source/shell/main.h
  D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stdarg.h
  D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stddef.h
+ E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h
  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/_ansi.h
  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/_newlib_version.h
  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/alloca.h

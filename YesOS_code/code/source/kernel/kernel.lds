@@ -31,8 +31,7 @@ SECTIONS
 	.first_task : AT(e_data) {
 		*first_task_entry*(.text .data. rodata .data)
 		*first_task*(.text .data. rodata .data)
-		*lib_syscall*(.text .data. rodata .data)
-
+	    *lib_syscall*(.text .data .bss)
 	}
 	PROVIDE(e_first_task = LOADADDR(.first_task) + SIZEOF(.first_task));
 

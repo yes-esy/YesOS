@@ -1,10 +1,17 @@
+/**
+ * 系统调用接口
+ *
+ * 作者：YES
+ * 联系邮箱: 2900226123@qq.com
+ */
 #ifndef LIB_SYSCALL_H
 #define LIB_SYSCALL_H
-#include "comm/types.h"
+
 #include "core/syscall.h"
 #include "os_cfg.h"
-#include "sys/stat.h"
+#include "dev/tty.h"
 
+#include <sys/stat.h>
 typedef struct _syscall_args_t
 {
     int id;
@@ -12,48 +19,43 @@ typedef struct _syscall_args_t
     int arg1;
     int arg2;
     int arg3;
-} sycall_args_t;
+} syscall_args_t;
 
-static inline int sys_call(sycall_args_t *args)
-{
-    uint32_t addr[] = {0, SELECTOR_SYSCALL | 0};
-
-    int ret = 0;
-    __asm__ __volatile__(
-        "push %[arg3]\n\t"
-        "push %[arg2]\n\t"
-        "push %[arg1]\n\t"
-        "push %[arg0]\n\t"
-        "push %[id]\n\t"
-        "lcall *(%[a])" : "=a"(ret) :
-        [arg3] "r"(args->arg3),
-        [arg2] "r"(args->arg2),
-        [arg1] "r"(args->arg1),
-        [arg0] "r"(args->arg0),
-        [id] "r"(args->id),
-        [a] "r"(addr));
-    return ret;
-}
-
-void msleep(int ms);
+int msleep(int ms);
+int fork(void);
 int getpid(void);
-void print_msg(const char *fmt, int arg);
-int fork();
+int yield(void);
 int execve(const char *name, char *const *argv, char *const *env);
-int yield();
+int print_msg(char *fmt, int arg);
+int wait(int *status);
+void _exit(int status);
 
 int open(const char *name, int flags, ...);
 int read(int file, char *ptr, int len);
-int write(int file, const char *ptr, int len);
+int write(int file, char *ptr, int len);
 int close(int file);
 int lseek(int file, int ptr, int dir);
-
 int isatty(int file);
 int fstat(int file, struct stat *st);
 void *sbrk(ptrdiff_t incr);
-
 int dup(int file);
+int ioctl(int file, int cmd, int arg0, int arg1);
+struct dirent
+{
+    int index;      // 在目录中的偏移
+    int type;       // 文件或目录的类型
+    char name[255]; // 目录或目录的名称
+    int size;       // 文件大小
+};
 
-void _exit(int status);
-int wait(int *status);
-#endif
+typedef struct _DIR
+{
+    int index; // 当前遍历的索引
+    struct dirent dirent;
+} DIR;
+
+DIR *opendir(const char *name);
+struct dirent *readdir(DIR *dir);
+int closedir(DIR *dir);
+
+#endif // LIB_SYSCALL_H

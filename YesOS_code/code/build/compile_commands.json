@@ -67,12 +67,6 @@
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/code/build/source/kernel",
-  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/cpu/mmu.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/mmu.c",
-  "file": "E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/mmu.c",
-  "output": "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj"
-},
-{
-  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/kernel",
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/dev/console.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/console.c",
   "file": "E:/OS/MyOs/YesOS_code/code/source/kernel/dev/console.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj"
@@ -115,6 +109,12 @@
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fatfs/fatfs.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fatfs/fatfs.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/kernel",
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/fs/file.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/fs/file.c",
   "file": "E:/OS/MyOs/YesOS_code/code/source/kernel/fs/file.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/fs/file.c.obj"
@@ -142,6 +142,12 @@
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/init/init.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/init/init.c",
   "file": "E:/OS/MyOs/YesOS_code/code/source/kernel/init/init.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/init/lib_syscall.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/init/lib_syscall.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/kernel/init/lib_syscall.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj"
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/code/build/source/kernel",
@@ -202,5 +208,53 @@
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/shell.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/shell.dir/main.c.obj -c E:/OS/MyOs/YesOS_code/code/source/shell/main.c",
   "file": "E:/OS/MyOs/YesOS_code/code/source/shell/main.c",
   "output": "source/shell/CMakeFiles/shell.dir/main.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/init",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/init.dir/includes_ASM.rsp -m32 -g -g -o CMakeFiles/init.dir/__/applib/crt0.S.obj -c E:/OS/MyOs/YesOS_code/code/source/applib/crt0.S",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/applib/crt0.S",
+  "output": "source/init/CMakeFiles/init.dir/__/applib/crt0.S.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/init",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/init.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/init.dir/__/applib/cstart.c.obj -c E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c",
+  "output": "source/init/CMakeFiles/init.dir/__/applib/cstart.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/init",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/init.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/init.dir/__/applib/lib_syscall.c.obj -c E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c",
+  "output": "source/init/CMakeFiles/init.dir/__/applib/lib_syscall.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/init",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/init.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/init.dir/main.c.obj -c E:/OS/MyOs/YesOS_code/code/source/init/main.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/init/main.c",
+  "output": "source/init/CMakeFiles/init.dir/main.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/loop",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/loop.dir/includes_ASM.rsp -m32 -g -g -o CMakeFiles/loop.dir/__/applib/crt0.S.obj -c E:/OS/MyOs/YesOS_code/code/source/applib/crt0.S",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/applib/crt0.S",
+  "output": "source/loop/CMakeFiles/loop.dir/__/applib/crt0.S.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/loop",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/loop.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loop.dir/__/applib/cstart.c.obj -c E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c",
+  "output": "source/loop/CMakeFiles/loop.dir/__/applib/cstart.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/loop",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/loop.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loop.dir/__/applib/lib_syscall.c.obj -c E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c",
+  "output": "source/loop/CMakeFiles/loop.dir/__/applib/lib_syscall.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/code/build/source/loop",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/loop.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/loop.dir/main.c.obj -c E:/OS/MyOs/YesOS_code/code/source/loop/main.c",
+  "file": "E:/OS/MyOs/YesOS_code/code/source/loop/main.c",
+  "output": "source/loop/CMakeFiles/loop.dir/main.c.obj"
 }
 ]

@@ -1,32 +1,45 @@
+/**
+ * 设备文件系统描述
+ *
+ * 创建时间：2022年8月5日
+ * 作者：YES
+ * 联系邮箱: 2900226123@qq.com
+ */
+#include "dev/dev.h"
 #include "fs/devfs/devfs.h"
 #include "fs/fs.h"
-#include "dev/dev.h"
 #include "tools/klib.h"
 #include "tools/log.h"
+#include "fs/file.h"
 
+// 设备文件系统中支持的设备
 static devfs_type_t devfs_type_list[] = {
     {
         .name = "tty",
         .dev_type = DEV_TTY,
         .file_type = FILE_TTY,
-    }};
-int devfs_mount(fs_t *fs, int major, int minor)
-{
+    }
+};
+/**
+ * @brief 挂载指定设备
+ * 设备文件系统，不需要考虑major和minor
+ */
+int devfs_mount (struct _fs_t * fs, int major, int minor) {
     fs->type = FS_DEVFS;
+    return 0;
 }
+
 /**
  * @brief 卸载指定的设备
  * @param fs 
  */
-int devfs_unmount (fs_t * fs) {
-    return 0;
+void devfs_unmount (struct _fs_t * fs) {
 }
 
 /**
  * @brief 打开指定的设备以进行读写
  */
-int devfs_open(fs_t *fs, const char *path, file_t *file)
-{
+int devfs_open (struct _fs_t * fs, const char * path, file_t * file) {   
     // 遍历所有支持的设备类型列表，根据path中的路径，找到相应的设备类型
     for (int i = 0; i < sizeof(devfs_type_list) / sizeof(devfs_type_list[0]); i++) {
         devfs_type_t * type = devfs_type_list + i;
@@ -39,7 +52,7 @@ int devfs_open(fs_t *fs, const char *path, file_t *file)
             int minor;
 
             // 转换得到设备子序号
-            if ((kernel_strlen(path) > type_name_len) && (path_to_num((char *)(path + type_name_len), &minor)) < 0) {
+            if ((kernel_strlen(path) > type_name_len) && (path_to_num(path + type_name_len, &minor)) < 0) {
                 log_printf("Get device num failed. %s", path);
                 break;
             }
@@ -64,41 +77,54 @@ int devfs_open(fs_t *fs, const char *path, file_t *file)
     return -1;
 }
 
-int devfs_write(char *buf, int size, file_t *file)
-{
+/**
+ * @brief 读写指定的文件系统
+ */
+int devfs_read (char * buf, int size, file_t * file) {
+    return dev_read(file->dev_id, file->pos, buf, size);
+}
+
+/**
+ * @brief 写设备文件系统
+ */
+int devfs_write (char * buf, int size, file_t * file) {
     return dev_write(file->dev_id, file->pos, buf, size);
 }
 
-int devfs_read(char *buf, int size, file_t *file)
-{
-    return dev_read(file->dev_id, file->pos, buf, size);
-    // fs->type = FS_DEVFS;
+/**
+ * @brief 关闭设备文件
+ */
+void devfs_close (file_t * file) {
+    dev_close(file->dev_id);
 }
 
-void devfs_close(file_t *file)
-{
-    return dev_close(file->dev_id);
+/**
+ * @brief 文件读写定位
+ */
+int devfs_seek (file_t * file, uint32_t offset, int dir) {
+    return -1;  // 不支持定位
 }
 
-int devfs_seek(file_t *file, uint32_t offset, int dir)
-{
-    // fs->type = FS_DEVFS
+/**
+ * @brief 获取文件信息
+ */
+int devfs_stat(file_t * file, struct stat *st) {
     return -1;
 }
 
-int devfs_stat(file_t *file, struct stat *st)
-{
-    // fs->type = FS_DEVFS;
-    return -1;
+int devfs_ioctl(file_t * file, int cmd, int arg0, int arg1) {
+    return dev_control(file->dev_id, cmd, arg0, arg1);
 }
 
+// 设备文件系统
 fs_op_t devfs_op = {
     .mount = devfs_mount,
     .unmount = devfs_unmount,
     .open = devfs_open,
-    .write = devfs_write,
     .read = devfs_read,
-    .close = devfs_close,
+    .write = devfs_write,
     .seek = devfs_seek,
     .stat = devfs_stat,
+    .close = devfs_close,
+    .ioctl = devfs_ioctl,
 };

@@ -12,13 +12,14 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.obj: \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/log.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/cpu/irq.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/cpu/mmu.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/memory.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/bitmap.h \
  E:/OS/MyOs/YesOS_code/code/source/comm/boot_info.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/mutex.h \
- E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/cpu/mmu.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/comm/elf.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/fs.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\stat.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\_ansi.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\newlib.h \
@@ -49,5 +50,8 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.obj: \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\sched.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\types.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_locale.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/fs.h \
- E:/OS/MyOs/YesOS_code/code/source/comm/elf.h
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/file.h \
+ E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/fatfs/fatfs.h

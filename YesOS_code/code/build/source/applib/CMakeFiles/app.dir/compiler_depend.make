@@ -3,9 +3,11 @@
 
 source/applib/CMakeFiles/app.dir/cstart.c.obj: E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c \
   E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
-  E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
   E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
+  E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h \
+  E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
   E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
+  E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h \
   D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stddef.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/_ansi.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/_newlib_version.h \
@@ -19,9 +21,7 @@ source/applib/CMakeFiles/app.dir/cstart.c.obj: E:/OS/MyOs/YesOS_code/code/source
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/time.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/types.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/newlib.h \
-  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/stdint.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/stdlib.h \
-  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_intsup.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_locale.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_pthreadtypes.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_sigset.h \
@@ -43,9 +43,11 @@ source/applib/CMakeFiles/app.dir/cstart.c.obj: E:/OS/MyOs/YesOS_code/code/source
 
 source/applib/CMakeFiles/app.dir/lib_syscall.c.obj: E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c \
   E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
-  E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
   E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
+  E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h \
+  E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
   E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
+  E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h \
   D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stddef.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/_ansi.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/_newlib_version.h \
@@ -54,9 +56,13 @@ source/applib/CMakeFiles/app.dir/lib_syscall.c.obj: E:/OS/MyOs/YesOS_code/code/s
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/_types.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/endian.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/ieeefp.h \
+  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/malloc.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/time.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/types.h \
+  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/malloc.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/newlib.h \
+  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/string.h \
+  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/strings.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_locale.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_pthreadtypes.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_sigset.h \
@@ -72,6 +78,7 @@ source/applib/CMakeFiles/app.dir/lib_syscall.c.obj: E:/OS/MyOs/YesOS_code/code/s
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/sched.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/select.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/stat.h \
+  E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/string.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/timespec.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/types.h \
   E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/time.h
@@ -79,19 +86,27 @@ source/applib/CMakeFiles/app.dir/lib_syscall.c.obj: E:/OS/MyOs/YesOS_code/code/s
 
 E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c:
 
+E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h:
+
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_locale.h:
 
 D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stddef.h:
 
 E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h:
 
-E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h:
-
-E:/OS/MyOs/YesOS_code/code/source/comm/types.h:
-
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/lock.h:
 
 E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h:
+
+E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h:
+
+E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h:
+
+E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/malloc.h:
+
+E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/timespec.h:
+
+E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h:
 
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/select.h:
 
@@ -104,6 +119,8 @@ E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/config.h:
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_types.h:
 
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/alloca.h:
+
+E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/strings.h:
 
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/_default_types.h:
 
@@ -129,12 +146,6 @@ E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/types.h:
 
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/newlib.h:
 
-E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/stdint.h:
-
-E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c:
-
-E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_intsup.h:
-
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_pthreadtypes.h:
 
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/_stdint.h:
@@ -151,8 +162,14 @@ E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/reent.h:
 
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/sched.h:
 
-E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/timespec.h:
-
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/types.h:
 
+E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/string.h:
+
 E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/time.h:
+
+E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c:
+
+E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/machine/malloc.h:
+
+E:/OS/MyOs/YesOS_code/newlib/i686-elf/include/sys/string.h:

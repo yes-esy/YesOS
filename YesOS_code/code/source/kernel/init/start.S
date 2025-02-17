@@ -1,37 +1,63 @@
-#include "os_cfg.h"
-    .text
-    .global _start
-    .extern kernel_init
-    .extern init_main
+/**
+ * 自己动手写操作系统
+ *
+ * 二级引导，负责进行硬件检测，进入保护模式，然后加载内核，并跳转至内核运行
+ *
+ * 作者：YES
+ * 联系邮箱: 2900226123@qq.com
+ */
+ #include "os_cfg.h"
+
+  	// 不必加.code32因默认就是32位
+ 	.text
+ 	.global _start
+	.extern kernel_init
+	.extern init_main
 _start:
-    push %ebp
-    mov %esp, %ebp
-    mov 0x8(%ebp), %eax
+    # 第一种方法
+    # push %ebp
+    # mov %esp, %ebp
+    # mov 0x8(%ebp), %eax
+    # push %eax
 
+    # 第二种方法
     # mov 4(%esp), %eax
+    # push %eax
 
-    push %eax
+    # 第三种方法
+    push 4(%esp)
+
+    # kernel_init(boot_info)
     call kernel_init
 
-    jmp $KERNEL_SELECTOR_CS, $gdt_reload
+	// 重新加载GDT
+	jmp $KERNEL_SELECTOR_CS, $gdt_reload
 
 gdt_reload:
-    mov $KERNEL_SELECTOR_DS, %ax		// 16为数据段选择子
+	mov $KERNEL_SELECTOR_DS, %ax		// 16为数据段选择子
 	mov %ax, %ds
     mov %ax, %ss
     mov %ax, %es
     mov %ax, %fs
     mov %ax, %gs
 
-    mov $(stack + KERNEL_STACK_SIZE), %esp
-    jmp init_main
+	// 栈设置
+	mov $(stack + KERNEL_STACK_SIZE), %esp
 
-    .bss
-.comm stack,KERNEL_STACK_SIZE
+	// 栈和段等沿用之前的设置
+	jmp init_main
+
+	.bss
+.comm stack, KERNEL_STACK_SIZE    // comm 声明未初始化的通用内存区域，以字节计
 
 
+// 中断发生时，会自动切换到特权级0对应的栈中去执行
+// 并且只保存ss,esp,cs,eip,flags寄存器
+// 所以需要在中断中自行保存其它寄存器
 
-    .text
+	// 下面的代码基本上是对上面代码的重复，只不过换用了宏来处理
+	// 注意确定没写错，可对照反汇编来看。另外，下面的代码没有办法调试，原因未知
+   .text
 .macro exception_handler name num with_error_code
 	    .extern do_handler_\name
 		.global exception_handler_\name
@@ -46,7 +72,7 @@ gdt_reload:
 		push $\num
 
 		// 保存所有寄存器
-		pusha
+		pushal
 		push %ds
 		push %es
 		push %fs
@@ -62,7 +88,7 @@ gdt_reload:
 		pop %fs
 		pop %es
 		pop %ds
-		popa
+		popal
 
 		// 跳过压入的异常号和错误码
 		add $(2*4), %esp
@@ -90,11 +116,16 @@ exception_handler machine_check, 18, 0
 exception_handler smd_exception, 19, 0
 exception_handler virtual_exception, 20, 0
 
-exception_handler time,0x20,0
-exception_handler kbd,0x21,0
+// 硬件中断
+exception_handler timer, 0x20, 0
+exception_handler kbd, 0x21, 0
 exception_handler ide_primary, 0x2E, 0
 
-
+// eax, ecx, edx由调用者自动保存
+// ebx, esi, edi, ebp需要由被调用者保存和恢复
+// cs/ds/es/fs/gs/ss不用保存，因为都是相同的
+// esp不用保存，只需要让esp保存在调用之前的状态
+// eflags ?
 	.text
 	.global simple_switch
 simple_switch:
@@ -118,10 +149,10 @@ simple_switch:
 	pop %ebp
   	ret
 
-.global exception_handler_syscall 
-.extern do_handler_syscall
-
+     .global exception_handler_syscall
+    .extern do_handler_syscall
 exception_handler_syscall:
+	// 保存前一任务的状态
 	pusha
 	push %ds
 	push %es
@@ -129,11 +160,20 @@ exception_handler_syscall:
 	push %gs
 	pushf
 
-	mov %esp, %eax
-	push %eax
+	// 使用内核段寄存器，避免使用应用层的
+	mov $(KERNEL_SELECTOR_DS), %eax
+	mov %eax, %ds
+	mov %eax, %es
+	mov %eax, %fs
+	mov %eax, %gs
+
+    // 调用处理函数
+    mov %esp, %eax
+    push %eax
 	call do_handler_syscall
 	add $4, %esp
 
+    // 再切换回来
 	popf
 	pop %gs
 	pop %fs
@@ -141,4 +181,5 @@ exception_handler_syscall:
 	pop %ds
 	popa
 	
-	retf $(5 * 4)
+	// 5个参数，加上5*4，不加会导致返回时ss取不出来，最后返回出现问题
+    retf $(5*4)    // CS发生了改变，需要使用远跳转

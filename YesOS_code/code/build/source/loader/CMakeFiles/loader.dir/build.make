@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -135,7 +132,7 @@ source/loader/loader.exe: source/loader/CMakeFiles/loader.dir/build.make
 source/loader/loader.exe: source/loader/CMakeFiles/loader.dir/linkLibs.rsp
 source/loader/loader.exe: source/loader/CMakeFiles/loader.dir/objects1.rsp
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable loader.exe"
-	cd E:/OS/MyOs/YesOS_code/code/build/source/loader && x86_64-elf-ld @CMakeFiles/loader.dir/objects1.rsp -m elf_i386  -Ttext=0x8000 -o E:/OS/MyOs/YesOS_code/code/build/source/loader/loader.elf
+	cd E:/OS/MyOs/YesOS_code/code/build/source/loader && x86_64-elf-ld @CMakeFiles/loader.dir/objects1.rsp -m elf_i386 -Ttext=0x8000 -o E:/OS/MyOs/YesOS_code/code/build/source/loader/loader.elf
 	cd E:/OS/MyOs/YesOS_code/code/build/source/loader && x86_64-elf-objcopy -O binary loader.elf E:/OS/MyOs/YesOS_code/code/../../image/loader.bin
 	cd E:/OS/MyOs/YesOS_code/code/build/source/loader && x86_64-elf-objdump -x -d -S -m i8086 E:/OS/MyOs/YesOS_code/code/build/source/loader/loader.elf > loader_dis.txt
 	cd E:/OS/MyOs/YesOS_code/code/build/source/loader && x86_64-elf-readelf -a E:/OS/MyOs/YesOS_code/code/build/source/loader/loader.elf > loader_elf.txt

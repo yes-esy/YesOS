@@ -1,29 +1,26 @@
+/**
+ * 互斥锁
+ *
+ * 作者：YES
+ * 联系邮箱: 2900226123@qq.com
+ */
 #ifndef MUTEX_H
 #define MUTEX_H
 
-#include "tools/list.h"
 #include "core/task.h"
+#include "tools/list.h"
 
-typedef struct _mutex_t
-{
+/**
+ * 进程同步用的计数信号量
+ */
+typedef struct _mutex_t {
     task_t * owner;
     int locked_count;
     list_t wait_list;
-} mutex_t;
+}mutex_t;
 
-/**
- * 锁初始化
- */
-void mutex_init(mutex_t *mutex);
-
-/**
- * 上锁
- */
-void mutex_lock(mutex_t *mutex);
-
-/**
- * 解锁
- */
-void mutex_unlock(mutex_t *mutex);
-
-#endif
+void mutex_init (mutex_t * mutex);
+void mutex_lock (mutex_t * mutex);
+void mutex_unlock (mutex_t * mutex);
+ 
+#endif //MUTEX_H

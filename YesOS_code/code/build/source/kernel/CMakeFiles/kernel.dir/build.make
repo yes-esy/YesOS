@@ -27,9 +27,6 @@
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -164,26 +161,11 @@ source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/kernel.dir/cpu/irq.c.s"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/irq.c -o CMakeFiles/kernel.dir/cpu/irq.c.s
 
-source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj: source/kernel/CMakeFiles/kernel.dir/flags.make
-source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
-source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/mmu.c
-source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj"
-	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj -MF CMakeFiles/kernel.dir/cpu/mmu.c.obj.d -o CMakeFiles/kernel.dir/cpu/mmu.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/mmu.c
-
-source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/kernel.dir/cpu/mmu.c.i"
-	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/mmu.c > CMakeFiles/kernel.dir/cpu/mmu.c.i
-
-source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/kernel.dir/cpu/mmu.c.s"
-	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:/OS/MyOs/YesOS_code/code/source/kernel/cpu/mmu.c -o CMakeFiles/kernel.dir/cpu/mmu.c.s
-
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/dev/console.c
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj -MF CMakeFiles/kernel.dir/dev/console.c.obj.d -o CMakeFiles/kernel.dir/dev/console.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/console.c
 
 source/kernel/CMakeFiles/kernel.dir/dev/console.c.i: cmake_force
@@ -198,7 +180,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj: source/kernel/CMakeFiles/kern
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/dev/dev.c
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj -MF CMakeFiles/kernel.dir/dev/dev.c.obj.d -o CMakeFiles/kernel.dir/dev/dev.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/dev.c
 
 source/kernel/CMakeFiles/kernel.dir/dev/dev.c.i: cmake_force
@@ -213,7 +195,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj: source/kernel/CMakeFiles/ker
 source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/dev/disk.c
 source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj -MF CMakeFiles/kernel.dir/dev/disk.c.obj.d -o CMakeFiles/kernel.dir/dev/disk.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/disk.c
 
 source/kernel/CMakeFiles/kernel.dir/dev/disk.c.i: cmake_force
@@ -228,7 +210,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj: source/kernel/CMakeFiles/kern
 source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/dev/kbd.c
 source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj -MF CMakeFiles/kernel.dir/dev/kbd.c.obj.d -o CMakeFiles/kernel.dir/dev/kbd.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/kbd.c
 
 source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.i: cmake_force
@@ -243,7 +225,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj: source/kernel/CMakeFiles/ker
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/dev/time.c
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj -MF CMakeFiles/kernel.dir/dev/time.c.obj.d -o CMakeFiles/kernel.dir/dev/time.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/time.c
 
 source/kernel/CMakeFiles/kernel.dir/dev/time.c.i: cmake_force
@@ -258,7 +240,7 @@ source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj: source/kernel/CMakeFiles/kern
 source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/dev/tty.c
 source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj -MF CMakeFiles/kernel.dir/dev/tty.c.obj.d -o CMakeFiles/kernel.dir/dev/tty.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/dev/tty.c
 
 source/kernel/CMakeFiles/kernel.dir/dev/tty.c.i: cmake_force
@@ -273,7 +255,7 @@ source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj: source/kernel/CMakeFil
 source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/fs/devfs/devfs.c
 source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj -MF CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj.d -o CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/fs/devfs/devfs.c
 
 source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.i: cmake_force
@@ -283,6 +265,21 @@ source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.i: cmake_force
 source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/kernel.dir/fs/devfs/devfs.c.s"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:/OS/MyOs/YesOS_code/code/source/kernel/fs/devfs/devfs.c -o CMakeFiles/kernel.dir/fs/devfs/devfs.c.s
+
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj: source/kernel/CMakeFiles/kernel.dir/flags.make
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fatfs/fatfs.c
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj -MF CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj.d -o CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fatfs/fatfs.c
+
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.i"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fatfs/fatfs.c > CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.i
+
+source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.s"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fatfs/fatfs.c -o CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.s
 
 source/kernel/CMakeFiles/kernel.dir/fs/file.c.obj: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/fs/file.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
@@ -358,11 +355,26 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/kernel.dir/init/init.c.s"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:/OS/MyOs/YesOS_code/code/source/kernel/init/init.c -o CMakeFiles/kernel.dir/init/init.c.s
 
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj: source/kernel/CMakeFiles/kernel.dir/flags.make
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/init/lib_syscall.c
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj -MF CMakeFiles/kernel.dir/init/lib_syscall.c.obj.d -o CMakeFiles/kernel.dir/init/lib_syscall.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/init/lib_syscall.c
+
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/kernel.dir/init/lib_syscall.c.i"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:/OS/MyOs/YesOS_code/code/source/kernel/init/lib_syscall.c > CMakeFiles/kernel.dir/init/lib_syscall.c.i
+
+source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/kernel.dir/init/lib_syscall.c.s"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:/OS/MyOs/YesOS_code/code/source/kernel/init/lib_syscall.c -o CMakeFiles/kernel.dir/init/lib_syscall.c.s
+
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj: source/kernel/CMakeFiles/kernel.dir/flags.make
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/ipc/mutex.c
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj -MF CMakeFiles/kernel.dir/ipc/mutex.c.obj.d -o CMakeFiles/kernel.dir/ipc/mutex.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/ipc/mutex.c
 
 source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.i: cmake_force
@@ -377,7 +389,7 @@ source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj: source/kernel/CMakeFiles/kern
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/ipc/sem.c
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj -MF CMakeFiles/kernel.dir/ipc/sem.c.obj.d -o CMakeFiles/kernel.dir/ipc/sem.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/ipc/sem.c
 
 source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.i: cmake_force
@@ -392,7 +404,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj: source/kernel/CMakeFiles
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/tools/bitmap.c
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj -MF CMakeFiles/kernel.dir/tools/bitmap.c.obj.d -o CMakeFiles/kernel.dir/tools/bitmap.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/tools/bitmap.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.i: cmake_force
@@ -407,7 +419,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj: source/kernel/CMakeFiles/k
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/tools/klib.c
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj -MF CMakeFiles/kernel.dir/tools/klib.c.obj.d -o CMakeFiles/kernel.dir/tools/klib.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/tools/klib.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.i: cmake_force
@@ -422,7 +434,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj: source/kernel/CMakeFiles/k
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/tools/list.c
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj -MF CMakeFiles/kernel.dir/tools/list.c.obj.d -o CMakeFiles/kernel.dir/tools/list.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/tools/list.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/list.c.i: cmake_force
@@ -437,7 +449,7 @@ source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj: source/kernel/CMakeFiles/ke
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj: source/kernel/CMakeFiles/kernel.dir/includes_C.rsp
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj: E:/OS/MyOs/YesOS_code/code/source/kernel/tools/log.c
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj: source/kernel/CMakeFiles/kernel.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj"
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj -MF CMakeFiles/kernel.dir/tools/log.c.obj.d -o CMakeFiles/kernel.dir/tools/log.c.obj -c E:/OS/MyOs/YesOS_code/code/source/kernel/tools/log.c
 
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.i: cmake_force
@@ -456,7 +468,6 @@ kernel_OBJECTS = \
 "CMakeFiles/kernel.dir/core/task.c.obj" \
 "CMakeFiles/kernel.dir/cpu/cpu.c.obj" \
 "CMakeFiles/kernel.dir/cpu/irq.c.obj" \
-"CMakeFiles/kernel.dir/cpu/mmu.c.obj" \
 "CMakeFiles/kernel.dir/dev/console.c.obj" \
 "CMakeFiles/kernel.dir/dev/dev.c.obj" \
 "CMakeFiles/kernel.dir/dev/disk.c.obj" \
@@ -464,11 +475,13 @@ kernel_OBJECTS = \
 "CMakeFiles/kernel.dir/dev/time.c.obj" \
 "CMakeFiles/kernel.dir/dev/tty.c.obj" \
 "CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj" \
+"CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj" \
 "CMakeFiles/kernel.dir/fs/file.c.obj" \
 "CMakeFiles/kernel.dir/fs/fs.c.obj" \
 "CMakeFiles/kernel.dir/init/first_task.c.obj" \
 "CMakeFiles/kernel.dir/init/first_task_entry.S.obj" \
 "CMakeFiles/kernel.dir/init/init.c.obj" \
+"CMakeFiles/kernel.dir/init/lib_syscall.c.obj" \
 "CMakeFiles/kernel.dir/ipc/mutex.c.obj" \
 "CMakeFiles/kernel.dir/ipc/sem.c.obj" \
 "CMakeFiles/kernel.dir/tools/bitmap.c.obj" \
@@ -485,7 +498,6 @@ source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/core/syscall.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/core/task.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj
-source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/dev/console.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/dev/dev.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/dev/disk.c.obj
@@ -493,11 +505,13 @@ source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/dev/kbd.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/dev/tty.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.obj
+source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/fs/file.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/fs/fs.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/init/first_task.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/init/first_task_entry.S.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/init/init.c.obj
+source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj
@@ -507,8 +521,8 @@ source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/build.make
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/linkLibs.rsp
 source/kernel/kernel.exe: source/kernel/CMakeFiles/kernel.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Linking C executable kernel.exe"
-	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && x86_64-elf-ld @CMakeFiles/kernel.dir/objects1.rsp -m elf_i386  -T E:/OS/MyOs/YesOS_code/code/source/kernel/kernel.lds -L E:/OS/MyOs/YesOS_code/code/build/source/applib/ -lapp -o E:/OS/MyOs/YesOS_code/code/build/source/kernel/kernel.elf
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=E:/OS/MyOs/YesOS_code/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Linking C executable kernel.exe"
+	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && x86_64-elf-ld @CMakeFiles/kernel.dir/objects1.rsp -m elf_i386 -T E:/OS/MyOs/YesOS_code/code/source/kernel/kernel.lds -L E:/OS/MyOs/YesOS_code/code/build/source/applib/ -o E:/OS/MyOs/YesOS_code/code/build/source/kernel/kernel.elf
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && x86_64-elf-objcopy -S kernel.elf E:/OS/MyOs/YesOS_code/code/../../image/kernel.elf
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && x86_64-elf-objdump -x -d -S -m i386 E:/OS/MyOs/YesOS_code/code/build/source/kernel/kernel.elf > kernel_dis.txt
 	cd E:/OS/MyOs/YesOS_code/code/build/source/kernel && x86_64-elf-readelf -a E:/OS/MyOs/YesOS_code/code/build/source/kernel/kernel.elf > kernel_elf.txt

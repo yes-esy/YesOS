@@ -1,8 +1,8 @@
 /**
  * ELF相关头文件及配置
  *
- * @author yes
- * @date 2025-02-02
+ * 作者：YES
+ * 联系邮箱: 2900226123@qq.com
  */
 #ifndef OS_ELF_H
 #define OS_ELF_H
@@ -16,17 +16,18 @@ typedef uint32_t Elf32_Off;
 typedef uint32_t Elf32_Sword;
 typedef uint32_t Elf32_Word;
 
+#pragma pack(1)
+
 // ELF Header
-#define EI_NIDENT 16
-#define ELF_MAGIC 0x7F
+#define EI_NIDENT       16
+#define ELF_MAGIC       0x7F
 
-#define ET_EXEC 2 // 可执行文件
-#define ET_386 3  // 80386处理器
+#define ET_EXEC         2   // 可执行文件
+#define ET_386          3   // 80386处理器
 
-#define PT_LOAD 1 // 可加载类型
+#define PT_LOAD         1   // 可加载类型
 
-typedef struct
-{
+typedef struct {
     char e_ident[EI_NIDENT];
     Elf32_Half e_type;
     Elf32_Half e_machine;
@@ -41,12 +42,11 @@ typedef struct
     Elf32_Half e_shentsize;
     Elf32_Half e_shnum;
     Elf32_Half e_shstrndx;
-} Elf32_Ehdr;
+}Elf32_Ehdr;
 
-#define PT_LOAD 1
+#define PT_LOAD         1
 
-typedef struct
-{
+typedef struct {
     Elf32_Word p_type;
     Elf32_Off p_offset;
     Elf32_Addr p_vaddr;
@@ -59,4 +59,4 @@ typedef struct
 
 #pragma pack()
 
-#endif // OS_ELF_H
+#endif //OS_ELF_H

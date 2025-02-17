@@ -1,3 +1,9 @@
+/**
+ * 系统内部的基本数据类型
+ *
+ * 作者：YES
+ * 联系邮箱: 2900226123@qq.com
+ */
 #ifndef TYPES_H
 #define TYPES_H
 
@@ -20,3 +26,4 @@ typedef unsigned long uint32_t;
 #endif
 
 #endif
+

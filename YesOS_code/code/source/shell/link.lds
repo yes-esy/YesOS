@@ -1,7 +1,7 @@
 ENTRY(_start)
 SECTIONS
-{   
-    . = 0x81000000;
+{
+	. = 0x81000000;
 	.text : {
 		*(*.text)
 	}
@@ -15,8 +15,8 @@ SECTIONS
 	}
 
 	.bss : {
-		PROVIDE(__bss_start__ = .);
+		__bss_start__ = .;
 		*(*.bss)
-		PROVIDE(__bss_end__ = .);
+    	__bss_end__ = . ;
 	}
 }

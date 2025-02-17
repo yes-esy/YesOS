@@ -39,8 +39,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-dsgb7r"
-      binary: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-dsgb7r"
+      source: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-vz2mut"
+      binary: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-vz2mut"
     cmakeVariables:
       CMAKE_C_FLAGS: "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables"
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -49,21 +49,21 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-dsgb7r'
+        Change Dir: 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-vz2mut'
         
-        Run Build Command(s): D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E env VERBOSE=1 D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe -f Makefile cmTC_3a749/fast
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe  -f CMakeFiles/cmTC_3a749.dir/build.make CMakeFiles/cmTC_3a749.dir/build
-        make[1]: Entering directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-dsgb7r'
-        Building C object CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables    -v -o CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj -c D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/share/cmake-3.31/Modules/CMakeCCompilerABI.c
+        Run Build Command(s): D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E env VERBOSE=1 D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe -f Makefile cmTC_7fa8b/fast
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe  -f CMakeFiles/cmTC_7fa8b.dir/build.make CMakeFiles/cmTC_7fa8b.dir/build
+        make[1]: Entering directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-vz2mut'
+        Building C object CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables    -v -o CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj -c D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/share/cmake-3.31/Modules/CMakeCCompilerABI.c
         Using built-in specs.
         COLLECT_GCC=D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe
         Target: x86_64-elf
         Configured with: ../gcc-7.1.0/configure --host=i686-w64-mingw32.static --target=x86_64-elf --disable-nls --enable-languages=c,c++ --without-headers --prefix=/root/build-x86_64-elf/windows/output
         Thread model: single
         gcc version 7.1.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
-         d:/myos/tools/x86_64-elf-tools-windows/bin/../libexec/gcc/x86_64-elf/7.1.0/cc1.exe -quiet -v -iprefix d:\\myos\\tools\\x86_64-elf-tools-windows\\bin\\../lib/gcc/x86_64-elf/7.1.0/ D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/share/cmake-3.31/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -m32 -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj -g -O0 -version -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -o C:\\Users\\Lenovo\\AppData\\Local\\Temp\\ccqbFUIn.s
+        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
+         d:/myos/tools/x86_64-elf-tools-windows/bin/../libexec/gcc/x86_64-elf/7.1.0/cc1.exe -quiet -v -iprefix d:\\myos\\tools\\x86_64-elf-tools-windows\\bin\\../lib/gcc/x86_64-elf/7.1.0/ D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/share/cmake-3.31/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -m32 -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj -g -O0 -version -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -o C:\\Users\\Lenovo\\AppData\\Local\\Temp\\ccncQrf2.s
         GNU C11 (GCC) version 7.1.0 (x86_64-elf)
         	compiled by GNU C version 5.5.0, GMP version 6.1.0, MPFR version 3.1.4, MPC version 1.0.3, isl version isl-0.16.1-GMP
         
@@ -84,15 +84,15 @@ events:
         
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
         Compiler executable checksum: b00064cd55ffce4efe95d0fcd6948296
-        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
-         d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/../../../../x86_64-elf/bin/as.exe --32 -o CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj C:\\Users\\Lenovo\\AppData\\Local\\Temp\\ccqbFUIn.s
+        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
+         d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/../../../../x86_64-elf/bin/as.exe --32 -o CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj C:\\Users\\Lenovo\\AppData\\Local\\Temp\\ccncQrf2.s
         COMPILER_PATH=d:/myos/tools/x86_64-elf-tools-windows/bin/../libexec/gcc/x86_64-elf/7.1.0/;d:/myos/tools/x86_64-elf-tools-windows/bin/../libexec/gcc/;d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/../../../../x86_64-elf/bin/
         LIBRARY_PATH=d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/;d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/;d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/../../../../x86_64-elf/lib/
-        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_3a749.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
-        Linking C executable cmTC_3a749.exe
-        D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E rm -f CMakeFiles/cmTC_3a749.dir/objects.a
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-ar.exe qc CMakeFiles/cmTC_3a749.dir/objects.a @CMakeFiles/cmTC_3a749.dir/objects1.rsp
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables   -v -Wl,-v -Wl,--whole-archive CMakeFiles/cmTC_3a749.dir/objects.a -Wl,--no-whole-archive -o cmTC_3a749.exe -Wl,--out-implib,libcmTC_3a749.dll.a -Wl,--major-image-version,0,--minor-image-version,0
+        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'CMakeFiles/cmTC_7fa8b.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64'
+        Linking C executable cmTC_7fa8b.exe
+        D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E rm -f CMakeFiles/cmTC_7fa8b.dir/objects.a
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-ar.exe qc CMakeFiles/cmTC_7fa8b.dir/objects.a @CMakeFiles/cmTC_7fa8b.dir/objects1.rsp
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables   -v -Wl,-v -Wl,--whole-archive CMakeFiles/cmTC_7fa8b.dir/objects.a -Wl,--no-whole-archive -o cmTC_7fa8b.exe -Wl,--out-implib,libcmTC_7fa8b.dll.a -Wl,--major-image-version,0,--minor-image-version,0
         Using built-in specs.
         COLLECT_GCC=D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe
         Target: x86_64-elf
@@ -101,9 +101,9 @@ events:
         gcc version 7.1.0 (GCC) 
         COMPILER_PATH=d:/myos/tools/x86_64-elf-tools-windows/bin/../libexec/gcc/x86_64-elf/7.1.0/;d:/myos/tools/x86_64-elf-tools-windows/bin/../libexec/gcc/;d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/../../../../x86_64-elf/bin/
         LIBRARY_PATH=d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/;d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/;d:/myos/tools/x86_64-elf-tools-windows/bin/../lib/gcc/x86_64-elf/7.1.0/../../../../x86_64-elf/lib/
-        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'cmTC_3a749.exe' '-mtune=generic' '-march=x86-64'
-        x86_64-elf-gcc.exe: warning: CMakeFiles/cmTC_3a749.dir/objects.a: linker input file unused because linking not done
-        make[1]: Leaving directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-dsgb7r'
+        COLLECT_GCC_OPTIONS='-g' '-c' '-O0' '-m32' '-fno-pie' '-fno-stack-protector' '-fno-asynchronous-unwind-tables' '-v' '-o' 'cmTC_7fa8b.exe' '-mtune=generic' '-march=x86-64'
+        x86_64-elf-gcc.exe: warning: CMakeFiles/cmTC_7fa8b.dir/objects.a: linker input file unused because linking not done
+        make[1]: Leaving directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-vz2mut'
         
       exitCode: 0
   -
@@ -114,8 +114,8 @@ events:
     checks:
       - "Check for working C compiler: D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe"
     directories:
-      source: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-9zi1ar"
-      binary: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-9zi1ar"
+      source: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-js2dzw"
+      binary: "E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-js2dzw"
     cmakeVariables:
       CMAKE_C_FLAGS: "-g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables"
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -124,19 +124,19 @@ events:
       variable: "CMAKE_C_COMPILER_WORKS"
       cached: true
       stdout: |
-        Change Dir: 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-9zi1ar'
+        Change Dir: 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-js2dzw'
         
-        Run Build Command(s): D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E env VERBOSE=1 D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe -f Makefile cmTC_6b8fd/fast
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe  -f CMakeFiles/cmTC_6b8fd.dir/build.make CMakeFiles/cmTC_6b8fd.dir/build
-        make[1]: Entering directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-9zi1ar'
-        Building C object CMakeFiles/cmTC_6b8fd.dir/testCCompiler.c.obj
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_6b8fd.dir/testCCompiler.c.obj -c E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-9zi1ar/testCCompiler.c
-        Linking C executable cmTC_6b8fd.exe
-        D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E rm -f CMakeFiles/cmTC_6b8fd.dir/objects.a
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-ar.exe qc CMakeFiles/cmTC_6b8fd.dir/objects.a @CMakeFiles/cmTC_6b8fd.dir/objects1.rsp
-        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -Wl,--whole-archive CMakeFiles/cmTC_6b8fd.dir/objects.a -Wl,--no-whole-archive -o cmTC_6b8fd.exe -Wl,--out-implib,libcmTC_6b8fd.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_6b8fd.dir/linkLibs.rsp
-        x86_64-elf-gcc.exe: warning: CMakeFiles/cmTC_6b8fd.dir/objects.a: linker input file unused because linking not done
-        make[1]: Leaving directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-9zi1ar'
+        Run Build Command(s): D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E env VERBOSE=1 D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe -f Makefile cmTC_d25d4/fast
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/make.exe  -f CMakeFiles/cmTC_d25d4.dir/build.make CMakeFiles/cmTC_d25d4.dir/build
+        make[1]: Entering directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-js2dzw'
+        Building C object CMakeFiles/cmTC_d25d4.dir/testCCompiler.c.obj
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe   -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -o CMakeFiles/cmTC_d25d4.dir/testCCompiler.c.obj -c E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-js2dzw/testCCompiler.c
+        Linking C executable cmTC_d25d4.exe
+        D:/MyOS/tools/CMake/cmake-3.31.3-windows-x86_64/bin/cmake.exe -E rm -f CMakeFiles/cmTC_d25d4.dir/objects.a
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-ar.exe qc CMakeFiles/cmTC_d25d4.dir/objects.a @CMakeFiles/cmTC_d25d4.dir/objects1.rsp
+        D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables  -Wl,--whole-archive CMakeFiles/cmTC_d25d4.dir/objects.a -Wl,--no-whole-archive -o cmTC_d25d4.exe -Wl,--out-implib,libcmTC_d25d4.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_d25d4.dir/linkLibs.rsp
+        x86_64-elf-gcc.exe: warning: CMakeFiles/cmTC_d25d4.dir/objects.a: linker input file unused because linking not done
+        make[1]: Leaving directory 'E:/OS/MyOs/YesOS_code/code/build/CMakeFiles/CMakeScratch/TryCompile-js2dzw'
         
       exitCode: 0
   -

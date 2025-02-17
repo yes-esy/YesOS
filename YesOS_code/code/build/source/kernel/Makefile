@@ -31,9 +31,6 @@ default_target: all
 
 .SUFFIXES: .hpux_make_needs_suffix_list
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Command-line flag to silence nested $(MAKE).
 $(VERBOSE)MAKESILENT = -s
 
@@ -253,30 +250,6 @@ cpu/irq.c.s:
 	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.s
 .PHONY : cpu/irq.c.s
 
-cpu/mmu.obj: cpu/mmu.c.obj
-.PHONY : cpu/mmu.obj
-
-# target to build an object file
-cpu/mmu.c.obj:
-	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj
-.PHONY : cpu/mmu.c.obj
-
-cpu/mmu.i: cpu/mmu.c.i
-.PHONY : cpu/mmu.i
-
-# target to preprocess a source file
-cpu/mmu.c.i:
-	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.i
-.PHONY : cpu/mmu.c.i
-
-cpu/mmu.s: cpu/mmu.c.s
-.PHONY : cpu/mmu.s
-
-# target to generate assembly for a file
-cpu/mmu.c.s:
-	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.s
-.PHONY : cpu/mmu.c.s
-
 dev/console.obj: dev/console.c.obj
 .PHONY : dev/console.obj
 
@@ -445,6 +418,30 @@ fs/devfs/devfs.c.s:
 	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/devfs/devfs.c.s
 .PHONY : fs/devfs/devfs.c.s
 
+fs/fatfs/fatfs.obj: fs/fatfs/fatfs.c.obj
+.PHONY : fs/fatfs/fatfs.obj
+
+# target to build an object file
+fs/fatfs/fatfs.c.obj:
+	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.obj
+.PHONY : fs/fatfs/fatfs.c.obj
+
+fs/fatfs/fatfs.i: fs/fatfs/fatfs.c.i
+.PHONY : fs/fatfs/fatfs.i
+
+# target to preprocess a source file
+fs/fatfs/fatfs.c.i:
+	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.i
+.PHONY : fs/fatfs/fatfs.c.i
+
+fs/fatfs/fatfs.s: fs/fatfs/fatfs.c.s
+.PHONY : fs/fatfs/fatfs.s
+
+# target to generate assembly for a file
+fs/fatfs/fatfs.c.s:
+	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/fs/fatfs/fatfs.c.s
+.PHONY : fs/fatfs/fatfs.c.s
+
 fs/file.obj: fs/file.c.obj
 .PHONY : fs/file.obj
 
@@ -548,6 +545,30 @@ init/init.s: init/init.c.s
 init/init.c.s:
 	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/init.c.s
 .PHONY : init/init.c.s
+
+init/lib_syscall.obj: init/lib_syscall.c.obj
+.PHONY : init/lib_syscall.obj
+
+# target to build an object file
+init/lib_syscall.c.obj:
+	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.obj
+.PHONY : init/lib_syscall.c.obj
+
+init/lib_syscall.i: init/lib_syscall.c.i
+.PHONY : init/lib_syscall.i
+
+# target to preprocess a source file
+init/lib_syscall.c.i:
+	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.i
+.PHONY : init/lib_syscall.c.i
+
+init/lib_syscall.s: init/lib_syscall.c.s
+.PHONY : init/lib_syscall.s
+
+# target to generate assembly for a file
+init/lib_syscall.c.s:
+	cd E:/OS/MyOs/YesOS_code/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/lib_syscall.c.s
+.PHONY : init/lib_syscall.c.s
 
 init/start.obj: init/start.S.obj
 .PHONY : init/start.obj
@@ -725,9 +746,6 @@ help:
 	@echo "... cpu/irq.obj"
 	@echo "... cpu/irq.i"
 	@echo "... cpu/irq.s"
-	@echo "... cpu/mmu.obj"
-	@echo "... cpu/mmu.i"
-	@echo "... cpu/mmu.s"
 	@echo "... dev/console.obj"
 	@echo "... dev/console.i"
 	@echo "... dev/console.s"
@@ -749,6 +767,9 @@ help:
 	@echo "... fs/devfs/devfs.obj"
 	@echo "... fs/devfs/devfs.i"
 	@echo "... fs/devfs/devfs.s"
+	@echo "... fs/fatfs/fatfs.obj"
+	@echo "... fs/fatfs/fatfs.i"
+	@echo "... fs/fatfs/fatfs.s"
 	@echo "... fs/file.obj"
 	@echo "... fs/file.i"
 	@echo "... fs/file.s"
@@ -762,6 +783,9 @@ help:
 	@echo "... init/init.obj"
 	@echo "... init/init.i"
 	@echo "... init/init.s"
+	@echo "... init/lib_syscall.obj"
+	@echo "... init/lib_syscall.i"
+	@echo "... init/lib_syscall.s"
 	@echo "... init/start.obj"
 	@echo "... ipc/mutex.obj"
 	@echo "... ipc/mutex.i"

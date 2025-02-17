@@ -1,17 +1,15 @@
 source/kernel/CMakeFiles/kernel.dir/fs/fs.c.obj: \
  E:/OS/MyOs/YesOS_code/code/source/kernel/fs/fs.c \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/fs.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/mutex.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/task.h \
  E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/cpu/cpu.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/file.h \
+ E:/OS/MyOs/YesOS_code/code/source/comm/cpu_instr.h \
+ E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/klib.h \
  d:\myos\tools\x86_64-elf-tools-windows\lib\gcc\x86_64-elf\7.1.0\include\stdarg.h \
- E:/OS/MyOs/YesOS_code/code/source/comm/boot_info.h \
- E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
- E:/OS/MyOs/YesOS_code/code/source/comm/cpu_instr.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/fs.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\stat.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\_ansi.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\newlib.h \
@@ -42,10 +40,17 @@ source/kernel/CMakeFiles/kernel.dir/fs/fs.c.obj: \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\sched.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\types.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_locale.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/log.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/console.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/file.h \
+ E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/fs/fatfs/fatfs.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/mutex.h \
+ E:/OS/MyOs/YesOS_code/code/source/comm/boot_info.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/console.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/log.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/dev.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\file.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\fcntl.h \

@@ -1,33 +1,30 @@
 source/applib/CMakeFiles/app.dir/cstart.c.obj: \
  E:/OS/MyOs/YesOS_code/code/source/applib/cstart.c \
- e:\os\myos\yesos_code\newlib\i686-elf\include\stdint.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\machine\_default_types.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\features.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\_newlib_version.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_intsup.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_stdint.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\stdlib.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\machine\ieeefp.h \
+ E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\stat.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\_ansi.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\newlib.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\_newlib_version.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\config.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\machine\ieeefp.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\features.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\time.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\_ansi.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\cdefs.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\machine\_default_types.h \
  d:\myos\tools\x86_64-elf-tools-windows\lib\gcc\x86_64-elf\7.1.0\include\stddef.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\reent.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\_ansi.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_types.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\_types.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\lock.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\cdefs.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\machine\stdlib.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\alloca.h \
- E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
- E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
- E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\stat.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\time.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\time.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\types.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_stdint.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\endian.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\_endian.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\select.h \
@@ -38,4 +35,7 @@ source/applib/CMakeFiles/app.dir/cstart.c.obj: \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_pthreadtypes.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\sched.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\types.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_locale.h
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_locale.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\stdlib.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\machine\stdlib.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\alloca.h

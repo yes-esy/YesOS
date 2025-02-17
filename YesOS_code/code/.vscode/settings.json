@@ -34,6 +34,10 @@
         "tty.h": "c",
         "dev.h": "c",
         "main.h": "c",
-        "disk.h": "c"
+        "disk.h": "c",
+        "file.h": "c",
+        "fatfs.h": "c",
+        "stat.h": "c",
+        "stdlib.h": "c"
     },
 }

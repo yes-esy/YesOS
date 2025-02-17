@@ -1,9 +1,11 @@
 source/applib/CMakeFiles/app.dir/lib_syscall.c.obj: \
  E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.c \
- E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
- E:/OS/MyOs/YesOS_code/code/source/comm/types.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/core/syscall.h \
  E:/OS/MyOs/YesOS_code/code/source/kernel/include/os_cfg.h \
+ E:/OS/MyOs/YesOS_code/code/source/applib/lib_syscall.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/dev/tty.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/ipc/sem.h \
+ E:/OS/MyOs/YesOS_code/code/source/kernel/include/tools/list.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\stat.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\_ansi.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\newlib.h \
@@ -33,4 +35,9 @@ source/applib/CMakeFiles/app.dir/lib_syscall.c.obj: \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_pthreadtypes.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\sys\sched.h \
  e:\os\myos\yesos_code\newlib\i686-elf\include\machine\types.h \
- e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_locale.h
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\_locale.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\malloc.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\machine\malloc.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\string.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\strings.h \
+ e:\os\myos\yesos_code\newlib\i686-elf\include\sys\string.h
