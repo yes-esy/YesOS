@@ -1,0 +1,19 @@
+/**
+ * @FilePath     : /code/source/kernel/include/os_cfg.h
+ * @Description  :  os配置文件
+ * @Author       : ys 2900226123@qq.com
+ * @Version      : 0.0.1
+ * @LastEditors  : ys 2900226123@qq.com
+ * @LastEditTime : 2025-04-13 20:41:29
+ * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
+ **/
+
+#ifndef OS_CFG_H
+#define OS_CFG_H
+
+#define GDT_TABLE_SIZE 256           // GDT表项数量
+#define KERNEL_SELECTOR_CS (1 * 8)   // 内核代码段描述符
+#define KERNEL_SELECTOR_DS (2 * 8)   // 内核数据段描述符
+#define KERNEL_STACK_SIZE (8 * 1024) // 栈大小
+
+#endif
