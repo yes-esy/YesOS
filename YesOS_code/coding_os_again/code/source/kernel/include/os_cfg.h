@@ -15,5 +15,7 @@
 #define KERNEL_SELECTOR_CS (1 * 8)   // 内核代码段描述符
 #define KERNEL_SELECTOR_DS (2 * 8)   // 内核数据段描述符
 #define KERNEL_STACK_SIZE (8 * 1024) // 栈大小
+#define OS_TICKS_MS (10)             // 每隔10ms
+#define OS_VERSION "1.0.0"           // 系统版本号
 
 #endif

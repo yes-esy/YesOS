@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-14 22:00:23
+ * @LastEditTime : 2025-04-17 11:39:58
  * Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  */
 
@@ -47,12 +47,20 @@ gdt_reload:
 .comm stack, KERNEL_STACK_SIZE    # comm 声明未初始化的通用内存区域，以字节计
 
 
-    .text
-    .extern do_handler_unknown
-    .global exception_handler_unknown
 
-exception_handler_unknown:
-    
+# 相当于c语言中的宏其中 num为中断向量号, with_err_code 为错误码
+.macro exception_handler name num with_err_code
+    .text
+    .extern do_handler_\name
+    .global exception_handler_\name
+
+exception_handler_\name:
+    .if \with_err_code == 0
+        push $0
+    .endif
+    # 压入中断号
+    push $\num
+
     # 保护现场
     pusha 
     push %ds
@@ -60,12 +68,45 @@ exception_handler_unknown:
     push %fs
     push %gs
 
-    call do_handler_unknown
+    push %esp # 相当于给do_handler_unknown 传递参数
+    
+    call do_handler_\name # 调用特定c处理函数
 
+    # esp出栈
+    add $(1*4) , %esp 
+    
     # 恢复现场
     pop %gs
     pop %fs
     pop %es
     pop %ds
     popa
+    
+    add $(2*4) , %esp
+
     iret
+.endm
+
+exception_handler unknown            , -1    , 0 # 未知异常
+exception_handler divider            ,  0    , 0 # 除0异常
+exception_handler Debug              ,  0    , 0 # Debug异常
+exception_handler NMI                ,  2    , 0 #
+exception_handler breakpoint         ,  3    , 0 # 断点异常
+exception_handler overflow           ,  4    , 0 # 溢出
+exception_handler bound_range        ,  5    , 0 # 越界
+exception_handler invalid_opcode     ,  6    , 0 # 无效操作码
+exception_handler device_unavailable ,  7    , 0 # 设备不可用
+exception_handler double_fault       ,  8    , 1 #
+exception_handler invalid_tss        ,  10   , 1 # 无效TSS
+exception_handler segment_not_present,  11   , 1 # 段不存在
+exception_handler stack_segment_fault,  12   , 1 #
+exception_handler general_protection ,  13   , 1 #
+exception_handler page_fault         ,  14   , 1 # 页错误
+exception_handler fpu_error          ,  16   , 0 # 浮点运算单元
+exception_handler alignment_check    ,  17   , 1 # 对齐检查
+exception_handler machine_check      ,  18   , 0 #
+exception_handler smd_exception      ,  19   , 0 #
+exception_handler virtual_exception  ,  20   , 0 #
+exception_handler control_exception  ,  21   , 1 #
+exception_handler timer              ,  0x20 , 0 #
+

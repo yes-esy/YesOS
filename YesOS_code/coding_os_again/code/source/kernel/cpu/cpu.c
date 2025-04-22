@@ -39,7 +39,7 @@ void segment_desc_set(int selector, uint32_t base, uint32_t limit, uint16_t attr
 }
 
 /**
- * @brief        : 对终端门类型的表项进行设置
+ * @brief        : 对中断门类型的表项进行设置
  * @param         {gate_desc_t} *desc: 指定的表项
  * @param         {uint16_t} selector: 对应的处理程序所在的代码段的选择子
  * @param         {uint32_t} offset: 地址偏移量

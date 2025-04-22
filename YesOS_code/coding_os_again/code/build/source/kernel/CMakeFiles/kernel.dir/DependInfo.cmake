@@ -22,7 +22,10 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/cpu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c" "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj.d"
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj.d"
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/klib.c" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj.d"
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/log.c" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

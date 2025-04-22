@@ -59,7 +59,7 @@ Disassembly of section .text:
   	.code16
  	.text
 	.global _start
-	.extern boot_entry // 声明boot_entry为外部函数
+	.extern boot_entry # 声明boot_entry为外部函数
 _start:
 	mov $0 , %ax
     7c00:	b8 00 00             	mov    $0x0,%ax
@@ -74,33 +74,34 @@ _start:
 	mov %ax, %gs
     7c0b:	8e e8                	mov    %ax,%gs
 	
-	mov $_start, %esp // 或者mov $0x7c00,%esp
+	mov $_start, %esp 
     7c0d:	66 bc 00 7c 00 00    	mov    $0x7c00,%esp
 
 00007c13 <read_loader>:
+	# 或者mov $0x7c00,%esp
 
-// 将loader读到0x8000处
+# 将loader读到0x8000处
 read_loader:
-	mov $0x8000, %bx	// 读取到的内存地址(目的地址)
+	mov $0x8000, %bx	# 读取到的内存地址(目的地址)
     7c13:	bb 00 80             	mov    $0x8000,%bx
-	mov $0x2, %cx		// ah: 0x2读磁盘命令 
+	mov $0x2, %cx		# ah: 0x2读磁盘命令 
     7c16:	b9 02 00             	mov    $0x2,%cx
-	mov $0x2, %ah		// ch:磁道号，cl起始扇区号
+	mov $0x2, %ah		# ch:磁道号，cl起始扇区号
     7c19:	b4 02                	mov    $0x2,%ah
-	mov $64, %al		// al: 读取的扇区数量, 必须小于128，暂设置成32KB
+	mov $64, %al		# al: 读取的扇区数量, 必须小于128，暂设置成32KB
     7c1b:	b0 40                	mov    $0x40,%al
-	mov $0x0080, %dx	// dh: 磁头号，dl驱动器号0x80(磁盘1)
+	mov $0x0080, %dx	# dh: 磁头号，dl驱动器号0x80(磁盘1)
     7c1d:	ba 80 00             	mov    $0x80,%dx
 	int $0x13 
     7c20:	cd 13                	int    $0x13
-	jc read_loader // 发生错误反复读取
+	jc read_loader # 发生错误反复读取
     7c22:	72 ef                	jb     7c13 <read_loader>
 
-	// 跳转至C部分执行，由C部分处理
+	# 跳转至C部分执行，由C部分处理
 	jmp boot_entry
     7c24:	e9 02 00             	jmp    7c29 <boot_entry>
 
-	// 原地跳转
+	# 原地跳转
 	jmp .
     7c27:	eb fe                	jmp    7c27 <read_loader+0x14>
 

@@ -61,7 +61,7 @@ static void detect_memory(void)
                              : "a"(0xE820), "b"(contID), "c"(24), "d"(0x534D4150), "D"(entry));
         if (signature != 0x534D4150)
         {
-            show_msg("failed.\r\n");
+            show_msg("detect failedly.\r\n");
             return;
         }
 
@@ -84,7 +84,7 @@ static void detect_memory(void)
             break;
         }
     }
-    show_msg("ok.\r\n");
+    show_msg("detect successfully.\r\n");
 }
 
 // gdt表,全局描述符

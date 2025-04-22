@@ -7,41 +7,41 @@ start address 0x00008000
 
 Program Header:
     LOAD off    0x00001000 vaddr 0x00008000 paddr 0x00008000 align 2**12
-         filesz 0x00000667 memsz 0x00000667 flags r-x
-    LOAD off    0x00001668 vaddr 0x00009668 paddr 0x00009668 align 2**12
-         filesz 0x00000018 memsz 0x0000006c flags rw-
+         filesz 0x00000681 memsz 0x00000681 flags r-x
+    LOAD off    0x00001684 vaddr 0x00009684 paddr 0x00009684 align 2**12
+         filesz 0x00000018 memsz 0x00000070 flags rw-
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         00000629  00008000  00008000  00001000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .rodata       0000003e  00008629  00008629  00001629  2**0
+  1 .rodata       00000058  00008629  00008629  00001629  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  2 .data         00000018  00009668  00009668  00001668  2**2
+  2 .data         00000018  00009684  00009684  00001684  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  3 .bss          00000054  00009680  00009680  00001680  2**5
+  3 .bss          00000054  000096a0  000096a0  0000169c  2**5
                   ALLOC
-  4 .comment      00000011  00000000  00000000  00001680  2**0
+  4 .comment      00000011  00000000  00000000  0000169c  2**0
                   CONTENTS, READONLY
-  5 .debug_aranges 00000060  00000000  00000000  00001698  2**3
+  5 .debug_aranges 00000060  00000000  00000000  000016b0  2**3
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000008e5  00000000  00000000  000016f8  2**0
+  6 .debug_info   000008e5  00000000  00000000  00001710  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000347  00000000  00000000  00001fdd  2**0
+  7 .debug_abbrev 00000347  00000000  00000000  00001ff5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000377  00000000  00000000  00002324  2**0
+  8 .debug_line   00000377  00000000  00000000  0000233c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000260  00000000  00000000  0000269c  2**2
+  9 .debug_frame  00000260  00000000  00000000  000026b4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000434  00000000  00000000  000028fc  2**0
+ 10 .debug_str    00000434  00000000  00000000  00002914  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000018  00000000  00000000  00002d30  2**0
+ 11 .debug_ranges 00000018  00000000  00000000  00002d48  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 00008000 l    d  .text	00000000 .text
 00008629 l    d  .rodata	00000000 .rodata
-00009668 l    d  .data	00000000 .data
-00009680 l    d  .bss	00000000 .bss
+00009684 l    d  .data	00000000 .data
+000096a0 l    d  .bss	00000000 .bss
 00000000 l    d  .comment	00000000 .comment
 00000000 l    d  .debug_aranges	00000000 .debug_aranges
 00000000 l    d  .debug_info	00000000 .debug_info
@@ -69,14 +69,14 @@ SYMBOL TABLE:
 000084be l     F .text	0000011a reload_elf_file
 000085d8 l     F .text	00000005 die
 00008311 g     F .text	00000023 loader_entry
-00009668 g     O .data	00000018 gdt_table
+00009684 g     O .data	00000018 gdt_table
 000085dd g     F .text	0000004c load_kernel
-00009680 g     O .bss	00000054 boot_info
+000096a0 g     O .bss	00000054 boot_info
 00008000 g       .text	00000000 _start
-00009680 g       .bss	00000000 __bss_start
+0000969c g       .bss	00000000 __bss_start
 00008003 g       .text	00000000 protect_mode_entry
-00009680 g       .data	00000000 _edata
-000096d4 g       .bss	00000000 _end
+0000969c g       .data	00000000 _edata
+000096f4 g       .bss	00000000 _end
 
 
 
@@ -85,7 +85,7 @@ Disassembly of section .text:
 00008000 <_start>:
   	.code16
  	.text
-	.extern loader_entry // 声明boot_entry为外部函数
+	.extern loader_entry # 声明boot_entry为外部函数
 	.global _start
 _start:
 	jmp loader_entry
@@ -96,7 +96,7 @@ _start:
 	.extern load_kernel
 
 protect_mode_entry:
-	// 重新加载所有的数据段描述符
+	# 重新加载所有的数据段描述符
 	mov $16, %ax
     8003:	66 b8 10 00 8e d8    	mov    $0xd88e0010,%eax
 	mov %ax, %ds
@@ -109,7 +109,7 @@ protect_mode_entry:
 	mov %ax, %gs
     800f:	8e e8                	mov    %ax,%gs
 
-	// 长跳转进入到32位内核加载模式中
+	# 长跳转进入到32位内核加载模式中
     8011:	ea dd 85 00 00       	ljmp   $0x0,$0x85dd
     8016:	08 00                	or     %al,(%bx,%si)
 
@@ -342,7 +342,7 @@ static void detect_memory(void)
     // 后续：EAX=0xE820,ECX=24,
     // 结束判断：EBX=0
     boot_info.ram_region_count = 0;
-    816a:	66 c7 06 d0 96 00 00 	movl   $0x0,-0x6930
+    816a:	66 c7 06 f0 96 00 00 	movl   $0x0,-0x6910
     8171:	00 00 
     for (int i = 0; i < BOOT_RAM_REGION_MAX; i++)
     8173:	67 66 c7 45 ec 00 00 	movl   $0x0,-0x14(%ebp)
@@ -372,7 +372,7 @@ static void detect_memory(void)
     81c3:	4d 53 
     81c5:	74 13                	je     81da <detect_memory+0x98>
         {
-            show_msg("failed.\r\n");
+            show_msg("detect failedly.\r\n");
     81c7:	66 68 3f 86 00 00    	pushl  $0x863f
     81cd:	66 e8 34 ff ff ff    	calll  8107 <show_msg>
     81d3:	66 83 c4 04          	add    $0x4,%esp
@@ -401,21 +401,21 @@ static void detect_memory(void)
     8203:	75 39                	jne    823e <detect_memory+0xfc>
         {
             boot_info.ram_region_cfg[boot_info.ram_region_count].start = entry->BaseL;
-    8205:	66 a1 d0 96          	mov    0x96d0,%eax
+    8205:	66 a1 f0 96          	mov    0x96f0,%eax
     8209:	67 66 8b 55 e8       	mov    -0x18(%ebp),%edx
     820e:	67 66 8b 12          	mov    (%edx),%edx
-    8212:	67 66 89 14 c5 80 96 	mov    %edx,0x9680(,%eax,8)
+    8212:	67 66 89 14 c5 a0 96 	mov    %edx,0x96a0(,%eax,8)
     8219:	00 00 
             boot_info.ram_region_cfg[boot_info.ram_region_count].size = entry->LengthL;
-    821b:	66 a1 d0 96          	mov    0x96d0,%eax
+    821b:	66 a1 f0 96          	mov    0x96f0,%eax
     821f:	67 66 8b 55 e8       	mov    -0x18(%ebp),%edx
     8224:	67 66 8b 52 08       	mov    0x8(%edx),%edx
-    8229:	67 66 89 14 c5 84 96 	mov    %edx,0x9684(,%eax,8)
+    8229:	67 66 89 14 c5 a4 96 	mov    %edx,0x96a4(,%eax,8)
     8230:	00 00 
             boot_info.ram_region_count++;
-    8232:	66 a1 d0 96          	mov    0x96d0,%eax
+    8232:	66 a1 f0 96          	mov    0x96f0,%eax
     8236:	66 83 c0 01          	add    $0x1,%eax
-    823a:	66 a3 d0 96          	mov    %eax,0x96d0
+    823a:	66 a3 f0 96          	mov    %eax,0x96f0
         }
 
         if (contID == 0)
@@ -434,8 +434,8 @@ static void detect_memory(void)
     825b:	90                   	nop
         }
     }
-    show_msg("ok.\r\n");
-    825c:	66 68 49 86 00 00    	pushl  $0x8649
+    show_msg("detect successfully.\r\n");
+    825c:	66 68 52 86 00 00    	pushl  $0x8652
     8262:	66 e8 9f fe ff ff    	calll  8107 <show_msg>
     8268:	66 83 c4 04          	add    $0x4,%esp
 }
@@ -477,7 +477,7 @@ static void enter_protect_mode()
 
     // 设置gdt表
     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
-    82be:	66 b8 68 96 00 00    	mov    $0x9668,%eax
+    82be:	66 b8 84 96 00 00    	mov    $0x9684,%eax
     82c4:	66 6a 18             	pushl  $0x18
     82c7:	66 50                	push   %eax
     82c9:	66 e8 ab fd ff ff    	calll  807a <lgdt>
@@ -518,7 +518,7 @@ void loader_entry(void)
     8311:	66 55                	push   %ebp
     8313:	66 89 e5             	mov    %esp,%ebp
     show_msg("loader is running....\r\n");
-    8316:	66 68 4f 86 00 00    	pushl  $0x864f
+    8316:	66 68 69 86 00 00    	pushl  $0x8669
     831c:	66 e8 e5 fd ff ff    	calll  8107 <show_msg>
     8322:	66 83 c4 04          	add    $0x4,%esp
     detect_memory();
@@ -945,7 +945,7 @@ void load_kernel(void)
     ((void (*)(boot_info_t *))kernel_entry)(&boot_info);
     8617:	8b 45 f4             	mov    -0xc(%di),%ax
     861a:	83 ec 0c             	sub    $0xc,%sp
-    861d:	68 80 96             	push   $0x9680
+    861d:	68 a0 96             	push   $0x96a0
     8620:	00 00                	add    %al,(%bx,%si)
     8622:	ff d0                	call   *%ax
     8624:	83 c4 10             	add    $0x10,%sp
