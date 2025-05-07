@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-21 21:34:23
+ * @LastEditTime : 2025-04-27 21:29:41
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -12,6 +12,7 @@
 #include "comm/cpu_instr.h"
 #include <stdarg.h>
 #include "tools/klib.h"
+#include "cpu/irq.h"
 
 #define COM1_PORT 0x3F8
 
@@ -33,7 +34,7 @@ void log_init(void)
  * @brief        : 实现打印的功能(类似printf)
  * @param         {char} *fmt: 格式化字符串
  * @return        {*}
-**/
+ **/
 void log_printf(const char *fmt, ...)
 {
     char str_buf[128];
@@ -42,6 +43,7 @@ void log_printf(const char *fmt, ...)
     va_start(args, fmt);                           // 将fmt后的可变参数存储到args中
     kernel_vsprintf(str_buf, fmt, args);           // 将可变参数放入缓冲区
     va_end(args);
+    irq_state_t state = irq_enter_protection(); // 进入临界区
     const char *p = str_buf;
     while (*p != '\0')
     {
@@ -51,4 +53,5 @@ void log_printf(const char *fmt, ...)
     }
     outb(COM1_PORT, '\r');
     outb(COM1_PORT, '\n');
+    irq_leave_protection(state); // 退出临界区
 }

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-17 11:48:05
+ * @LastEditTime : 2025-04-27 21:28:24
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -70,7 +70,7 @@ typedef struct _exception_frame_t
 } exception_frame_t;
 
 typedef void (*irq_handler_t)(exception_frame_t *frame); // 中断处理类型irq_handler_t
-int irq_install(int irq_num, irq_handler_t handler); // 中断绑定
+int irq_install(int irq_num, irq_handler_t handler);     // 中断绑定
 
 // 中断捕获
 void exception_handler_divider(exception_frame_t *frame); // 除0异常
@@ -103,4 +103,9 @@ void irq_disable_global(void); // 关闭全局中断
 void irq_enable_global(void);  // 开启全局中断
 
 void pic_send_eoi(int irq);
+
+typedef uint32_t irq_state_t;
+
+irq_state_t irq_enter_protection(void);       // 进入临界区
+void irq_leave_protection(irq_state_t state); // 退出临界区
 #endif

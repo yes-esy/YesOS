@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-05 21:10:24
+ * @LastEditTime : 2025-04-27 21:37:53
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -42,7 +42,7 @@ static inline uint16_t inw(uint16_t port)
     /**
      * inb al,dx
      */
-    __asm__ __volatile__("in %1, %0" : "=a" (rv) : "dN" (port));
+    __asm__ __volatile__("in %1, %0" : "=a"(rv) : "dN"(port));
     return rv;
 }
 
@@ -101,7 +101,7 @@ static inline void lgdt(uint32_t start, uint32_t size)
  * @param         {uint32_t} start: 起始地址
  * @param         {uint32_t} size: 大小
  * @return        {*}
-**/
+ **/
 static inline void lidt(uint32_t start, uint32_t size)
 {
     // gdt表的信息
@@ -149,9 +149,36 @@ static inline void far_jump(uint32_t selector, uint32_t offset)
     uint32_t addr[] = {offset, selector};
     __asm__ __volatile__("ljmpl *(%[a])" ::[a] "r"(addr));
 }
-
+/**
+ * @brief        : 停机指令
+ * @return        {*}
+ **/
 static inline void hlt(void)
 {
     __asm__ __volatile__("hlt");
 }
+
+/**
+ * @brief        : 写task register寄存器于lgdt类似
+ * @param         {uint16_t} tss_selector: 对应的tss选择子
+ * @return        {*}
+ **/
+static inline void write_tr(uint16_t tss_selector)
+{
+    __asm__ __volatile__("ltr %%ax" ::"a"(tss_selector));
+}
+
+static inline uint32_t read_eflags(void)
+{
+    uint32_t eflags;
+
+    __asm__ __volatile__("pushf \n\tpop %%eax" : "=a"(eflags));
+    return eflags;
+}
+
+static inline void write_eflags(uint32_t eflags)
+{
+    __asm__ __volatile__("push %%eax\n\tpopf" ::"a"(eflags));
+}
+
 #endif

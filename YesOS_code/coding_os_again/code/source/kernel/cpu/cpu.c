@@ -1,6 +1,6 @@
 /**
  * @FilePath     : /code/source/kernel/cpu/cpu.c
- * @Description  : 
+ * @Description  :
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
@@ -10,6 +10,7 @@
 #include "cpu/cpu.h"
 #include "os_cfg.h"
 #include "comm/cpu_instr.h"
+#include "cpu/irq.h"
 // gdt_table gdt表
 static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 
@@ -31,7 +32,7 @@ void segment_desc_set(int selector, uint32_t base, uint32_t limit, uint16_t attr
         attr |= 0x8000;
         limit /= 0x1000;
     }
-    desc->limit15_0 = limit & 0xFFFF; 
+    desc->limit15_0 = limit & 0xFFFF;
     desc->base15_0 = base & 0xFFFF;
     desc->base23_16 = (base >> 16) & 0xFF;
     desc->attr = attr | (((limit >> 16) & 0xF) << 8);
@@ -45,13 +46,33 @@ void segment_desc_set(int selector, uint32_t base, uint32_t limit, uint16_t attr
  * @param         {uint32_t} offset: 地址偏移量
  * @param         {uint16_t} attr: 属性
  * @return        {*}
-**/
+ **/
 void gate_desc_set(gate_desc_t *desc, uint16_t selector, uint32_t offset, uint16_t attr)
 {
     desc->offset15_0 = offset & 0xFFFF;
     desc->selector = selector;
     desc->attr = attr;
     desc->offset31_16 = (offset >> 16) & 0xFFFF;
+}
+/**
+ * @brief        : 分配一个空闲gdt表项
+ * @return        {int} 选择子
+ **/
+int gdt_alloc_desc(void)
+{
+    irq_state_t state = irq_enter_protection();
+    // 跳过第0项
+    for (int i = 1; i < GDT_TABLE_SIZE; i++)
+    {
+        segment_desc_t *desc = gdt_table + i;
+        if (desc->attr == 0) // 该表项为空闲
+        {
+            irq_leave_protection(state);
+            return i * sizeof(segment_desc_t);
+        }
+    }
+    irq_leave_protection(state);
+    return -1;
 }
 
 /**
@@ -74,7 +95,15 @@ void init_gdt(void)
     // 加载gdt
     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
 }
-
+/**
+ * @brief        : 切换至TSS,即跳转实现任务切换
+ * @param         {uint16_t} tss_selector: 对应的tss选择子
+ * @return        {*}
+ **/
+void switch_to_tss(uint32_t tss_selector)
+{
+    far_jump(tss_selector, 0);
+}
 /**
  * @brief        : cpu初始化
  * @return        {*}

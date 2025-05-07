@@ -535,7 +535,7 @@ void loader_entry(void)
     8337:	83 ec 14             	sub    $0x14,%sp
     833a:	8b 45 08             	mov    0x8(%di),%ax
     833d:	66 89 45 ec          	mov    %eax,-0x14(%di)
-    __asm__ __volatile__("in %1, %0" : "=a" (rv) : "dN" (port));
+    __asm__ __volatile__("in %1, %0" : "=a"(rv) : "dN"(port));
     8341:	0f b7 45 ec          	movzww -0x14(%di),%ax
     8345:	89 c2                	mov    %ax,%dx
     8347:	66 ed                	in     (%dx),%eax

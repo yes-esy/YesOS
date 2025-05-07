@@ -37,6 +37,12 @@
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/core/task.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/task.c",
+  "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/task.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/core/task.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/cpu/cpu.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/cpu.c",
   "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/cpu.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj"
@@ -64,6 +70,12 @@
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/klib.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/klib.c",
   "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/klib.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/list.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/list.c",
+  "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/list.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj"
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",

@@ -133,6 +133,30 @@ kernel/fast:
 	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/build
 .PHONY : kernel/fast
 
+core/task.obj: core/task.c.obj
+.PHONY : core/task.obj
+
+# target to build an object file
+core/task.c.obj:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.obj
+.PHONY : core/task.c.obj
+
+core/task.i: core/task.c.i
+.PHONY : core/task.i
+
+# target to preprocess a source file
+core/task.c.i:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.i
+.PHONY : core/task.c.i
+
+core/task.s: core/task.c.s
+.PHONY : core/task.s
+
+# target to generate assembly for a file
+core/task.c.s:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/core/task.c.s
+.PHONY : core/task.c.s
+
 cpu/cpu.obj: cpu/cpu.c.obj
 .PHONY : cpu/cpu.obj
 
@@ -261,6 +285,30 @@ tools/klib.c.s:
 	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/klib.c.s
 .PHONY : tools/klib.c.s
 
+tools/list.obj: tools/list.c.obj
+.PHONY : tools/list.obj
+
+# target to build an object file
+tools/list.c.obj:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj
+.PHONY : tools/list.c.obj
+
+tools/list.i: tools/list.c.i
+.PHONY : tools/list.i
+
+# target to preprocess a source file
+tools/list.c.i:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/list.c.i
+.PHONY : tools/list.c.i
+
+tools/list.s: tools/list.c.s
+.PHONY : tools/list.s
+
+# target to generate assembly for a file
+tools/list.c.s:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/tools/list.c.s
+.PHONY : tools/list.c.s
+
 tools/log.obj: tools/log.c.obj
 .PHONY : tools/log.obj
 
@@ -294,6 +342,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... kernel"
+	@echo "... core/task.obj"
+	@echo "... core/task.i"
+	@echo "... core/task.s"
 	@echo "... cpu/cpu.obj"
 	@echo "... cpu/cpu.i"
 	@echo "... cpu/cpu.s"
@@ -310,6 +361,9 @@ help:
 	@echo "... tools/klib.obj"
 	@echo "... tools/klib.i"
 	@echo "... tools/klib.s"
+	@echo "... tools/list.obj"
+	@echo "... tools/list.i"
+	@echo "... tools/list.s"
 	@echo "... tools/log.obj"
 	@echo "... tools/log.i"
 	@echo "... tools/log.s"

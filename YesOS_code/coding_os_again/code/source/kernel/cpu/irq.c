@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-21 20:54:47
+ * @LastEditTime : 2025-05-07 19:38:24
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "cpu/irq.h"
@@ -18,6 +18,11 @@
 void exception_handler_unknown(void);       // 中断处理函数
 static gate_desc_t idt_table[IDT_TABLE_NR]; // IDT表
 
+/**
+ * @brief        :  打印寄存器异常信息
+ * @param         {exception_frame_t} *frame: 寄存器信息
+ * @return        {*}
+ **/
 static void dump_core_regs(exception_frame_t *frame)
 {
     // 打印CPU寄存器相关内容
@@ -184,6 +189,11 @@ static void init_pic()
     outb(PIC1_IMR, 0xFF);
 }
 
+/**
+ * @brief        : 通过写8259的ocw端口，来告诉操作系统irq_num对应的中断已经响应完了
+ * @param         {int} irq_num: 中断号
+ * @return        {*}
+ **/
 void pic_send_eoi(int irq_num)
 {
     irq_num -= IRQ_PIC_START;
@@ -320,4 +330,26 @@ void irq_disable_global(void)
 void irq_enable_global(void)
 {
     sti();
+}
+/**
+ * @brief        : 进入临界区,读取eflags的值，关中断
+ * @return        {irq_state_t}eflags的值
+ **/
+irq_state_t irq_enter_protection(void)
+{
+
+    irq_state_t state = read_eflags();
+
+    irq_disable_global();
+
+    return state;
+}
+/**
+ * @brief        : 退出临界区,将eflags原来的值写回
+ * @param         {irq_state_t} state: 原eflags的值
+ * @return        {*}
+ **/
+void irq_leave_protection(irq_state_t state)
+{
+    write_eflags(state);
 }

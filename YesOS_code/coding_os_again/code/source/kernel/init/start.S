@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-17 11:39:58
+ * @LastEditTime : 2025-04-23 21:37:08
  * Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  */
 
@@ -110,3 +110,27 @@ exception_handler virtual_exception  ,  20   , 0 #
 exception_handler control_exception  ,  21   , 1 #
 exception_handler timer              ,  0x20 , 0 #
 
+    .text
+    .global simple_switch
+    # simple_switch(&from,&to)
+simple_switch:
+    mov 4(%esp),%eax  # 取from->stack 
+    mov 8(%esp),%edx  # 取to->stack
+
+    # 压栈,保存当前任务的状态
+    push %ebp
+    push %ebx
+    push %esi
+    push %edi
+
+    # 切换当前栈
+    mov %esp,(%eax)  # from->stack = esp
+    mov %edx , %esp  # esp = to->stack
+    
+    # 加载下一任务的栈
+    pop %edi
+    pop %esi
+    pop %ebx
+    pop %ebp
+
+    ret

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-17 11:49:38
+ * @LastEditTime : 2025-04-27 21:02:46
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -13,6 +13,7 @@
 #include "comm/cpu_instr.h"
 #include "os_cfg.h"
 #include "cpu/irq.h"
+#include "core/task.h"
 
 static uint32_t sys_tick;
 
@@ -26,6 +27,8 @@ void do_handler_timer(exception_frame_t *frame)
     sys_tick++;
 
     pic_send_eoi(IRQ0_TIMER);
+
+    task_time_ticks();
 }
 
 /**

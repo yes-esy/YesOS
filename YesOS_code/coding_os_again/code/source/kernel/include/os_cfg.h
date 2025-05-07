@@ -17,5 +17,6 @@
 #define KERNEL_STACK_SIZE (8 * 1024) // 栈大小
 #define OS_TICKS_MS (10)             // 每隔10ms
 #define OS_VERSION "1.0.0"           // 系统版本号
+#define IDLE_TASK_SIZE 1024          //  空闲进程占空间大小
 
 #endif
