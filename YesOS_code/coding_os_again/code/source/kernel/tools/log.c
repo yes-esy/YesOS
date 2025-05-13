@@ -13,15 +13,18 @@
 #include <stdarg.h>
 #include "tools/klib.h"
 #include "cpu/irq.h"
+#include "ipc/mutex.h"
 
 #define COM1_PORT 0x3F8
 
+static mutex_t mutex;
 /**
  * @brief        : 日志输出初始化函数，对相应寄存器进行设置
  * @return        {*}
  **/
 void log_init(void)
 {
+    mutex_init(&mutex);
     outb(COM1_PORT + 1, 0x00); // 中断相关
     outb(COM1_PORT + 3, 0x80); // 发送速度
     outb(COM1_PORT + 0, 0x3);
@@ -43,7 +46,8 @@ void log_printf(const char *fmt, ...)
     va_start(args, fmt);                           // 将fmt后的可变参数存储到args中
     kernel_vsprintf(str_buf, fmt, args);           // 将可变参数放入缓冲区
     va_end(args);
-    irq_state_t state = irq_enter_protection(); // 进入临界区
+    // irq_state_t state = irq_enter_protection(); // 进入临界区
+    mutex_lock(&mutex);
     const char *p = str_buf;
     while (*p != '\0')
     {
@@ -53,5 +57,6 @@ void log_printf(const char *fmt, ...)
     }
     outb(COM1_PORT, '\r');
     outb(COM1_PORT, '\n');
-    irq_leave_protection(state); // 退出临界区
+    // irq_leave_protection(state); // 退出临界区
+    mutex_unlock(&mutex);
 }

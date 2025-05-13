@@ -11,9 +11,11 @@
 #include "os_cfg.h"
 #include "comm/cpu_instr.h"
 #include "cpu/irq.h"
+#include "ipc/mutex.h"
 // gdt_table gdt表
 static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 
+static mutex_t mutex;
 /**
  * @brief        : 对gdt表中指定的表项设置
  * @param         {int} selector: 选择子，gdt表中的某一个表项
@@ -60,18 +62,21 @@ void gate_desc_set(gate_desc_t *desc, uint16_t selector, uint32_t offset, uint16
  **/
 int gdt_alloc_desc(void)
 {
-    irq_state_t state = irq_enter_protection();
+    // irq_state_t state = irq_enter_protection();
+    mutex_lock(&mutex);
     // 跳过第0项
     for (int i = 1; i < GDT_TABLE_SIZE; i++)
     {
         segment_desc_t *desc = gdt_table + i;
         if (desc->attr == 0) // 该表项为空闲
         {
-            irq_leave_protection(state);
+            // irq_leave_protection(state);
+            mutex_unlock(&mutex);
             return i * sizeof(segment_desc_t);
         }
     }
-    irq_leave_protection(state);
+    // irq_leave_protection(state);
+    mutex_unlock(&mutex);
     return -1;
 }
 
@@ -110,5 +115,6 @@ void switch_to_tss(uint32_t tss_selector)
  **/
 void cpu_init(void)
 {
-    init_gdt(); // gdt表初始化
+    init_gdt();         // gdt表初始化
+    mutex_init(&mutex); // 互斥锁初始化
 }

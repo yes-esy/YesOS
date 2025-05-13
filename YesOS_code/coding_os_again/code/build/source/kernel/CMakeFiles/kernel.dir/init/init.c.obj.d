@@ -13,4 +13,5 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.obj: \
  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/klib.h \
  d:\myos\tools\x86_64-elf-tools-windows\lib\gcc\x86_64-elf\7.1.0\include\stdarg.h \
  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
- E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h
+ E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h \
+ E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/sem.h

@@ -16,9 +16,12 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.obj: E:/OS/MyOs/YesOS_code/codin
 source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/cpu.c \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/cpu_instr.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/types.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/irq.h \
-  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/os_cfg.h
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/mutex.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/os_cfg.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h
 
 source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/cpu_instr.h \
@@ -46,12 +49,29 @@ source/kernel/CMakeFiles/kernel.dir/init/init.c.obj: E:/OS/MyOs/YesOS_code/codin
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/irq.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/dev/time.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/sem.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/os_cfg.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/klib.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/log.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.h \
   D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stdarg.h
+
+source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/mutex.c \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/types.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/irq.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/mutex.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h
+
+source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/sem.c \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/types.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/irq.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/sem.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h
 
 source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/klib.c \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/cpu_instr.h \
@@ -66,8 +86,12 @@ source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj: E:/OS/MyOs/YesOS_code/codi
 source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/log.c \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/cpu_instr.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/types.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/irq.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/mutex.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/klib.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/log.h \
   D:/MyOS/tools/x86_64-elf-tools-windows/lib/gcc/x86_64-elf/7.1.0/include/stdarg.h
 
@@ -104,12 +128,20 @@ E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c:
 
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/cpu.c:
 
+E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/mutex.h:
+
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/dev/time.c:
 
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/dev/time.h:
 
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.c:
 
+E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/sem.h:
+
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.h:
+
+E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/mutex.c:
+
+E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/sem.c:
 
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/log.c:

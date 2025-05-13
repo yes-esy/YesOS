@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-05 16:29:13
+ * @LastEditTime : 2025-05-07 21:56:58
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef TASK_H
@@ -38,6 +38,7 @@ typedef struct _task_t
 
     list_node_t run_node; // 运行相关结点
     list_node_t all_node; // 所有队列结点
+    list_node_t wait_node; // 等待结点
 
     // uint32_t * stack;
     tss_t tss;        // 任务的tss段
@@ -93,4 +94,5 @@ void task_time_ticks(void);
 void sys_sleep(uint32_t ms); // 进程延时
 void task_set_sleep(task_t *task, uint32_t ticks);
 void task_set_wakeup(task_t *task);
+void task_set_ready(task_t *task);
 #endif

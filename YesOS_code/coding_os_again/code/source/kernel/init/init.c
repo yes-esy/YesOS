@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-29 18:04:51
+ * @LastEditTime : 2025-05-10 20:11:25
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "init.h"
@@ -18,8 +18,11 @@
 #include "tools/klib.h"
 #include "core/task.h"
 #include "tools/list.h"
+#include "ipc/sem.h"
 
 static boot_info_t *init_boot_info; // 启动信息
+
+static sem_t sem;
 
 /**
  * @brief        : 内核初始化
@@ -42,12 +45,13 @@ static task_t first_task; // 第一个任务
 static uint32_t first_task_stack[1024];
 void first_task_entry(void)
 {
-     int count = 0;
+    int count = 0;
     for (;;)
     {
+        sem_wait(&sem);
         log_printf("first_task_entry , count is %d", count++);
         // sys_sched_yield();
-        sys_sleep(1000);
+        // sys_sleep(10000);
     }
 }
 
@@ -113,17 +117,21 @@ void list_test()
 void init_main()
 {
     // int a = 3 / 0;
-    //irq_enable_global(); // 测试打开全局中断
     log_printf("Kernel is running . . .");
     log_printf("Version:%s", OS_VERSION);
-    task_init(&first_task, "init task",(uint32_t)first_task_entry, (uint32_t)&first_task_stack[1024]); // x86栈地址由高到低增长 ,同时init_task需要一个单独的栈空间。
+    task_init(&first_task, "init task", (uint32_t)first_task_entry, (uint32_t)&first_task_stack[1024]); // x86栈地址由高到低增长 ,同时init_task需要一个单独的栈空间。
     task_first_init();
-    list_test();
+    // list_test();
+
+    sem_init(&sem, 0);   // 初始化信号量
+    irq_enable_global(); // 测试打开全局中断
+
     int count = 0;
     for (;;)
     {
         log_printf("init main , count is %d", count++);
+        sem_signal(&sem);
         // sys_sched_yield();
-        sys_sleep(10000);
+        // sys_sleep(1000);
     }
 }
