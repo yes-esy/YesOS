@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-13 21:31:01
+ * @LastEditTime : 2025-06-26 14:54:02
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "loader.h"
@@ -106,6 +106,28 @@ static void die(int code)
     }
 }
 
+static void enable_page_mode()
+{
+#define PDE_P (1 << 0) // 表项有效
+#define PDE_W (1 << 1) // 可写
+#define PDE_PS (1 << 7)
+#define CR4_PSE (1 << 4)
+#define CR0_PG (1 << 31)
+    static uint32_t page_dir[1024] __attribute__((aligned(4096))) = {
+        [0] = PDE_P | PDE_PS | PDE_W|0, // PDE_PS，开启4MB的页，对表项0进行处理，因为loader对应表项0所在的0~4MB的区域。
+    }; // 页目录表
+
+    // 设置PSE，以便启用4M的页，而不是4KB
+    uint32_t cr4 = read_cr4(); // 读出CR4
+    write_cr4(cr4 | CR4_PSE);  // 写CR4
+
+    // 设置页表地址
+    write_cr3((uint32_t)page_dir); // 写CR3
+
+    // 开启分页机制
+    write_cr0(read_cr0() | CR0_PG); // 写CR0
+}
+
 void load_kernel(void)
 {
 
@@ -117,6 +139,8 @@ void load_kernel(void)
     {
         die(-1);
     }
+
+    enable_page_mode();
     ((void (*)(boot_info_t *))kernel_entry)(&boot_info);
     for (;;)
     {

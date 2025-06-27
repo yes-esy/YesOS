@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-07 19:38:24
+ * @LastEditTime : 2025-05-15 22:47:29
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "cpu/irq.h"
@@ -214,7 +214,7 @@ void irq_init(void)
     for (int i = 0; i < IDT_TABLE_NR; i++)
     {
         gate_desc_set(idt_table + i, KERNEL_SELECTOR_CS, (uint32_t)exception_handler_unknown,
-                      GATE_P_PRESENT | GATE_DPL0 | GATE_TYPE_INT);
+                      GATE_P_PRESENT | GATE_DPL0 | GATE_TYPE_IDT);
     }
 
     // 安装异常处理函数
@@ -256,7 +256,7 @@ int irq_install(int irq_num, irq_handler_t handler)
     {
         return -1;
     }
-    gate_desc_set(idt_table + irq_num, KERNEL_SELECTOR_CS, (uint32_t)handler, GATE_P_PRESENT | GATE_DPL0 | GATE_TYPE_INT);
+    gate_desc_set(idt_table + irq_num, KERNEL_SELECTOR_CS, (uint32_t)handler, GATE_P_PRESENT | GATE_DPL0 | GATE_TYPE_IDT);
     return 0;
 }
 

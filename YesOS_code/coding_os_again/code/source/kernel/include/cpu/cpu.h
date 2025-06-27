@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-23 19:51:15
+ * @LastEditTime : 2025-05-19 21:34:13
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -70,7 +70,7 @@ typedef struct _tss_t
 #define SEG_TYPE_DATA (0 << 3)   // 指定其为数据段
 #define SEG_TYPE_TSS  (9 << 0)   // 指定其为TSS
 #define SEG_TYE_RW (1 << 1)      // 是否可写可读,不设置为只读
-#define GATE_TYPE_INT (0XE << 8) // 门类型
+#define GATE_TYPE_IDT (0XE << 8) // 门类型
 #define GATE_P_PRESENT (1 << 15) // 中断门是否存在
 #define GATE_DPL0 (0 << 13)      // 特权级0
 #define GATE_DPL3 (3 << 13)      // 特权级3
@@ -86,4 +86,6 @@ int gdt_alloc_desc(void);
 
 // 
 void switch_to_tss(uint32_t tss_selector);
+
+void gdt_free_sel(int sel); // 释放
 #endif

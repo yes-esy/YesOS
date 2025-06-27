@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-22 19:45:42
+ * @LastEditTime : 2025-06-25 13:22:21
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -13,6 +13,27 @@
 
 #include "comm/types.h"
 #include <stdarg.h>
+
+/**
+ * @brief        : 向下取整到边界整数倍
+ * @param         {uint32_t} size: 需要转换的大小
+ * @param         {uint32_t} bound: 边界（必须为2的幂）
+ * @return        {uint32_t} : 对齐后的结果
+ **/
+static inline uint32_t down2(uint32_t size, uint32_t bound)
+{
+    return size & ~(bound - 1);
+}
+/**
+ * @brief        : 向上取整到边界整数倍
+ * @param         {uint32_t} size: 需要转换的大小
+ * @param         {uint32_t} bound: 边界（必须为2的幂）
+ * @return        {uint32_t} : 对齐后的结果
+ **/
+static inline uint32_t up2(uint32_t size, uint32_t bound)
+{
+    return (size + bound - 1) & ~(bound - 1);
+}
 
 /**
  * @brief        : 字符串复制函数

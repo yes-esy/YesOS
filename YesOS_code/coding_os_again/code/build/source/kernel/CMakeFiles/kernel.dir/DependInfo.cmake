@@ -20,13 +20,16 @@ set(CMAKE_ASM_TARGET_INCLUDE_PATH
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/memory.c" "source/kernel/CMakeFiles/kernel.dir/core/memory.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/core/memory.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/task.c" "source/kernel/CMakeFiles/kernel.dir/core/task.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/core/task.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/cpu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/cpu.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c" "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj.d"
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/mmu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/mutex.c" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/sem.c" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj.d"
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/bitmap.c" "source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/klib.c" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/klib.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/list.c" "source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/list.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/log.c" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/tools/log.c.obj.d"

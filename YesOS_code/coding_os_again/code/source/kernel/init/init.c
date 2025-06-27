@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-10 20:11:25
+ * @LastEditTime : 2025-05-16 17:16:00
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "init.h"
@@ -19,11 +19,14 @@
 #include "core/task.h"
 #include "tools/list.h"
 #include "ipc/sem.h"
-
+#include "core/memory.h"
 static boot_info_t *init_boot_info; // 启动信息
 
 static sem_t sem;
-
+void test()
+{
+    
+}
 /**
  * @brief        : 内核初始化
  * @param         {boot_info_t} *boot_info: 启动信息
@@ -34,6 +37,7 @@ void kernel_init(boot_info_t *boot_info)
     init_boot_info = boot_info;
     cpu_init();
 
+    memory_init(boot_info);
     log_init();
     irq_init();
     time_init();

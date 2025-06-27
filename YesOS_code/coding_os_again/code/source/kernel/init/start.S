@@ -47,10 +47,9 @@ gdt_reload:
 .comm stack, KERNEL_STACK_SIZE    # comm 声明未初始化的通用内存区域，以字节计
 
 
-
+    .text
 # 相当于c语言中的宏其中 num为中断向量号, with_err_code 为错误码
 .macro exception_handler name num with_err_code
-    .text
     .extern do_handler_\name
     .global exception_handler_\name
 
@@ -80,7 +79,7 @@ exception_handler_\name:
     pop %fs
     pop %es
     pop %ds
-    popa
+    popal
     
     add $(2*4) , %esp
 

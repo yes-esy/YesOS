@@ -6,12 +6,13 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-11 16:16:48
+ * @LastEditTime : 2025-05-16 16:35:20
  * Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  */
 	#include "boot.h"
 
   	# 16位代码，务必加上
+	
   	.code16
  	.text
 	.global _start

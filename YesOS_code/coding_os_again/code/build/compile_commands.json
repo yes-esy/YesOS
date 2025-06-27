@@ -37,6 +37,12 @@
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/core/memory.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/memory.c",
+  "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/memory.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/core/memory.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/core/task.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/task.c",
   "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/core/task.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/core/task.c.obj"
@@ -52,6 +58,12 @@
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/cpu/irq.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c",
   "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/cpu/mmu.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/mmu.c",
+  "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/mmu.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj"
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
@@ -76,6 +88,12 @@
   "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/ipc/sem.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/sem.c",
   "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/sem.c",
   "output": "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj"
+},
+{
+  "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",
+  "command": "D:/MyOS/tools/x86_64-elf-tools-windows/bin/x86_64-elf-gcc.exe  @CMakeFiles/kernel.dir/includes_C.rsp -g -c -O0 -m32 -fno-pie -fno-stack-protector -fno-asynchronous-unwind-tables -g -o CMakeFiles/kernel.dir/tools/bitmap.c.obj -c E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/bitmap.c",
+  "file": "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/tools/bitmap.c",
+  "output": "source/kernel/CMakeFiles/kernel.dir/tools/bitmap.c.obj"
 },
 {
   "directory": "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel",

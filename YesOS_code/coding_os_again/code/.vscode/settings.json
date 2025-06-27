@@ -21,6 +21,9 @@
         "klib.h": "c",
         "init.h": "c",
         "sem.h": "c",
-        "bitmap.h": "c"
+        "bitmap.h": "c",
+        "memory.h": "c",
+        "mmu.h": "c",
+        "mutex.h": "c"
     },
 }

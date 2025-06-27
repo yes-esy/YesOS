@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-27 21:37:53
+ * @LastEditTime : 2025-05-15 22:49:47
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -118,6 +118,47 @@ static inline void lidt(uint32_t start, uint32_t size)
 }
 
 /**
+ * @brief        : 写入cr3
+ * @param         {uint32_t} v: 写入的值
+ * @return        {*}
+ **/
+static inline void write_cr3(uint32_t v)
+{
+    __asm__ __volatile__("mov %[v],%%cr3" ::[v] "r"(v));
+}
+
+/**
+ * @brief        : 读取cr3
+ * @return        {uint16_t} cr3的值
+ **/
+static inline uint16_t read_cr3(void)
+{
+    uint32_t cr3;
+    __asm__ __volatile__("mov %%cr3,%[v]" : [v] "=r"(cr3));
+    return cr3;
+}
+
+/**
+ * @brief        : 写入cr4
+ * @param         {uint32_t} v: 写入的值
+ * @return        {*}
+ **/
+static inline void write_cr4(uint32_t v)
+{
+    __asm__ __volatile__("mov %[v],%%cr4" ::[v] "r"(v));
+}
+
+/**
+ * @brief        : 读取cr4
+ * @return        {uint16_t} cr4的值
+ **/
+static inline uint16_t read_cr4(void)
+{
+    uint32_t cr4;
+    __asm__ __volatile__("mov %%cr3,%[v]" : [v] "=r"(cr4));
+    return cr4;
+}
+/**
  * @brief        : 读取cr0
  * @return        {uint16_t} cr0的值
  **/
@@ -127,7 +168,6 @@ static inline uint16_t read_cr0(void)
     __asm__ __volatile__("mov %%cr0,%[v]" : [v] "=r"(cr0));
     return cr0;
 }
-
 /**
  * @brief        : 写入cr0
  * @param         {uint32_t} v: 写入的值
@@ -137,7 +177,6 @@ static inline void write_cr0(uint32_t v)
 {
     __asm__ __volatile__("mov %[v],%%cr0" ::[v] "r"(v));
 }
-
 /**
  * @brief        : 远跳转指令
  * @param         {uint32_t} selector: 选择子

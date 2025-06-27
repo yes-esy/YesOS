@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-14 21:53:27
+ * @LastEditTime : 2025-05-19 21:34:51
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "cpu/cpu.h"
@@ -108,6 +108,14 @@ void init_gdt(void)
 void switch_to_tss(uint32_t tss_selector)
 {
     far_jump(tss_selector, 0);
+}
+
+// gdt表项释放
+void gdt_free_sel(int sel)
+{
+    mutex_lock(&mutex);
+    gdt_table[sel/sizeof(segment_desc_t)].attr = 0;
+    mutex_unlock(&mutex);
 }
 /**
  * @brief        : cpu初始化
