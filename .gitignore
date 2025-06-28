@@ -2,8 +2,8 @@ image/
 *.o
 *.elf
 *.bin
-.txt
+
 YesOS_code/code/build/
 YesOS_code/coding_os_again/code/build/
 
-YesOS_code/coding_os_again/code/image
+YesOS_code/coding_os_again/code/image/
