@@ -16,6 +16,7 @@
 #include "comm/cpu_instr.h"
 #include "cpu/irq.h"
 #include "core/memory.h"
+#include "cpu/mmu.h"
 static task_manager_t task_manager; // 全局任务管理器
 
 /**
@@ -138,8 +139,8 @@ static int tss_init(task_t *task, uint32_t entry, uint32_t esp)
     task->tss.iomap = 0;
     // eflags
     task->tss.eflags = EFLAGS_DEFAULT | EFLAGS_IF;
-    uint32_t page_dir = memory_create_uvm();
-    if(page_dir == 0)
+    uint32_t page_dir = memory_create_uvm(); // 页目录表
+    if (page_dir == 0)
     {
         gdt_free_sel(tss_sel);
         return -1;
@@ -246,9 +247,12 @@ void task_manager_init(void)
  **/
 void task_first_init(void)
 {
-    task_init(&task_manager.first_task, "first task", 0, 0);
+    void first_task_entry(void);
+    uint32_t first_start = (uint32_t)first_task_entry;
+    task_init(&task_manager.first_task, "first task", first_start, 0);
     write_tr(task_manager.first_task.tss_sel);
     task_manager.curr_task = &task_manager.first_task;
+    mmu_set_page_dir(task_manager.first_task.tss.cr3);
 }
 
 /**

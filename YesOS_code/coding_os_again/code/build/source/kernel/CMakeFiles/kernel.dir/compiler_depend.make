@@ -24,6 +24,7 @@ source/kernel/CMakeFiles/kernel.dir/core/task.c.obj: E:/OS/MyOs/YesOS_code/codin
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/irq.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/mmu.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/ipc/mutex.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/os_cfg.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/bitmap.h \
@@ -64,6 +65,13 @@ source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj: E:/OS/MyOs/YesOS_code/coding
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/dev/time.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/os_cfg.h \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h
+
+source/kernel/CMakeFiles/kernel.dir/init/first_task.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/first_task.c \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/types.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/core/task.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/cpu/cpu.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/list.h \
+  E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/tools/log.h
 
 source/kernel/CMakeFiles/kernel.dir/init/init.c.obj: E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.c \
   E:/OS/MyOs/YesOS_code/coding_os_again/code/source/comm/boot_info.h \
@@ -178,6 +186,8 @@ E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/mmu.c:
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/dev/time.c:
 
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/include/dev/time.h:
+
+E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/first_task.c:
 
 E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.c:
 

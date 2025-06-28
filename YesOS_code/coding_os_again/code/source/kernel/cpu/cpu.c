@@ -110,7 +110,11 @@ void switch_to_tss(uint32_t tss_selector)
     far_jump(tss_selector, 0);
 }
 
-// gdt表项释放
+/**
+ * @brief        : gdt表项释放
+ * @param         {int} sel: 选择子
+ * @return        {*}
+ **/
 void gdt_free_sel(int sel)
 {
     mutex_lock(&mutex);

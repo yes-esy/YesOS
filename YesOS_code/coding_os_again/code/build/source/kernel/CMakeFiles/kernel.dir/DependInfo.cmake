@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_ASM
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/first_task.S" "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel/CMakeFiles/kernel.dir/init/first_task.S.obj"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/start.S" "E:/OS/MyOs/YesOS_code/coding_os_again/code/build/source/kernel/CMakeFiles/kernel.dir/init/start.S.obj"
   )
 set(CMAKE_ASM_COMPILER_ID "GNU")
@@ -26,6 +27,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/irq.c" "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/irq.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/cpu/mmu.c" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/cpu/mmu.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/dev/time.c" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/dev/time.c.obj.d"
+  "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/first_task.c" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/first_task.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/init/init.c" "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/init/init.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/mutex.c" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/mutex.c.obj.d"
   "E:/OS/MyOs/YesOS_code/coding_os_again/code/source/kernel/ipc/sem.c" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj" "gcc" "source/kernel/CMakeFiles/kernel.dir/ipc/sem.c.obj.d"

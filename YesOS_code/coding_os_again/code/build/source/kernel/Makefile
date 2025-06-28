@@ -277,6 +277,38 @@ dev/time.c.s:
 	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/dev/time.c.s
 .PHONY : dev/time.c.s
 
+init/first_task.obj: init/first_task.S.obj
+.PHONY : init/first_task.obj
+
+# target to build an object file
+init/first_task.S.obj:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.S.obj
+.PHONY : init/first_task.S.obj
+
+init/first_task.obj: init/first_task.c.obj
+.PHONY : init/first_task.obj
+
+# target to build an object file
+init/first_task.c.obj:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.c.obj
+.PHONY : init/first_task.c.obj
+
+init/first_task.i: init/first_task.c.i
+.PHONY : init/first_task.i
+
+# target to preprocess a source file
+init/first_task.c.i:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.c.i
+.PHONY : init/first_task.c.i
+
+init/first_task.s: init/first_task.c.s
+.PHONY : init/first_task.s
+
+# target to generate assembly for a file
+init/first_task.c.s:
+	cd E:/OS/MyOs/YesOS_code/coding_os_again/code/build && $(MAKE) $(MAKESILENT) -f source/kernel/CMakeFiles/kernel.dir/build.make source/kernel/CMakeFiles/kernel.dir/init/first_task.c.s
+.PHONY : init/first_task.c.s
+
 init/init.obj: init/init.c.obj
 .PHONY : init/init.obj
 
@@ -480,6 +512,10 @@ help:
 	@echo "... dev/time.obj"
 	@echo "... dev/time.i"
 	@echo "... dev/time.s"
+	@echo "... init/first_task.obj"
+	@echo "... init/first_task.obj"
+	@echo "... init/first_task.i"
+	@echo "... init/first_task.s"
 	@echo "... init/init.obj"
 	@echo "... init/init.i"
 	@echo "... init/init.s"

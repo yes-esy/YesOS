@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-26 16:53:40
+ * @LastEditTime : 2025-06-27 16:31:58
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/memory.h"
@@ -12,7 +12,7 @@
 #include "tools/klib.h"
 #include "cpu/mmu.h"
 static addr_alloc_t paddr_alloc;                                               // 地址分配结构                                         // 物理地址分配结构
-static pde_t kernel_page_dir[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE))); // 页目录表
+static pde_t kernel_page_dir[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE))); // 内核页目录表(全局唯一)
 /**
  * @brief        : 对相应的地址分配结构进行初始化
  * @param         {addr_alloc_t} *alloc: 地址分配结构的指针
@@ -33,9 +33,9 @@ static void addr_alloc_init(addr_alloc_t *alloc, uint8_t *bits, uint32_t start, 
 
 /**
  * @brief        : 分配页存储空间
- * @param         {addr_alloc_t *} alloc:
- * @param         {int} page_count:
- * @return        {*}分配好的页地址
+ * @param         {addr_alloc_t *} alloc: 地址分配结构
+ * @param         {int} page_count: 分配的页数
+ * @return        {*} :物理页地址
  **/
 static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count)
 {
@@ -110,7 +110,7 @@ pte_t *find_pte(pde_t *page_dir, uint32_t vaddr, int alloc)
         }
         // 不存在,分配
         uint32_t pg_addr = addr_alloc_page(&paddr_alloc, 1); // 分配一个页表
-        if (pg_addr == 0) // 分配失败
+        if (pg_addr == 0)                                    // 分配失败
         {
             return (pte_t *)0;
         }
@@ -160,15 +160,45 @@ int memory_create_map(pde_t *page_dir, uint32_t vaddr, uint32_t paddr, int count
 void create_kernel_table()
 {
     extern uint8_t s_text[], e_text[], s_data[], kernel_base[];
-    // 内核映射关系
+    
+    /* 
+     * 内核映射关系说明：
+     * memory_map_t 结构: {虚拟起始地址, 虚拟结束地址, 物理起始地址, 权限标识符}
+     * 
+     * 映射策略：
+     * 1. 内核低地址区域：identity mapping (虚拟地址 = 物理地址)
+     * 2. 不同区域设置不同权限以保护内核安全
+     */
     static memory_map_t kernel_map[] = {
-        // 线性起始地址,    线性结束地址,   物理地址, 权限标识符
-        {kernel_base, s_text, 0, PTE_W},                       // 内核 ,只读
-        {s_text, e_text, s_text, 0},                           // 内核代码区,只读,程序和只读数据
-        {s_data, (void *)(MEM_EBDA_START - 1), s_data, PTE_W}, // 内核数据区,可读写数据空间
-        // 扩展存储空间一一映射,方便直接操作
+        /* 映射1: kernel_base 到 s_text 区域
+         * 虚拟地址: kernel_base ~ s_text
+         * 物理地址: 0x0 开始 (低地址区域)
+         * 权限: PTE_W (可写)
+         * 用途: 内核启动代码、中断向量表等低地址必需区域 */
+        {kernel_base, s_text, 0, PTE_W},
+        
+        /* 映射2: 内核代码段
+         * 虚拟地址: s_text ~ e_text  
+         * 物理地址: s_text (identity mapping)
+         * 权限: 0 (只读，不可写)
+         * 用途: 内核代码区域，只读保护防止代码被意外修改 */
+        {s_text, e_text, s_text, 0},
+        
+        /* 映射3: 内核数据段  
+         * 虚拟地址: s_data ~ MEM_EBDA_START-1
+         * 物理地址: s_data (identity mapping)
+         * 权限: PTE_W (可读写)
+         * 用途: 内核数据区域，包括全局变量、BSS段等 */
+        {s_data, (void *)(MEM_EBDA_START - 1), s_data, PTE_W},
+        
+        /* 映射4: 扩展内存区域
+         * 虚拟地址: MEM_EXT_START ~ MEM_EXT_END
+         * 物理地址: MEM_EXT_START (identity mapping，一一对应)
+         * 权限: PTE_W (可读写)
+         * 用途: 1MB以上扩展内存，用于动态分配、用户进程等 */
         {(void *)MEM_EXT_START, (void *)MEM_EXT_END, (void *)MEM_EXT_START, PTE_W},
     };
+    
     // 遍历表项,建立映射关系
     for (int i = 0; i < sizeof(kernel_map) / sizeof(memory_map_t); i++)
     {
@@ -185,21 +215,24 @@ void create_kernel_table()
         memory_create_map(kernel_page_dir, vstart, paddr, page_count, map->perm);
     }
 }
-
+/**
+ * @brief        : 创建页目录表
+ * @return        {uint32_t}: 页目录表物理地址
+ **/
 uint32_t memory_create_uvm(void)
 {
-    pde_t *page_dir = (pde_t *)addr_alloc_page(&paddr_alloc, 1);
-    if (page_dir == 0)
+    pde_t *page_dir = (pde_t *)addr_alloc_page(&paddr_alloc, 1); // 分配一页内存用于存放页目录表
+    if (page_dir == 0)                                           // 分配失败
     {
         return 0;
     }
-    kernel_memset((void *)page_dir, 0, MEM_PAGE_SIZE);
-    uint32_t user_pde_start = pde_index(MEMORY_TASK_BASE);
-    for (int i = 0; i < user_pde_start; i++)
+    kernel_memset((void *)page_dir, 0, MEM_PAGE_SIZE);     // 清空
+    uint32_t user_pde_start = pde_index(MEMORY_TASK_BASE); // 用户进程起始地址在内核页表中开始的表项索引
+    for (int i = 0; i < user_pde_start; i++)               // 将内核页目录项的内容复制到新的页目录表中
     {
         page_dir[i].v = kernel_page_dir[i].v;
     }
-    return (uint32_t)page_dir;
+    return (uint32_t)page_dir; // 返回页目录表物理地址
 }
 /**
  * @brief        : 初始化

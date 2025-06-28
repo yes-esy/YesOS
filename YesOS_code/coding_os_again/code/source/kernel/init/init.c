@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-16 17:16:00
+ * @LastEditTime : 2025-06-27 17:07:41
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "init.h"
@@ -23,10 +23,7 @@
 static boot_info_t *init_boot_info; // 启动信息
 
 static sem_t sem;
-void test()
-{
-    
-}
+
 /**
  * @brief        : 内核初始化
  * @param         {boot_info_t} *boot_info: 启动信息
@@ -44,20 +41,20 @@ void kernel_init(boot_info_t *boot_info)
     task_manager_init();
 }
 
-static task_t init_task;  // 初始任务
-static task_t first_task; // 第一个任务
-static uint32_t first_task_stack[1024];
-void first_task_entry(void)
-{
-    int count = 0;
-    for (;;)
-    {
-        sem_wait(&sem);
-        log_printf("first_task_entry , count is %d", count++);
-        // sys_sched_yield();
-        // sys_sleep(10000);
-    }
-}
+static task_t init_task; // 初始任务
+// static task_t first_task; // 第一个任务
+// static uint32_t first_task_stack[1024];
+// void first_task_entry(void)
+// {
+//     int count = 0;
+//     for (;;)
+//     {
+//         sem_wait(&sem);
+//         log_printf("first_task_entry , count is %d", count++);
+//         // sys_sched_yield();
+//         // sys_sleep(10000);
+//     }
+// }
 
 void list_test()
 {
@@ -118,24 +115,34 @@ void list_test()
                list_first(&list), list_last(&list), list_count(&list));
 }
 
+void move_to_first_task(void)
+{
+    task_t *curr = task_current(); // 取当前进程
+    ASSERT(curr != 0); // 不为空
+    tss_t *tss = &(curr->tss);
+    __asm__ __volatile__(
+        "jmp *%[ip]"::[ip]"r"(tss->eip)
+    );
+}
+
 void init_main()
 {
     // int a = 3 / 0;
     log_printf("Kernel is running . . .");
     log_printf("Version:%s", OS_VERSION);
-    task_init(&first_task, "init task", (uint32_t)first_task_entry, (uint32_t)&first_task_stack[1024]); // x86栈地址由高到低增长 ,同时init_task需要一个单独的栈空间。
+    // task_init(&first_task, "init task", (uint32_t)first_task_entry, (uint32_t)&first_task_stack[1024]); // x86栈地址由高到低增长 ,同时init_task需要一个单独的栈空间。
     task_first_init();
     // list_test();
+    // sem_init(&sem, 0);   // 初始化信号量
+    // irq_enable_global(); // 测试打开全局中断
+    // int count = 0;
+    // for (;;)
+    // {
+    //     log_printf("init main , count is %d", count++);
+    //     sem_signal(&sem);
+    // sys_sched_yield();
+    // sys_sleep(1000);
+    // }
 
-    sem_init(&sem, 0);   // 初始化信号量
-    irq_enable_global(); // 测试打开全局中断
-
-    int count = 0;
-    for (;;)
-    {
-        log_printf("init main , count is %d", count++);
-        sem_signal(&sem);
-        // sys_sched_yield();
-        // sys_sleep(1000);
-    }
+    move_to_first_task();
 }
