@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-27 16:31:58
+ * @LastEditTime : 2025-06-29 19:20:31
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/memory.h"
@@ -49,14 +49,19 @@ static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count)
     mutex_unlock(&alloc->mutex);
     return addr;
 }
-
+/**
+ * @brief        : 释放已经分配的页内存
+ * @param         {addr_alloc_t} *alloc: 地址分配器结构体指针
+ * @param         {uint32_t} addr: 要释放的结束物理地址
+ * @param         {int} page_count: 要释放的连续页数
+ * @return        {void} : 无返回值
+ **/
 static void addr_free_page(addr_alloc_t *alloc, uint32_t addr, int page_count)
 {
-    mutex_lock(&alloc->mutex);
-    uint32_t page_index = (addr - alloc->start) / alloc->page_size;
-    bitmap_set_bit(&alloc->bitmap, page_index, page_count, 0);
-
-    mutex_unlock(&alloc->mutex);
+    mutex_lock(&alloc->mutex);                                      // 进入临界区，保证线程安全
+    uint32_t page_index = (addr - alloc->start) / alloc->page_size; // 计算页在位图中的索引位置
+    bitmap_set_bit(&alloc->bitmap, page_index, page_count, 0);      // 将位图对应位置设为0，标记为空闲
+    mutex_unlock(&alloc->mutex);                                    // 退出临界区
 }
 
 /**
@@ -154,17 +159,17 @@ int memory_create_map(pde_t *page_dir, uint32_t vaddr, uint32_t paddr, int count
     return 0;
 }
 /**
- * @brief        : 创建内核页表,并根据映射结构创建映射关系
+ * @brief        : 创建内核页目录表,并根据映射结构创建映射关系
  * @return        {*}
  **/
 void create_kernel_table()
 {
     extern uint8_t s_text[], e_text[], s_data[], kernel_base[];
-    
-    /* 
+
+    /*
      * 内核映射关系说明：
      * memory_map_t 结构: {虚拟起始地址, 虚拟结束地址, 物理起始地址, 权限标识符}
-     * 
+     *
      * 映射策略：
      * 1. 内核低地址区域：identity mapping (虚拟地址 = 物理地址)
      * 2. 不同区域设置不同权限以保护内核安全
@@ -176,21 +181,21 @@ void create_kernel_table()
          * 权限: PTE_W (可写)
          * 用途: 内核启动代码、中断向量表等低地址必需区域 */
         {kernel_base, s_text, 0, PTE_W},
-        
+
         /* 映射2: 内核代码段
-         * 虚拟地址: s_text ~ e_text  
+         * 虚拟地址: s_text ~ e_text
          * 物理地址: s_text (identity mapping)
          * 权限: 0 (只读，不可写)
          * 用途: 内核代码区域，只读保护防止代码被意外修改 */
         {s_text, e_text, s_text, 0},
-        
-        /* 映射3: 内核数据段  
+
+        /* 映射3: 内核数据段
          * 虚拟地址: s_data ~ MEM_EBDA_START-1
          * 物理地址: s_data (identity mapping)
          * 权限: PTE_W (可读写)
          * 用途: 内核数据区域，包括全局变量、BSS段等 */
         {s_data, (void *)(MEM_EBDA_START - 1), s_data, PTE_W},
-        
+
         /* 映射4: 扩展内存区域
          * 虚拟地址: MEM_EXT_START ~ MEM_EXT_END
          * 物理地址: MEM_EXT_START (identity mapping，一一对应)
@@ -198,7 +203,7 @@ void create_kernel_table()
          * 用途: 1MB以上扩展内存，用于动态分配、用户进程等 */
         {(void *)MEM_EXT_START, (void *)MEM_EXT_END, (void *)MEM_EXT_START, PTE_W},
     };
-    
+
     // 遍历表项,建立映射关系
     for (int i = 0; i < sizeof(kernel_map) / sizeof(memory_map_t); i++)
     {
@@ -216,10 +221,20 @@ void create_kernel_table()
     }
 }
 /**
- * @brief        : 创建页目录表
+ * @brief        : 取当前进程的页目录表指针
+ * @return        {pde_t *} : 当前进程的页目录表指针
+ **/
+static pde_t *curr_page_dir(void)
+{
+    return (pde_t *)(task_current()->tss.cr3);
+}
+
+/**
+ * @brief        : 创建页目录表,并将内核页目录表中的表项拷贝到新创建的页目录表中
  * @return        {uint32_t}: 页目录表物理地址
  **/
-uint32_t memory_create_uvm(void)
+uint32_t
+memory_create_uvm(void)
 {
     pde_t *page_dir = (pde_t *)addr_alloc_page(&paddr_alloc, 1); // 分配一页内存用于存放页目录表
     if (page_dir == 0)                                           // 分配失败
@@ -233,6 +248,79 @@ uint32_t memory_create_uvm(void)
         page_dir[i].v = kernel_page_dir[i].v;
     }
     return (uint32_t)page_dir; // 返回页目录表物理地址
+}
+/**
+ * @brief        : 为指定页目录的虚拟地址区域分配页表内存空间
+ * @param         {uint32_t} page_dir: 页目录表的物理地址
+ * @param         {uint32_t} vaddr: 需要分配内存的虚拟起始地址
+ * @param         {uint32_t} size: 需要分配的内存空间大小（字节）
+ * @param         {int} perm: 页面权限标志（如可读、可写、用户态等）
+ * @return        {int} : 成功返回0，失败返回错误码
+ **/
+int memory_alloc_page_for_dir(uint32_t page_dir, uint32_t vaddr, uint32_t size, int perm)
+{
+    uint32_t curr_vaddr = vaddr;                               // 线性地址
+    int page_count = up2(size, MEM_PAGE_SIZE) / MEM_PAGE_SIZE; // 需要分配的物理页数量
+    vaddr = down2(vaddr, MEM_PAGE_SIZE);                       // 向下对齐到整数倍
+    for (int i = 0; i < page_count; i++)                       // 逐页分配内存,然后建立映射关系
+    {
+        uint32_t paddr = addr_alloc_page(&paddr_alloc, 1); // 分配一页物理内存
+        if (paddr == 0)                                    // 分配失败
+        {
+            log_printf("mem alloc failed. non memory");
+            return 0;
+        }
+        int err = memory_create_map((pde_t *)page_dir, curr_vaddr, paddr, 1, perm); // 建立映射关系
+        if (err < 0)                                                                // 建立映射关系失败
+        {
+            log_printf("create memory failed. err=%d", err);
+            // 释放全部已建立映射关系的页
+            addr_free_page(&paddr_alloc, vaddr, i + 1);
+            return -1;
+        }
+        curr_vaddr += MEM_PAGE_SIZE; // 处理下一页
+    }
+    return 0;
+}
+/**
+ * @brief        : 为当前进程的虚拟地址区域分配页表内存空间
+ * @param         {uint32_t} addr: 需要分配内存的虚拟起始地址
+ * @param         {uint32_t} size: 需要分配的内存空间大小（字节）
+ * @param         {int} perm: 页面权限标志（如可读、可写、用户态等）
+ * @return        {int} : 成功返回0，失败返回错误码
+ **/
+int memory_alloc_page_for(uint32_t vaddr, uint32_t size, int perm)
+{
+    uint32_t page_dir = task_current()->tss.cr3;                   // 取当前页目录表地址
+    return memory_alloc_page_for_dir(page_dir, vaddr, size, perm); // 为当前页目录表分配页表
+}
+/**
+ * @brief        : 分配一页物理内存
+ * @return        {uint32_t} : 申请到的内存空间的虚拟地址
+ **/
+uint32_t memory_alloc_page(void)
+{
+    uint32_t addr = addr_alloc_page(&paddr_alloc, 1);
+    return addr;
+}
+/**
+ * @brief        : 释放一页物理内存
+ * @param         {uint32_t} addr:
+ * @return        {*}
+ **/
+void memory_free_page(uint32_t addr)
+{
+    if (addr < MEMORY_TASK_BASE) // 地址小于进程起始空间,直接释放
+    {
+        addr_free_page(&paddr_alloc, addr, 1);
+    }
+    else // 超过进程起始空间,线性地址(虚拟地址)
+    {
+        pte_t *pte = find_pte(curr_page_dir(), addr, 0); // 对于的页表项
+        ASSERT((pte != (pte_t *)0) && pte->present);
+        addr_free_page(&paddr_alloc, pte_paddr(pte), 1); // 释放该表项
+        pte->v = 0;                                      // 清楚映射关系,表项清空
+    }
 }
 /**
  * @brief        : 初始化
@@ -262,7 +350,6 @@ void memory_init(boot_info_t *boot_info)
 
     create_kernel_table(); // 创建内核页表
 
-    // 设置页目录表地址,打开分页机制
-    mmu_set_page_dir((uint32_t)kernel_page_dir);
+    mmu_set_page_dir((uint32_t)kernel_page_dir); // 设置页目录表地址,打开分页机制
     log_printf("memory success.");
 }

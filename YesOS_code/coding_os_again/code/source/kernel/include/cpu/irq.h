@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-27 21:28:24
+ * @LastEditTime : 2025-06-29 16:35:52
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -58,6 +58,13 @@
 
 #define IRQ_PIC_START 0x20 // PIC起始中断号
 
+#define ERR_PAGE_P (1 << 0)
+#define ERR_PAGE_WR (1 << 1)
+#define ERR_PAGE_US (1 << 1)
+
+#define ERR_EXT (1 << 0)
+#define ERR_IDT (1 << 1)
+
 void irq_init(void); // 中断初始化函数
 
 // 中断发生时异常信息保存在exception_frame_t中(无特权级)
@@ -67,6 +74,7 @@ typedef struct _exception_frame_t
     uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
     uint32_t num, error_code;
     uint32_t eip, cs, eflags;
+    uint32_t esp3, ss3;
 } exception_frame_t;
 
 typedef void (*irq_handler_t)(exception_frame_t *frame); // 中断处理类型irq_handler_t

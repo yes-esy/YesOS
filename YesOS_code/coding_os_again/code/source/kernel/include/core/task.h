@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-07 21:56:58
+ * @LastEditTime : 2025-06-29 16:41:39
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef TASK_H
@@ -16,7 +16,7 @@
 
 #define TASK_NAME_SIZE 64          // 进程名字
 #define TASK_TIME_SLICE_DEFAULT 10 // 定时中断
-
+#define TASK_FLAGS_SYSTEM (1 << 0) // 系统进程
 /**
  * 进程控制块结构
  */
@@ -36,8 +36,8 @@ typedef struct _task_t
     int sleep_ticks;           // 进程睡眠时间
     char name[TASK_NAME_SIZE]; // 任务名
 
-    list_node_t run_node; // 运行相关结点
-    list_node_t all_node; // 所有队列结点
+    list_node_t run_node;  // 运行相关结点
+    list_node_t all_node;  // 所有队列结点
     list_node_t wait_node; // 等待结点
 
     // uint32_t * stack;
@@ -47,13 +47,14 @@ typedef struct _task_t
 
 /**
  * @brief        : 进程初始化
- * @param         {task_t *}       task: 需要运行的进程的指针
- * @param         {const char *}   name : 进程名称
- * @param         {uint32_t}       entry: 入口地址(解析elf的得到的入口地址)
- * @param         {uint32_t}       esp: 栈顶指针
- * @return        {*}
+ * @param         {task_t *} task: 需要运行的进程的指针
+ * @param         {const char *} name : 进程名称
+ * @param         {int} flag: 1为系统进程,0为普通进程
+ * @param         {uint32_t} entry: 入口地址(解析elf的得到的入口地址)
+ * @param         {uint32_t} esp: 栈顶指针
+ * @return        {int} : 状态码0
  **/
-int task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp);
+int task_init(task_t *task, const char *name, int flag, uint32_t entry, uint32_t esp);
 
 /**
  * @brief        : 实现从一个任务到另一个任务的切换
@@ -75,6 +76,9 @@ typedef struct _task_manager_t
     list_t sleep_list; // 进程睡眠队列
 
     task_t idle_task; // 空闲进程
+
+    int app_code_sel; // 代码段选择子
+    int app_data_sel; // 数据段选择子
 } task_manager_t;
 
 // 任务管理器初始化

@@ -16,7 +16,7 @@
 #define PDE_W (1 << 1) // 页目录表项可写
 #define PTE_W (1 << 1) // 页表表项可写
 #define PDE_U (1 << 2) // 页目录表项用户态访问
-
+#define PTE_U (1 << 2) // 页目录表项用户态访问
 #include "comm/types.h"
 #include "comm/cpu_instr.h"
 #pragma pack(1)

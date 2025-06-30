@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-15 22:49:47
+ * @LastEditTime : 2025-06-29 16:13:44
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -129,9 +129,9 @@ static inline void write_cr3(uint32_t v)
 
 /**
  * @brief        : 读取cr3
- * @return        {uint16_t} cr3的值
+ * @return        {uint32_t} cr3的值
  **/
-static inline uint16_t read_cr3(void)
+static inline uint32_t read_cr3(void)
 {
     uint32_t cr3;
     __asm__ __volatile__("mov %%cr3,%[v]" : [v] "=r"(cr3));
@@ -152,7 +152,7 @@ static inline void write_cr4(uint32_t v)
  * @brief        : 读取cr4
  * @return        {uint16_t} cr4的值
  **/
-static inline uint16_t read_cr4(void)
+static inline uint32_t read_cr4(void)
 {
     uint32_t cr4;
     __asm__ __volatile__("mov %%cr3,%[v]" : [v] "=r"(cr4));
@@ -160,9 +160,9 @@ static inline uint16_t read_cr4(void)
 }
 /**
  * @brief        : 读取cr0
- * @return        {uint16_t} cr0的值
+ * @return        {uint32_t} cr0的值
  **/
-static inline uint16_t read_cr0(void)
+static inline uint32_t read_cr0(void)
 {
     uint32_t cr0;
     __asm__ __volatile__("mov %%cr0,%[v]" : [v] "=r"(cr0));
@@ -171,7 +171,7 @@ static inline uint16_t read_cr0(void)
 /**
  * @brief        : 写入cr0
  * @param         {uint32_t} v: 写入的值
- * @return        {*}
+ * @return        {void} : 无返回值
  **/
 static inline void write_cr0(uint32_t v)
 {
@@ -206,18 +206,42 @@ static inline void write_tr(uint16_t tss_selector)
 {
     __asm__ __volatile__("ltr %%ax" ::"a"(tss_selector));
 }
-
+/**
+ * @brief        : 读出eflags寄存器的内容
+ * @return        {uint32_t}
+ **/
 static inline uint32_t read_eflags(void)
 {
     uint32_t eflags;
-
     __asm__ __volatile__("pushf \n\tpop %%eax" : "=a"(eflags));
     return eflags;
 }
-
+/**
+ * @brief        : 往eflags寄存器写入内容
+ * @param         {uint32_t} eflags: 写入的值
+ * @return        {void} 无返回值
+ **/
 static inline void write_eflags(uint32_t eflags)
 {
     __asm__ __volatile__("push %%eax\n\tpopf" ::"a"(eflags));
 }
-
+/**
+ * @brief        : 读取cr2
+ * @return        {uint32_t}: 读取出的cr2的值
+ **/
+static inline uint32_t read_cr2(void)
+{
+    uint32_t cr2;
+    __asm__ __volatile__("mov %%cr0,%[v]" : [v] "=r"(cr2));
+    return cr2;
+}
+/**
+ * @brief        : 写入cr2
+ * @param         {uint32_t} v: 写入cr2的值
+ * @return        {void} : 无返回值
+ **/
+static inline void write_cr2(uint32_t v)
+{
+    __asm__ __volatile__("mov %[v],%%cr0" ::[v] "r"(v));
+}
 #endif

@@ -12,7 +12,7 @@
   	# 16位代码，务必加上
   	.code16
  	.text
-	.extern loader_entry # 声明boot_entry为外部函数
+	.extern loader_entry # 声明loader_entry为外部函数
 	.global _start
 _start:
 	jmp loader_entry

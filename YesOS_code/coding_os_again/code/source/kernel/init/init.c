@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-27 17:07:41
+ * @LastEditTime : 2025-06-30 17:13:33
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "init.h"
@@ -33,9 +33,9 @@ void kernel_init(boot_info_t *boot_info)
 {
     init_boot_info = boot_info;
     cpu_init();
-
-    memory_init(boot_info);
     log_init();
+    memory_init(boot_info);
+
     irq_init();
     time_init();
     task_manager_init();
@@ -114,15 +114,26 @@ void list_test()
     log_printf("list: first = 0x%x , last = 0x%x ,count = %d\n",
                list_first(&list), list_last(&list), list_count(&list));
 }
-
+/**
+ * @brief        : 跳转到第一个进程
+ * @return        {void}
+ **/
 void move_to_first_task(void)
 {
     task_t *curr = task_current(); // 取当前进程
-    ASSERT(curr != 0); // 不为空
+    ASSERT(curr != 0);             // 不为空
     tss_t *tss = &(curr->tss);
     __asm__ __volatile__(
-        "jmp *%[ip]"::[ip]"r"(tss->eip)
-    );
+        "push %[ss]\n\t"
+        "push %[esp]\n\t"
+        "push %[eflags]\n\t"
+        "push %[cs]\n\t"
+        "push %[eip]\n\t"
+        "iret" ::[ss] "r"(tss->ss),
+        [esp] "r"(tss->esp),
+        [eflags] "r"(tss->eflags),
+        [cs] "r"(tss->cs),
+        [eip] "r"(tss->eip));
 }
 
 void init_main()

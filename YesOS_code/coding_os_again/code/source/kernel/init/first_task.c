@@ -1,10 +1,10 @@
 /**
- * @FilePath     : /code/source/kernel/init/first_tack.c
- * @Description  :  
+ * @FilePath     : /code/source/kernel/init/first_task.c
+ * @Description  : first_task进程代码
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-27 17:08:48
+ * @LastEditTime : 2025-06-28 20:50:23
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
 **/
 #include "core/task.h"

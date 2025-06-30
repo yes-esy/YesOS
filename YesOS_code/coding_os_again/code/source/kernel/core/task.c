@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-07 20:29:39
+ * @LastEditTime : 2025-06-30 19:12:34
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -111,58 +111,79 @@ void task_set_block(task_t *task)
 /**
  * @brief        : 对指定任务的TSS进行初始化包括设置GDT表项,寄存器设置,任务入口地址
  * @param         {task_t *} task: 需要运行的任务
+ * @param         {int} flag: 1为系统进程,0为普通进程
  * @param         {uint32_t} entry: 入口地址
  * @param         {uint32_t} esp: 栈顶指针
  * @return        {int} 成功为0 ,失败为-1
  **/
-static int tss_init(task_t *task, uint32_t entry, uint32_t esp)
+static int tss_init(task_t *task, int flag, uint32_t entry, uint32_t esp)
 {
-    int tss_sel = gdt_alloc_desc(); // 分配一个空闲表项
+    int tss_sel = gdt_alloc_desc(); // 分配一个空闲表项,
     if (tss_sel < 0)
     {
         log_printf("alloc tss failed!!!\n");
         return -1;
     }
     segment_desc_set(tss_sel, (uint32_t)&task->tss, sizeof(tss_t),
-                     SEG_P_PRESENT | SEG_DPL0 | SEG_TYPE_TSS);
+                     SEG_P_PRESENT | SEG_DPL0 | SEG_TYPE_TSS); // 为该表项设置属性
 
+    int code_sel, data_sel;
+    if (flag & TASK_FLAGS_SYSTEM) // 特权级0
+    {
+        code_sel = KERNEL_SELECTOR_CS; // 设置代码段权限
+        data_sel = KERNEL_SELECTOR_DS; // 设置数据段权限
+    }
+    else // 特权级3
+    {
+        code_sel = task_manager.app_code_sel | SEG_CPL3; // 设置代码段权限
+        data_sel = task_manager.app_data_sel | SEG_CPL3; // 设置数据段权限
+    }
     kernel_memset(&task->tss, 0, sizeof(tss_t)); // 清零 , 第一次运行无关紧要
-    task->tss.eip = entry;                       // 当前任务没有运行过,所以eip为当前任务的入口地址
-    task->tss.esp = task->tss.esp0 = esp;        // esp0特权级0 , 设置栈地址
+    uint32_t kernel_stack = memory_alloc_page(); // 分配内核栈空间
+    if (kernel_stack == 0)
+    {
+        goto tss_init_failed;
+    }
+    task->tss.eip = entry;                         // 当前任务没有运行过,所以eip为当前任务的入口地址
+    task->tss.esp = esp;                           // esp特权级3 , 设置栈底地址
+    task->tss.esp0 = kernel_stack + MEM_PAGE_SIZE; // esp0特权级0 , 设置栈底地址
 
     // 平坦模型只有两个段cs和ds 其中ss , es , ds , fs , gs 设置为ds
-    task->tss.ss = task->tss.ss0 = KERNEL_SELECTOR_DS;
-    task->tss.es = task->tss.ds = task->tss.fs = task->tss.gs = KERNEL_SELECTOR_DS;
+    task->tss.ss = data_sel;
+    task->tss.ss0 = KERNEL_SELECTOR_DS;
+    task->tss.es = task->tss.ds = task->tss.fs = task->tss.gs = data_sel;
 
     // 设置cs
-    task->tss.cs = KERNEL_SELECTOR_CS;
+    task->tss.cs = code_sel;
     task->tss.iomap = 0;
     // eflags
     task->tss.eflags = EFLAGS_DEFAULT | EFLAGS_IF;
     uint32_t page_dir = memory_create_uvm(); // 页目录表
     if (page_dir == 0)
     {
-        gdt_free_sel(tss_sel);
-        return -1;
+        goto tss_init_failed;
     }
     task->tss.cr3 = page_dir;
     task->tss_sel = tss_sel;
     return 0;
+tss_init_failed:
+    gdt_free_sel(tss_sel);
+    return -1;
 }
 
 /**
  * @brief        : 进程初始化
- * @param         {task_t *}       task: 需要运行的进程的指针
- * @param         {const char *}   name : 进程名称
- * @param         {uint32_t}       entry: 入口地址(解析elf的得到的入口地址)
- * @param         {uint32_t}       esp: 栈顶指针
- * @return        {*}
+ * @param         {task_t *} task: 需要运行的进程的指针
+ * @param         {const char *} name : 进程名称
+ * @param         {int} flag: 1为系统进程,0为普通进程
+ * @param         {uint32_t} entry: 入口地址(解析elf的得到的入口地址)
+ * @param         {uint32_t} esp: 栈顶指针
+ * @return        {int} : 返回 0
  **/
-int task_init(task_t *task, const char *name, uint32_t entry, uint32_t esp)
-
+int task_init(task_t *task, const char *name, int flag, uint32_t entry, uint32_t esp)
 {
     ASSERT(task != (task_t *)0);
-    tss_init(task, entry, esp);
+    tss_init(task, flag, entry, esp);
 
     kernel_memcpy((void *)task->name, (void *)name, TASK_NAME_SIZE);
 
@@ -230,12 +251,25 @@ static void idle_task_entry()
  **/
 void task_manager_init(void)
 {
+    int data_sel = gdt_alloc_desc(); // 分配一个数据段描述符
+    // 初始化描述符
+    segment_desc_set(data_sel, 0x00000000, 0xFFFFFFFF,
+                     SEG_P_PRESENT | SEG_DPL3 | SEG_S_NORMAL | SEG_TYPE_DATA | SEG_TYE_RW | SEG_D);
+    task_manager.app_data_sel = data_sel; // 保存数据段描述符
+
+    int code_sel = gdt_alloc_desc(); // 分配一个代码段描述符
+    // 初始化描述符
+    segment_desc_set(code_sel, 0x00000000, 0xFFFFFFFF,
+                     SEG_P_PRESENT | SEG_DPL3 | SEG_S_NORMAL | SEG_TYPE_CODE | SEG_TYE_RW | SEG_D);
+    task_manager.app_code_sel = code_sel; // 保存代码段描述符
+
     list_init(&task_manager.ready_list); // 就绪队列
     list_init(&task_manager.task_list);  // 进程队列
     list_init(&task_manager.sleep_list); // 延时队列
     task_manager.curr_task = (task_t *)0;
     task_init(&task_manager.idle_task,
               "idle task",
+              TASK_FLAGS_SYSTEM,
               (uint32_t)idle_task_entry,
               (uint32_t)(idle_task_stack + IDLE_TASK_SIZE));
     task_manager.curr_task = (task_t *)0;
@@ -243,16 +277,27 @@ void task_manager_init(void)
 
 /**
  * @brief        : 初始化OS中的第一个任务
- * @return        {*}
+ * @return        {void}
  **/
 void task_first_init(void)
 {
-    void first_task_entry(void);
+    void first_task_entry(void);                                  // 第一个任务入口 线性地址
+    extern uint8_t s_first_task[], e_first_task[];                // 物理起始地址与结束地址
+    uint32_t copy_size = (uint32_t)(e_first_task - s_first_task); // 搬运大小
+    uint32_t alloc_size = 10 * MEM_PAGE_SIZE;
+    ASSERT(copy_size < alloc_size);
     uint32_t first_start = (uint32_t)first_task_entry;
-    task_init(&task_manager.first_task, "first task", first_start, 0);
+    task_init(&task_manager.first_task, "first task",
+              0, first_start,
+              first_start + alloc_size); // 指定起始地址,first_start + alloc_size为栈低(由高向低增长)
     write_tr(task_manager.first_task.tss_sel);
     task_manager.curr_task = &task_manager.first_task;
-    mmu_set_page_dir(task_manager.first_task.tss.cr3);
+    mmu_set_page_dir(task_manager.first_task.tss.cr3); // 切换页目录表
+
+    // 切换页目录表后,分配页表空间
+    memory_alloc_page_for(first_start, alloc_size, PTE_P | PTE_W | PTE_U);
+    // 分配完后拷贝
+    kernel_memcpy((void *)first_start,(void *)s_first_task, copy_size);
 }
 
 /**

@@ -130,8 +130,7 @@ static void enable_page_mode()
 
 void load_kernel(void)
 {
-
-    read_disk(100, 500, (uint8_t *)SYS_KERNEL_LOAD_ADDR);
+    read_disk(100, 500, (uint8_t *)SYS_KERNEL_LOAD_ADDR); // 从第100扇区读取内核
 
     uint32_t kernel_entry = reload_elf_file((uint8_t *)SYS_KERNEL_LOAD_ADDR);
     // 加载失败

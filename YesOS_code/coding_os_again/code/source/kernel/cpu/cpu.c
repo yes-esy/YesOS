@@ -22,7 +22,7 @@ static mutex_t mutex;
  * @param         {uint32_t} base: 基地址
  * @param         {uint32_t} limit: 界限 20位
  * @param         {uint16_t} attr: 属性
- * @return        {*}
+ * @return        {void}
  **/
 void segment_desc_set(int selector, uint32_t base, uint32_t limit, uint16_t attr)
 {

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-25 13:46:15
+ * @LastEditTime : 2025-06-29 19:03:23
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -48,5 +48,29 @@ typedef struct _memory_map_t
  * @return        {*}
  **/
 void memory_init(boot_info_t *boot_info);
+/**
+ * @brief        : 创建页目录表,并将内核页目录表中的表项拷贝到新创建的页目录表中
+ * @return        {uint32_t}: 页目录表物理地址
+ **/
 uint32_t memory_create_uvm();
+/**
+ * @brief        : 为线性地址区域分配页表内存空间
+ * @param         {uint32_t} addr: 需要分配内存区域的程序的线性起始地址
+ * @param         {uint32_t} size: 内存空间大小
+ * @param         {int} perm: 权限
+ * @return        {int} : 状态码
+**/
+int memory_alloc_page_for(uint32_t addr , uint32_t size ,int perm);
+
+/**
+ * @brief        : 分配一页物理内存
+ * @return        {uint32_t}
+**/
+uint32_t memory_alloc_page(void);
+/**
+ * @brief        : 释放一页物理内存
+ * @param         {uint32_t} addr:
+ * @return        {*}
+**/
+void memory_free_page(uint32_t addr);
 #endif

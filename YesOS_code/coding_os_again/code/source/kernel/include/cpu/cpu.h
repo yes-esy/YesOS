@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-19 21:34:13
+ * @LastEditTime : 2025-06-29 16:03:43
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -49,7 +49,7 @@ typedef struct _tss_t
 {
     uint32_t pre_link;                               // 前一任务链接
     uint32_t esp0, ss0, esp1, ss1, esp2, ss2;        // 栈相关 不同特权级的栈
-    uint32_t cr3;                                    // 页表
+    uint32_t cr3;                                    // 页目录表
     uint32_t eip, eflags;                            // 运行状态
     uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi; // 通用寄存器
     uint32_t es, cs, ss, ds, fs, gs;                 // 段寄存器
@@ -64,6 +64,8 @@ typedef struct _tss_t
 #define SEG_P_PRESENT (1 << 7)   // 段是否存在，1存在，0不存在
 #define SEG_DPL0 (0 << 5)        // 特权级0，最高特权级
 #define SEG_DPL3 (3 << 5)        // 特权级3,最低特权级
+#define SEG_CPL0 (0 << 0)        // 特权级0，最高特权级
+#define SEG_CPL3 (3 << 0)        // 特权级3,最低特权级
 #define SEG_S_SYSTEM (0 << 4)    // 是否位系统段,如调用门或者中断
 #define SEG_S_NORMAL (1 << 4)    // 普通的代码段或数据段
 #define SEG_TYPE_CODE (1 << 3)   // 指定其为代码段
