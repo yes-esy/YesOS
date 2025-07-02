@@ -24,6 +24,7 @@
         "bitmap.h": "c",
         "memory.h": "c",
         "mmu.h": "c",
-        "mutex.h": "c"
+        "mutex.h": "c",
+        "syscall.h": "c"
     },
 }

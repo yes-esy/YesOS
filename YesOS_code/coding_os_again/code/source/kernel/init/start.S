@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-23 21:37:08
+ * @LastEditTime : 2025-07-01 20:46:35
  * Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  */
 
@@ -108,6 +108,7 @@ exception_handler smd_exception      ,  19   , 0 #
 exception_handler virtual_exception  ,  20   , 0 #
 exception_handler control_exception  ,  21   , 1 #
 exception_handler timer              ,  0x20 , 0 #
+# exception_handler syscall            ,  0x80 , 0 # 系统调用
 
     .text
     .global simple_switch
@@ -133,3 +134,27 @@ simple_switch:
     pop %ebp
 
     ret
+    
+
+    .global exception_handler_syscall
+    .extern do_handler_syscall
+exception_handler_syscall:
+    pusha  # eax值入栈
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    pushf # eflags寄存器压栈
+
+    mov %esp , %eax # 将当前栈指针ESP的值复制到EAX
+    push %eax # 将EAX(即栈指针)作为参数压入栈
+    call do_handler_syscall
+    add $4 , %esp # 清理参数(1个指针=4字节)
+
+    popf
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
+    popa # 弹出到eax寄存器
+    retf $(5 * 4)

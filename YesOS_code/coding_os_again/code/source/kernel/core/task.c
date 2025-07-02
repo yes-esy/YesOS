@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-30 19:12:34
+ * @LastEditTime : 2025-07-01 16:21:35
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -18,6 +18,8 @@
 #include "core/memory.h"
 #include "cpu/mmu.h"
 static task_manager_t task_manager; // 全局任务管理器
+
+static uint32_t task_count = 1; // 进程数量
 
 /**
  * @brief        : 返回下一个将要运行的进程,从就绪对列中取，若为空则运行空闲进程
@@ -172,6 +174,25 @@ tss_init_failed:
 }
 
 /**
+ * @brief        : 分配新的进程ID
+ * @return       : 新的PID
+ **/
+static uint32_t alloc_pid(void)
+{
+    irq_state_t state = irq_enter_protection();
+    uint32_t pid = task_count++;
+
+    // 防止PID溢出，保留0和一些特殊值
+    if (task_count >= 0xFFFF0000)
+    {
+        task_count = 1; // 重新从1开始
+    }
+
+    irq_leave_protection(state);
+    return pid;
+}
+
+/**
  * @brief        : 进程初始化
  * @param         {task_t *} task: 需要运行的进程的指针
  * @param         {const char *} name : 进程名称
@@ -192,6 +213,8 @@ int task_init(task_t *task, const char *name, int flag, uint32_t entry, uint32_t
     task->time_ticks = TASK_TIME_SLICE_DEFAULT;
     task->slice_ticks = task->time_ticks;
     task->sleep_ticks = 0; // 没有延时
+
+    task->pid = alloc_pid(); // 设置为当前的数量
 
     list_node_init(&task->all_node);
     list_node_init(&task->run_node);
@@ -297,7 +320,7 @@ void task_first_init(void)
     // 切换页目录表后,分配页表空间
     memory_alloc_page_for(first_start, alloc_size, PTE_P | PTE_W | PTE_U);
     // 分配完后拷贝
-    kernel_memcpy((void *)first_start,(void *)s_first_task, copy_size);
+    kernel_memcpy((void *)first_start, (void *)s_first_task, copy_size);
 }
 
 /**
@@ -382,4 +405,17 @@ void sys_sleep(uint32_t ms) // 进程延时
     task_dispatch();
 
     irq_leave_protection(state);
+}
+/**
+ * @brief        : 获取进程ID
+ * @return        {int} : 进程ID
+**/
+int sys_getpid(void)
+{
+    return task_current()->pid;
+}
+
+int sys_fork(void)
+{
+    return -1;   
 }

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-05-19 21:34:51
+ * @LastEditTime : 2025-06-30 21:02:18
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "cpu/cpu.h"
@@ -12,6 +12,7 @@
 #include "comm/cpu_instr.h"
 #include "cpu/irq.h"
 #include "ipc/mutex.h"
+#include "core/syscall.h"
 // gdt_table gdt表
 static segment_desc_t gdt_table[GDT_TABLE_SIZE];
 
@@ -97,6 +98,11 @@ void init_gdt(void)
     // 代码段
     segment_desc_set(KERNEL_SELECTOR_CS, 0x00000000, 0xFFFFFFFF,
                      SEG_P_PRESENT | SEG_DPL0 | SEG_S_NORMAL | SEG_TYPE_CODE | SEG_TYE_RW | SEG_D | SEG_G);
+    gate_desc_set((gate_desc_t *)(gdt_table + (SELECTOR_SYSCALL >> 3)), // gdt表
+                  KERNEL_SELECTOR_CS,                                 // 段
+                  (uint32_t)exception_handler_syscall,
+                  GATE_P_PRESENT | GATE_DPL3 | GATE_TYPE_SYSCALL | SYSCALL_PARAM_COUNT // 属性设置
+    );
     // 加载gdt
     lgdt((uint32_t)gdt_table, sizeof(gdt_table));
 }
@@ -113,12 +119,12 @@ void switch_to_tss(uint32_t tss_selector)
 /**
  * @brief        : gdt表项释放
  * @param         {int} sel: 选择子
- * @return        {*}
+ * @return        {void}
  **/
 void gdt_free_sel(int sel)
 {
     mutex_lock(&mutex);
-    gdt_table[sel/sizeof(segment_desc_t)].attr = 0;
+    gdt_table[sel / sizeof(segment_desc_t)].attr = 0;
     mutex_unlock(&mutex);
 }
 /**

@@ -31,6 +31,8 @@ typedef struct _task_t
         TASK_WAIT,    // 等待
     } state;
 
+    int pid; // 进程ID号
+
     int time_ticks;            // 进程运行时间片
     int slice_ticks;           // 进程已运行时间
     int sleep_ticks;           // 进程睡眠时间
@@ -91,12 +93,14 @@ void task_first_init(void);
 task_t *task_first_task(void);
 
 void task_set_block(task_t *task);
-int sys_sched_yield(void); // 进程主动放弃cpu
-void task_dispatch(void);
-task_t *task_current(void);
+int sys_sched_yield(void);  // 进程主动放弃cpu
+void task_dispatch(void);   // 进程调度
+task_t *task_current(void); // 获取当前执行的进程
 void task_time_ticks(void);
-void sys_sleep(uint32_t ms); // 进程延时
-void task_set_sleep(task_t *task, uint32_t ticks);
-void task_set_wakeup(task_t *task);
-void task_set_ready(task_t *task);
+void sys_sleep(uint32_t ms);                       // 进程延时
+void task_set_sleep(task_t *task, uint32_t ticks); // 将进程状态设置为睡眠状态
+void task_set_wakeup(task_t *task);                // 唤醒进程
+void task_set_ready(task_t *task);                 // 将进程状态设置为就绪态
+int sys_getpid(void);                              // 获取进程ID
+int sys_fork(void);                                // 创建子进程
 #endif

@@ -6,7 +6,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-30 10:55:28
+ * @LastEditTime : 2025-06-30 21:03:12
  * Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  */
 	#include "boot.h"
@@ -29,7 +29,7 @@ _start:
 	# 或者mov $0x7c00,%esp
 
 # 将loader读到0x8000处
-:
+read_loader:
 	mov $0x8000, %bx	# 读取到的内存地址(目的地址)
 	mov $0x2, %cx		# ah: 0x2读磁盘命令 
 	mov $0x2, %ah		# ch:磁道号，cl起始扇区号
