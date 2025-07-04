@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-01 22:00:08
+ * @LastEditTime : 2025-07-04 16:33:11
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef LIB_SYSCALL_H
@@ -32,21 +32,21 @@ typedef struct _syscall_args_t
 static inline int sys_call(syscall_args_t *args)
 {
     int ret;
-    uint32_t addr[] = {0, SELECTOR_SYSCALL | 0}; // RPL<=DPL ,RPL设置为0
+    uint32_t sys_gate_addr[] = {0, SELECTOR_SYSCALL | 0}; // RPL<=DPL ,RPL设置为0
     __asm__ __volatile__(
         "push %[arg3]\n\t"
         "push %[arg2]\n\t"
         "push %[arg1]\n\t"
         "push %[arg0]\n\t"
         "push %[id]\n\t"
-        "lcalll *(%[a])"
+        "lcalll *(%[gate])\n\n"
         : "=a"(ret) // 表明从eax中取出其值
         : [arg3] "r"(args->arg3),
           [arg2] "r"(args->arg2),
           [arg1] "r"(args->arg1),
           [arg0] "r"(args->arg0),
           [id] "r"(args->id),
-          [a] "r"(addr)); // 跳转到exception_handler_syscall
+          [gate] "r"(sys_gate_addr)); // 跳转到exception_handler_syscall
     /*int 80的实现方式*/
     // __asm__ __volatile__(
     //     "int $0x80"
@@ -60,7 +60,7 @@ static inline int sys_call(syscall_args_t *args)
 }
 
 /**
- * @brief        : 延时系统调用
+ * @brief        : 延时系统调用接口
  * @param         {int} ms: 睡眠的毫秒数
  * @return        {void}
  **/
@@ -76,7 +76,7 @@ static inline void msleep(int ms)
     sys_call(&args);     // 通用系统调用,并传递参数
 }
 /**
- * @brief        : 获取当前进程的ID号
+ * @brief        : 获取当前进程的ID号接口
  * @return        {int} : 进程ID号
  **/
 static inline int getpid()
@@ -86,10 +86,10 @@ static inline int getpid()
     return sys_call(&args);
 }
 /**
- * @brief        : 简单打印信息
+ * @brief        : 简单打印信息接口
  * @param         {char} *fmt: 格式化字符串
  * @param         {int} arg: 参数
- * @return        {*}
+ * @return        {void}
  **/
 static inline void print_msg(const char *fmt, int arg)
 {
@@ -99,12 +99,40 @@ static inline void print_msg(const char *fmt, int arg)
     args.arg1 = arg;
     sys_call(&args);
 }
-
+/**
+ * @brief        : 创建子进程的系统调用接口
+ * @return        {int} : 子进程的PID
+**/
 static inline int fork()
 {
     syscall_args_t args;
     args.id = SYS_fork;
     sys_call(&args);
 }
-
+/**
+ * @brief        : 创建一个新的进程
+ * @param         {char *} name: 应用程序路径
+ * @param         {char **} argv: 参数
+ * @param         {char **} env: 环境变量
+ * @return        {int} : 创建的进程的PID
+**/
+static inline int execve(const char * name,char * const * argv,char * const * env )
+{
+    syscall_args_t args;
+    args.id = SYS_execve;
+    args.arg0 = (int) name;
+    args.arg1 = (int) argv;
+    args.arg2 = (int) env;
+    sys_call(&args);
+}
+/**
+ * @brief        : 创建子进程的系统调用接口
+ * @return        {int} : 子进程的PID
+ **/
+static inline int yield()
+{
+    syscall_args_t args;
+    args.id = SYS_yield;
+    sys_call(&args);
+}
 #endif

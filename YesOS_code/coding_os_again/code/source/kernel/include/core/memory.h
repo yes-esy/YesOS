@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-29 19:03:23
+ * @LastEditTime : 2025-07-03 15:08:21
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -16,6 +16,9 @@
 #define MEM_EBDA_START 0x80000
 #define MEMORY_TASK_BASE (0x80000000) // 进程起始地址空间
 #define MEM_EXT_END (127 * 1024 * 1024)
+#define MEM_TASK_STACK_TOP 0xE0000000             // 栈起始地址
+#define MEM_TASK_STACK_SIZE (MEM_PAGE_SIZE * 500) // 栈空间大小
+#define MEM_TASK_ARG_SIZE (MEM_PAGE_SIZE * 4)     // 预留空间放置参数
 #include "comm/types.h"
 #include "tools/bitmap.h"
 #include "ipc/mutex.h"
@@ -59,18 +62,33 @@ uint32_t memory_create_uvm();
  * @param         {uint32_t} size: 内存空间大小
  * @param         {int} perm: 权限
  * @return        {int} : 状态码
-**/
-int memory_alloc_page_for(uint32_t addr , uint32_t size ,int perm);
+ **/
+int memory_alloc_page_for(uint32_t addr, uint32_t size, int perm);
 
 /**
  * @brief        : 分配一页物理内存
  * @return        {uint32_t}
-**/
+ **/
 uint32_t memory_alloc_page(void);
 /**
  * @brief        : 释放一页物理内存
  * @param         {uint32_t} addr:
  * @return        {*}
-**/
+ **/
 void memory_free_page(uint32_t addr);
+
+uint32_t memory_copy_uvm(uint32_t page_dir);
+void memory_destory_uvm(uint32_t page_dir);
+int memory_alloc_page_for_dir(uint32_t page_dir, uint32_t vaddr, uint32_t size, int perm);
+uint32_t memory_get_paddr(uint32_t page_dir, uint32_t vaddr);
+/**
+ * @brief        : 从当前页表中from开始的地址连续拷贝size空间大小到page_dir页目录表to开始的地址
+ * @param         {uint32_t} to: 拷贝目的地址
+ * @param         {uint32_t} page_dir: 目的地址所在的页目录表
+ * @param         {uint32_t} from: 源起始地址
+ * @param         {uint32_t} size: 拷贝大小
+ * @return        {int} : 状态码
+ **/
+int memory_copy_uvm_data(uint32_t to, uint32_t page_dir, uint32_t from, uint32_t size);
+
 #endif

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-01 19:32:04
+ * @LastEditTime : 2025-07-03 15:42:05
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/syscall.h"
@@ -30,7 +30,9 @@ static const sys_handler_t sys_table[] = {
     [SYS_sleep] = (sys_handler_t)sys_sleep,
     [SYS_getpid] = (sys_handler_t)sys_getpid,
     [SYS_print_msg] = (sys_handler_t)sys_print_msg,
-    [SYS_fork] = (sys_handler_t) sys_fork
+    [SYS_fork] = (sys_handler_t)sys_fork,
+    [SYS_execve] = (sys_handler_t)sys_execve,
+    [SYS_yield] = (sys_handler_t)sys_yield,
 
 };
 /**

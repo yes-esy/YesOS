@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-29 16:41:39
+ * @LastEditTime : 2025-07-04 11:28:10
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef TASK_H
@@ -17,6 +17,16 @@
 #define TASK_NAME_SIZE 64          // 进程名字
 #define TASK_TIME_SLICE_DEFAULT 10 // 定时中断
 #define TASK_FLAGS_SYSTEM (1 << 0) // 系统进程
+/**
+ * 进程传递的参数
+ */
+typedef struct _task_args_t
+{
+    uint32_t ret_addr; // 返回地址
+    uint32_t argc;     // 参数个数
+    char **argv;       // 指针数组起始地址
+} task_args_t;
+
 /**
  * 进程控制块结构
  */
@@ -31,7 +41,8 @@ typedef struct _task_t
         TASK_WAIT,    // 等待
     } state;
 
-    int pid; // 进程ID号
+    int pid;                // 进程ID号
+    struct _task_t *parent; // 当前进程父进程
 
     int time_ticks;            // 进程运行时间片
     int slice_ticks;           // 进程已运行时间
@@ -93,14 +104,15 @@ void task_first_init(void);
 task_t *task_first_task(void);
 
 void task_set_block(task_t *task);
-int sys_sched_yield(void);  // 进程主动放弃cpu
+int sys_yield(void);        // 进程主动放弃cpu
 void task_dispatch(void);   // 进程调度
 task_t *task_current(void); // 获取当前执行的进程
 void task_time_ticks(void);
-void sys_sleep(uint32_t ms);                       // 进程延时
-void task_set_sleep(task_t *task, uint32_t ticks); // 将进程状态设置为睡眠状态
-void task_set_wakeup(task_t *task);                // 唤醒进程
-void task_set_ready(task_t *task);                 // 将进程状态设置为就绪态
-int sys_getpid(void);                              // 获取进程ID
-int sys_fork(void);                                // 创建子进程
+void sys_sleep(uint32_t ms);                         // 进程延时
+void task_set_sleep(task_t *task, uint32_t ticks);   // 将进程状态设置为睡眠状态
+void task_set_wakeup(task_t *task);                  // 唤醒进程
+void task_set_ready(task_t *task);                   // 将进程状态设置为就绪态
+int sys_getpid(void);                                // 获取进程ID
+int sys_fork(void);                                  // 创建子进程
+int sys_execve(char *name, char **argv, char **env); // 创建空进程
 #endif

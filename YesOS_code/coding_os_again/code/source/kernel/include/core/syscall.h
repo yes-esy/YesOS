@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-01 21:51:43
+ * @LastEditTime : 2025-07-03 15:40:18
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef SYSCALL_H
@@ -15,6 +15,8 @@
 #define SYS_sleep 0
 #define SYS_getpid 1
 #define SYS_fork 2
+#define SYS_execve 3
+#define SYS_yield 4
 #define SYS_print_msg 100
 #define SYSCALL_PARAM_COUNT 5 // 系统调用参数数量
 
@@ -26,6 +28,7 @@ typedef struct _syscall_frame_t
     uint32_t edi, esi, ebp, dummy, ebx, edx, ecx, eax;
     uint32_t eip, cs;
     int func_id, arg0, arg1, arg2, arg3;
+    uint32_t esp, ss;
 } syscall_frame_t;
 
 void exception_handler_syscall(void); // 系统调用函数声明

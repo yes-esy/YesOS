@@ -25,6 +25,9 @@ typedef uint32_t Elf32_Word;
 #define EI_NIDENT 16
 #define ELF_MAGIC 0x7F
 
+#define ET_EXEC 2 // 可执行文件
+#define ET_386 3  // 80386处理器
+
 typedef struct
 {
     char e_ident[EI_NIDENT];

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-29 19:20:31
+ * @LastEditTime : 2025-07-04 19:40:26
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/memory.h"
@@ -58,7 +58,7 @@ static uint32_t addr_alloc_page(addr_alloc_t *alloc, int page_count)
  **/
 static void addr_free_page(addr_alloc_t *alloc, uint32_t addr, int page_count)
 {
-    mutex_lock(&alloc->mutex);                                      // 进入临界区，保证线程安全
+    mutex_lock(&alloc->mutex);                                      // 进入临界区，保证进程安全
     uint32_t page_index = (addr - alloc->start) / alloc->page_size; // 计算页在位图中的索引位置
     bitmap_set_bit(&alloc->bitmap, page_index, page_count, 0);      // 将位图对应位置设为0，标记为空闲
     mutex_unlock(&alloc->mutex);                                    // 退出临界区
@@ -233,8 +233,7 @@ static pde_t *curr_page_dir(void)
  * @brief        : 创建页目录表,并将内核页目录表中的表项拷贝到新创建的页目录表中
  * @return        {uint32_t}: 页目录表物理地址
  **/
-uint32_t
-memory_create_uvm(void)
+uint32_t memory_create_uvm(void)
 {
     pde_t *page_dir = (pde_t *)addr_alloc_page(&paddr_alloc, 1); // 分配一页内存用于存放页目录表
     if (page_dir == 0)                                           // 分配失败
@@ -283,6 +282,52 @@ int memory_alloc_page_for_dir(uint32_t page_dir, uint32_t vaddr, uint32_t size, 
     return 0;
 }
 /**
+ * @brief        : 返回虚拟地址在页表中的物理地址
+ * @param         {uint32_t} page_dir: 页目录表
+ * @param         {uint32_t} vaddr: 虚拟地址
+ * @return        {uint32_t} vaddr在页目录表中的物理地址
+ **/
+uint32_t memory_get_paddr(uint32_t page_dir, uint32_t vaddr)
+{
+    pte_t *pte = find_pte((pde_t *)page_dir, vaddr, 0); // 对应页表项的指针
+    if (!pte)                                           // 没有找到
+    {
+        return 0;
+    }
+    return pte_paddr(pte) + (vaddr & (MEM_PAGE_SIZE - 1)); // 物理地址加偏移量
+}
+/**
+ * @brief        : 将数据从一个地址空间拷贝到另一个进程的用户虚拟内存空间中。
+ * @param         {uint32_t} to: 目标虚拟地址,在page_dir页目录表中
+ * @param         {uint32_t} page_dir:  目标页目录表
+ * @param         {uint32_t} from: 源地址(当前地址空间)
+ * @param         {uint32_t} size: 拷贝的字节数
+ * @return        {int} : 状态码. 成功返回0,失败返回-1
+ **/
+int memory_copy_uvm_data(uint32_t to, uint32_t page_dir, uint32_t from, uint32_t size)
+{
+    while (size > 0)
+    {
+        uint32_t to_paddr = memory_get_paddr(page_dir, to); // 目的地址所在物理地址
+        if (to_paddr == 0)                                  // 目标地址未映射
+        {
+            return -1;
+        }
+        uint32_t offset_in_page = to_paddr & (MEM_PAGE_SIZE - 1); // 页内偏移
+        uint32_t curr_size = MEM_PAGE_SIZE - offset_in_page;      // 当前页还能拷贝的大小
+        if (curr_size > size)                                     // 如果剩余要拷贝的数据小于当前页能容纳的，则只拷贝剩余的
+        {
+            curr_size = size;
+        }
+        kernel_memcpy((void *)to_paddr, (void *)from, curr_size); // 执行实际的内存拷贝（直接使用物理地址）
+        // 更新指针和剩余大小
+        size -= curr_size;
+        to += curr_size;
+        from += curr_size;
+    }
+    return 0 ;
+}
+/**
  * @brief        : 为当前进程的虚拟地址区域分配页表内存空间
  * @param         {uint32_t} addr: 需要分配内存的虚拟起始地址
  * @param         {uint32_t} size: 需要分配的内存空间大小（字节）
@@ -321,6 +366,83 @@ void memory_free_page(uint32_t addr)
         addr_free_page(&paddr_alloc, pte_paddr(pte), 1); // 释放该表项
         pte->v = 0;                                      // 清楚映射关系,表项清空
     }
+}
+/**
+ * @brief        : 释放页目录表及其映射关系
+ * @param         {uint32_t} page_dir: 需要释放的页目录表的物理地址
+ * @return        {void}
+ **/
+void memory_destory_uvm(uint32_t page_dir)
+{
+    uint32_t user_pde_start = pde_index(MEMORY_TASK_BASE); // pde表项索引
+    pde_t *pde = (pde_t *)(page_dir + user_pde_start);     // 得到原一级页目录表项
+    for (int i = user_pde_start; i < PDE_CNT; i++, pde++)  // 从用户进程空间开始
+    {
+        if (!pde->present) // 页目录表项不存在
+        {
+            continue;
+        }
+        pte_t *pte = (pte_t *)pde_paddr(pde);    // 取出页表物理地址
+        for (int j = 0; j < PTE_CNT; j++, pte++) // 遍历页表
+        {
+            if (!pte->present) // 页表项不存在
+            {
+                continue;
+            }
+            addr_free_page(&paddr_alloc, pte_paddr(pte), 1); // 释放该页物理地址
+        }
+        addr_free_page(&paddr_alloc, (uint32_t)pde_paddr(pde), 1); // 释放该页表对应的空间
+    }
+    addr_free_page(&paddr_alloc, (uint32_t)page_dir, 1); // 释放该页目录表
+}
+/**
+ * @brief        : 复制一个页目录表及其映射关系，创建一个新的页目录表
+ * @param         {uint32_t} page_dir: 需要复制的源页目录表的物理地址
+ * @return        {uint32_t} : 新创建的页目录表的物理地址，失败返回-1
+ **/
+uint32_t memory_copy_uvm(uint32_t page_dir)
+{
+    uint32_t to_page_dir = memory_create_uvm(); // 创建页目录表
+    if (to_page_dir == 0)                       // 创建失败
+    {
+        goto copy_uvm_failed;
+    }
+    uint32_t user_pde_start = pde_index(MEMORY_TASK_BASE); // pde表项索引
+    pde_t *pde = (pde_t *)page_dir + user_pde_start;       // 得到原一级页目录表中用户进程开始的页目录表项
+    for (int i = user_pde_start; i < PDE_CNT; i++, pde++)  // 遍历页目录表
+    {
+        if (!pde->present) // 页目录表项不存在
+        {
+            continue;
+        }
+        pte_t *pte = (pte_t *)pde_paddr(pde);    // 取出页目录表项对应的页表的物理地址
+        for (int j = 0; j < PTE_CNT; j++, pte++) // 遍历页表
+        {
+            if (!pte->present) // 页表项不存在
+            {
+                continue;
+            }
+            uint32_t page = addr_alloc_page(&paddr_alloc, 1); // 分配一页物理内存
+            if (page == 0)                                    // 分配失败
+            {
+                goto copy_uvm_failed;
+            }
+            uint32_t vaddr = (i << 22) | (j << 12);
+            int err = memory_create_map((pde_t *)to_page_dir, vaddr, page, 1, get_pte_perm(pte)); // 建立映射关系
+            if (err < 0)
+            {
+                goto copy_uvm_failed;
+            }
+            kernel_memcpy((void *)page, (void *)vaddr, MEM_PAGE_SIZE); // 复制内容
+        }
+    }
+    return to_page_dir;
+copy_uvm_failed:
+    if (to_page_dir)
+    {
+        memory_destory_uvm(to_page_dir); // 释放页目录表
+    }
+    return -1;
 }
 /**
  * @brief        : 初始化

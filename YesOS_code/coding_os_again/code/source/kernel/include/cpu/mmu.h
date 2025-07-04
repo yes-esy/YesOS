@@ -4,13 +4,14 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-26 16:51:36
+ * @LastEditTime : 2025-07-02 21:59:14
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef MMU_H
 #define MMU_H
 
 #define PDE_CNT (1024) // 页目录表项数量
+#define PTE_CNT (1024) // 页表表项数量
 #define PTE_P (1 << 0) // 页表表项存在
 #define PDE_P (1 << 0) // 页目录表项存在
 #define PDE_W (1 << 1) // 页目录表项可写
@@ -108,5 +109,13 @@ static inline uint32_t pte_paddr(pte_t *pte)
 {
     return pte->phy_page_addr << 12;
 }
-
+/**
+ * @brief        : 返回页表表项的属性 
+ * @param         {pte_t} *pte: 页表表项的指针
+ * @return        {uint32_t} : 页表表项的权限
+**/
+static inline uint32_t get_pte_perm(pte_t *pte)
+{
+    return (pte->v & 0x1FF);
+}
 #endif

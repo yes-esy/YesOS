@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-04-22 19:47:05
+ * @LastEditTime : 2025-07-03 15:18:42
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -13,6 +13,41 @@
 #include "tools/log.h"
 #include "comm/cpu_instr.h"
 
+/**
+ * @brief        : 计算指针数组中的参数个数
+ * @param         {char **} start: 起始地址
+ * @return        {int} : 参数数量
+ **/
+int strings_count(char **start)
+{
+    int count = 0;
+    if (start)
+    {
+        while (*start++)
+        {
+            count++;
+        }
+    }
+    return count;
+}
+/**
+ * @brief        : 从文件路径中获取文件名
+ * @param         {char} *path: 文件路径
+ * @return        {char *} :文件名指针
+ **/
+char *get_file_name(char *path)
+{
+    char *s = path;
+    while (*s != '\0')
+    {
+        s++;
+    }
+    while (*s != '/' && (*s != '\\') && (s >= path))
+    {
+        s--;
+    }
+    return s + 1;
+}
 /**
  * @brief        : 字符串复制函数
  * @param         {char *} dest:目的地址
@@ -310,12 +345,12 @@ void kernel_vsprintf(char *buffer, const char *fmt, va_list args)
  * @param         {char} *func: 函数名
  * @param         {char} *cond: 表达式
  * @return        {*}
-**/
+ **/
 void pannic(const char *file, int line, const char *func, const char *cond)
 {
     log_printf("ASSERT FAILED! %s", cond);
     log_printf("File is : %s \nLine is : %d\nFunc is : %s\n", file, line, func);
-    for(;;)
+    for (;;)
     {
         hlt();
     }

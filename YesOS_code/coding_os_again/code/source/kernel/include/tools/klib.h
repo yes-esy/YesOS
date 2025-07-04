@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-25 13:22:21
+ * @LastEditTime : 2025-07-03 15:24:29
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -49,7 +49,7 @@ void kernel_strcpy(char *dest, const char *src);
  * @param         {int} size:大小
  * @return        {*}
  **/
-void kernerl_strncpy(char *dest, const char *src, int size);
+void kernel_strncpy(char *dest, const char *src, int size);
 
 /**
  * @brief        : 字符串比较函数
@@ -101,6 +101,19 @@ int kernel_memcmp(void *d1, void *d2, int size);
  * @return        {*}
  **/
 void kernel_sprintf(char *buf, const char *fmt, ...);
+
+/**
+ * @brief        : 计算指针数组中的参数个数
+ * @param         {char **} start: 起始地址
+ * @return        {int} : 参数数量
+ **/
+int strings_count(char **start);
+/**
+ * @brief        : 从文件路径中获取文件名
+ * @param         {char} *path: 文件路径
+ * @return        {char *} :文件名指针
+ **/
+char *get_file_name(char *path);
 /**
  * @brief        : 将args中的参数根据格式化字符串fmt填入缓冲区buf中
  * @param         {char} *buf: 字符缓冲区

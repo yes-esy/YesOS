@@ -19,5 +19,6 @@
 #define OS_VERSION "1.0.0"           // 系统版本号
 #define IDLE_TASK_SIZE 1024          // 空闲进程占空间大小
 #define SELECTOR_SYSCALL (3 * 8)     // 系统调用
+#define TASK_NR 128                  // 系统中最多存在的进程
 
 #endif
