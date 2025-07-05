@@ -12,12 +12,20 @@
 
 #include "comm/types.h"
 
-#define SYS_sleep 0
-#define SYS_getpid 1
-#define SYS_fork 2
-#define SYS_execve 3
-#define SYS_yield 4
-#define SYS_print_msg 100
+#define SYS_sleep           0 // 睡眠系统调用编号
+#define SYS_getpid          1 // 获取进程PID系统调用编号
+#define SYS_fork            2
+#define SYS_execve          3
+#define SYS_yield           4
+#define SYS_open            50
+#define SYS_read            51
+#define SYS_write           52
+#define SYS_close           53
+#define SYS_lseek           54
+#define SYS_isatty          55
+#define SYS_sbrk            56
+#define SYS_fstat           57
+#define SYS_print_msg       100
 #define SYSCALL_PARAM_COUNT 5 // 系统调用参数数量
 
 typedef struct _syscall_frame_t

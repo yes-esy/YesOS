@@ -44,6 +44,9 @@ typedef struct _task_t
     int pid;                // 进程ID号
     struct _task_t *parent; // 当前进程父进程
 
+    uint32_t heap_start; // 堆起始地址
+    uint32_t heap_end;   // 堆结束地址
+
     int time_ticks;            // 进程运行时间片
     int slice_ticks;           // 进程已运行时间
     int sleep_ticks;           // 进程睡眠时间

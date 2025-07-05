@@ -7,8 +7,6 @@
  * @LastEditTime : 2025-07-03 10:20:54
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
-#include "core/task.h"
-#include "tools/log.h"
 #include "applib/lib_syscall.h"
 int first_task_main(void)
 {

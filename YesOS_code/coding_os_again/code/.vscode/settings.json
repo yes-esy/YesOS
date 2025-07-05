@@ -27,6 +27,7 @@
         "mutex.h": "c",
         "syscall.h": "c",
         "fs.h": "c",
-        "elf.h": "c"
+        "elf.h": "c",
+        "console.h": "c"
     },
 }

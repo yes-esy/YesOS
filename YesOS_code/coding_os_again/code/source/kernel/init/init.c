@@ -20,6 +20,7 @@
 #include "tools/list.h"
 #include "ipc/sem.h"
 #include "core/memory.h"
+#include "dev/console.h"
 static boot_info_t *init_boot_info; // 启动信息
 
 static sem_t sem;
@@ -33,10 +34,11 @@ void kernel_init(boot_info_t *boot_info)
 {
     init_boot_info = boot_info;
     cpu_init();
-    log_init();
-    memory_init(boot_info);
+    log_init();             // 打印初始化
+    console_init();         // 控制台初始化
+    memory_init(boot_info); // 内存初始化
 
-    irq_init();
+    irq_init(); // 中断初始化
     time_init();
     task_manager_init();
 }

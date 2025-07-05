@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-03 15:08:21
+ * @LastEditTime : 2025-07-04 21:04:40
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -91,4 +91,5 @@ uint32_t memory_get_paddr(uint32_t page_dir, uint32_t vaddr);
  **/
 int memory_copy_uvm_data(uint32_t to, uint32_t page_dir, uint32_t from, uint32_t size);
 
+char * sys_sbrk(int incr);
 #endif

@@ -4,13 +4,15 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 16:54:51
+ * @LastEditTime : 2025-07-05 15:08:23
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "fs/fs.h"
 #include "tools/klib.h"
 #include "comm/boot_info.h"
 #include "comm/cpu_instr.h"
+#include "tools/log.h"
+#include "dev/console.h"
 #define TEMP_FILE_ID 100
 static uint8_t TEMP_ADDR[100 * 1024]; // 临时地址
 static uint8_t *temp_pos;             // 文件读写位置
@@ -70,12 +72,12 @@ int sys_open(const char *path, int flags, ...)
  * @param         {char} *ptr: 读取到文件的目的地址
  * @param         {int} len: 读取长度
  * @return        {int} 读取成功返回读取长度,失败返回-1
-**/
+ **/
 int sys_read(int file, char *ptr, int len)
 {
-    if(file == TEMP_FILE_ID)
+    if (file == TEMP_FILE_ID)
     {
-        kernel_memcpy(ptr,temp_pos,len);
+        kernel_memcpy(ptr, temp_pos, len);
         temp_pos += len;
         return len;
     }
@@ -84,31 +86,44 @@ int sys_read(int file, char *ptr, int len)
 /**
  * @brief        : 写文件
  * @param         {int} file: 写入的文件
- * @param         {char} *ptr: 
+ * @param         {char} *ptr: 写入的内容的起始地址
  * @param         {int} len: 写入长度
- * @return        {*}
-**/
+ * @return        {int} : 返回-1
+ **/
 int sys_write(int file, char *ptr, int len)
 {
+    if (file == 1)
+    { // ptr[len] = '\0';
+        // log_printf("%s", ptr);
+        console_write(0, ptr, len);
+    }
     return -1;
 }
 /**
  * @brief        : 调整读写指针
- * @param         {int} file: 操作文件 
- * @param         {int} ptr: 
+ * @param         {int} file: 操作文件
+ * @param         {int} ptr:
  * @param         {int} dir:
  * @return        {int} 成功返回 1, 失败返回 -1
-**/
+ **/
 int sys_lseek(int file, int ptr, int dir)
 {
-    if(file = TEMP_FILE_ID)
+    if (file = TEMP_FILE_ID)
     {
-        temp_pos = (uint8_t *) (TEMP_ADDR + ptr); // 调整指针
+        temp_pos = (uint8_t *)(TEMP_ADDR + ptr); // 调整指针
         return 0;
     }
     return -1;
 }
 int sys_close(int file)
+{
+    return 0;
+}
+int sys_isatty(int file)
+{
+    return 0;
+}
+int sys_fstat(struct stat *st)
 {
     return 0;
 }

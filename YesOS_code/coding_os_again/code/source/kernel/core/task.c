@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 19:22:17
+ * @LastEditTime : 2025-07-05 13:22:39
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -198,9 +198,9 @@ int task_init(task_t *task, const char *name, int flag, uint32_t entry, uint32_t
     task->slice_ticks = task->time_ticks;
     task->sleep_ticks = 0; // 没有延时
     task->parent = (task_t *)0;
-
+    task->heap_start = 0;
+    task->heap_end = 0;
     task->pid = (uint32_t)task; // 设置为当前的数量
-
     list_node_init(&task->all_node);
     list_node_init(&task->run_node);
     list_node_init(&task->wait_node);
@@ -339,6 +339,9 @@ void task_first_init(void)
     task_init(&task_manager.first_task, "first task",
               0, first_start,
               first_start + alloc_size); // 指定起始地址,first_start + alloc_size为栈低(由高向低增长)
+    // 设置堆
+    task_manager.first_task.heap_start = (uint32_t) e_first_task;
+    task_manager.first_task.heap_end = (uint32_t)e_first_task;
     write_tr(task_manager.first_task.tss_sel);
     task_manager.curr_task = &task_manager.first_task;
     mmu_set_page_dir(task_manager.first_task.tss.cr3); // 切换页目录表
@@ -551,6 +554,9 @@ static uint32_t load_elf_file(task_t *task, const char *path, uint32_t page_dir)
             log_printf("load program hdr failed");
             goto load_failed;
         }
+        // task->heap_start最终指向bss区末端地址
+        task->heap_start = elf_phdr.p_vaddr + elf_phdr.p_memsz;
+        task->heap_end = task->heap_start; // 堆大小为0 
     }
     sys_close(file);
     return elf_hdr.e_entry;

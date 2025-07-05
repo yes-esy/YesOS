@@ -8,14 +8,14 @@ SECTIONS {
     . = 0x00010000;
     PROVIDE(s_text = .);
     .text : {
-        *(EXCLUDE_FILE(*first_task*).text)
+        	*(EXCLUDE_FILE(*first_task* *lib_syscall*) .text)
     }
     /**
     * 存放常量数据
     * e_text 标记只读区域结束
     **/
     .rodata :{
-        *(.rodata)
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .rodata)
     }
     PROVIDE(e_text = .);
     /**
@@ -27,10 +27,10 @@ SECTIONS {
     . = ALIGN(4096);
     PROVIDE(s_data = .);
     .data :{
-        *(.data)
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .data)
     }
     .bss : {
-        *(.bss)
+        *(EXCLUDE_FILE(*first_task* *lib_syscall*) .bss)
     }
     e_data = .;
     /**
@@ -43,6 +43,8 @@ SECTIONS {
     .first_task :AT(e_data) {
         *first_task_entry*(.text .rodata .bss .data)
         *first_task*(.text .rodata .bss .data)
+        *lib_syscall*(.text .data .bss)
+
     }
     PROVIDE(e_first_task = LOADADDR(.first_task) + SIZEOF(.first_task));
     PROVIDE(mem_free_start = e_first_task );

@@ -4,13 +4,14 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 19:40:26
+ * @LastEditTime : 2025-07-05 15:13:11
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/memory.h"
 #include "tools/log.h"
 #include "tools/klib.h"
 #include "cpu/mmu.h"
+#include "dev/console.h"
 static addr_alloc_t paddr_alloc;                                               // 地址分配结构                                         // 物理地址分配结构
 static pde_t kernel_page_dir[PDE_CNT] __attribute__((aligned(MEM_PAGE_SIZE))); // 内核页目录表(全局唯一)
 /**
@@ -195,7 +196,12 @@ void create_kernel_table()
          * 权限: PTE_W (可读写)
          * 用途: 内核数据区域，包括全局变量、BSS段等 */
         {s_data, (void *)(MEM_EBDA_START - 1), s_data, PTE_W},
-
+        /* 映射4: 显存区域
+         * 虚拟地址: CONSOLE_DISP_ADDR ~ CONSOLE_DISP_END-1
+         * 物理地址: CONSOLE_DISP_ADDR (identity mapping)
+         * 权限: PTE_W (可读写)
+         * 用途: 屏幕显示*/
+        {(void *)CONSOLE_DISP_ADDR, (void *)CONSOLE_DISP_END, (void *)CONSOLE_DISP_ADDR, PTE_W},
         /* 映射4: 扩展内存区域
          * 虚拟地址: MEM_EXT_START ~ MEM_EXT_END
          * 物理地址: MEM_EXT_START (identity mapping，一一对应)
@@ -325,7 +331,7 @@ int memory_copy_uvm_data(uint32_t to, uint32_t page_dir, uint32_t from, uint32_t
         to += curr_size;
         from += curr_size;
     }
-    return 0 ;
+    return 0;
 }
 /**
  * @brief        : 为当前进程的虚拟地址区域分配页表内存空间
@@ -474,4 +480,53 @@ void memory_init(boot_info_t *boot_info)
 
     mmu_set_page_dir((uint32_t)kernel_page_dir); // 设置页目录表地址,打开分页机制
     log_printf("memory success.");
+}
+/**
+ * @brief        : 为当前进程增长指定字节的堆空间
+ * @param         {int} incr: 增长的字节量
+ * @return        {char *} 增长之前的堆末端地址
+ **/
+char *sys_sbrk(int incr)
+{
+    task_t *task = task_current();               // 获取当前进程
+    char *pre_heap_end = (char *)task->heap_end; // 当前进程堆末端地址
+    int pre_incr = incr;                         // 原始incr
+    ASSERT(incr >= 0);
+    if (incr == 0)
+    {
+        log_printf("sbrk(0) : end=0x%x", pre_heap_end);
+        return pre_heap_end;
+    }
+    uint32_t start = task->heap_end;      // 增长的起始地址
+    uint32_t end = task->heap_end + incr; // 增长后结束地址
+
+    int start_offset = start & (MEM_PAGE_SIZE - 1); // 获取页边界对齐后的偏移量
+    if (start_offset)
+    {
+        if (start_offset + incr <= MEM_PAGE_SIZE) // 没有超过一页,直接分配
+        {
+            task->heap_end = end; // 直接调整，因为之前都是一页一页分配的
+            incr -= incr;
+            return pre_heap_end; // 返回之前堆末端地址
+        }
+        else // 超过了一页
+        {
+            uint32_t curr_size = MEM_PAGE_SIZE - start_offset; // 当前页已经分配了,所以只需要分配当前页之外的
+            start += curr_size;                                // 调整增长的起始地址
+            incr -= curr_size;                                 // 调整分配的大小
+        }
+    }
+    if (incr) // 还没分配完
+    {
+        uint32_t curr_size = end - start;
+        int err = memory_alloc_page_for(start, curr_size, PTE_P | PTE_U | PTE_W); // 分配内存
+        if (err < 0)
+        {
+            log_printf("sbrk: alloc memory failed.");
+            return (char *)-1;
+        }
+    }
+    log_printf("sbrk(%d): end = 0x%x", pre_incr, end);
+    task->heap_end = end;        // 调整末端地址
+    return (char *)pre_heap_end; // 返回之前的末端地址
 }

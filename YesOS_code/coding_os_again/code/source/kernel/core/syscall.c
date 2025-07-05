@@ -4,21 +4,23 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-03 15:42:05
+ * @LastEditTime : 2025-07-04 20:16:54
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/syscall.h"
 #include "core/task.h"
 #include "tools/log.h"
 #include "cpu/irq.h"
+#include "fs/fs.h"
+#include "core/memory.h"
 
 typedef int (*sys_handler_t)(uint32_t arg0, uint32_t arg1, uint32_t arg2, uint32_t arg3);
 /**
- * @brief        : 
+ * @brief        :
  * @param         {char} *fmt:
  * @param         {int} arg:
  * @return        {*}
-**/
+ **/
 void sys_print_msg(char *fmt, int arg)
 {
     log_printf(fmt, arg);
@@ -33,6 +35,14 @@ static const sys_handler_t sys_table[] = {
     [SYS_fork] = (sys_handler_t)sys_fork,
     [SYS_execve] = (sys_handler_t)sys_execve,
     [SYS_yield] = (sys_handler_t)sys_yield,
+    [SYS_open] = (sys_handler_t)sys_open,
+    [SYS_read] = (sys_handler_t)sys_read,
+    [SYS_write] = (sys_handler_t)sys_write,
+    [SYS_close] = (sys_handler_t)sys_close,
+    [SYS_lseek] = (sys_handler_t)sys_lseek,
+    [SYS_isatty] = (sys_handler_t)sys_isatty,
+    [SYS_sbrk] = (sys_handler_t)sys_sbrk,
+    [SYS_fstat] = (sys_handler_t)sys_fstat,
 
 };
 /**
@@ -49,7 +59,7 @@ void do_handler_syscall(syscall_frame_t *frame)
         if (handler)
         {
             int ret = handler(frame->arg0, frame->arg1, frame->arg2, frame->arg3); // 调用该函数
-            frame->eax = ret; // 返回值
+            frame->eax = ret;                                                      // 返回值
             return;
         }
     }

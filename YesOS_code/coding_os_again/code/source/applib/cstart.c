@@ -7,8 +7,17 @@
  * @LastEditTime : 2025-07-03 09:58:30
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
+#include <stdint.h>
 int main(int argc, char **argv);
+extern uint8_t __bss__start__[], __bss__end__[];
 void cstart(int argc, char **argv)
 {
+    // bss区域清空
+    uint8_t *start = __bss__start__;
+    uint8_t *end = __bss__end__;
+    while (start < end)
+    {
+        *start++ = 0;
+    }
     main(argc, argv); // 跳转至应用程序运行
 }
