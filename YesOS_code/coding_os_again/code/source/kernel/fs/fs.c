@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 15:08:23
+ * @LastEditTime : 2025-07-06 15:26:02
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "fs/fs.h"
@@ -102,8 +102,8 @@ int sys_write(int file, char *ptr, int len)
 /**
  * @brief        : 调整读写指针
  * @param         {int} file: 操作文件
- * @param         {int} ptr:
- * @param         {int} dir:
+ * @param         {int} ptr: 要调整的指针
+ * @param         {int} dir: 文件所在目录
  * @return        {int} 成功返回 1, 失败返回 -1
  **/
 int sys_lseek(int file, int ptr, int dir)
@@ -115,14 +115,29 @@ int sys_lseek(int file, int ptr, int dir)
     }
     return -1;
 }
+/**
+ * @brief        : 关闭某个打开的文件
+ * @param         {int} file: 操作的文件
+ * @return        {int} : 返回0
+**/
 int sys_close(int file)
 {
     return 0;
 }
+/**
+ * @brief        : 判断文件是否为tty设备
+ * @param         {int} file: 操作的文件
+ * @return        {int} : 返回0
+**/ 
 int sys_isatty(int file)
 {
     return 0;
 }
+/**
+ * @brief        : 
+ * @param         {stat} *st:
+ * @return        {*}
+**/
 int sys_fstat(struct stat *st)
 {
     return 0;

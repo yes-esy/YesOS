@@ -29,6 +29,7 @@
         "fs.h": "c",
         "elf.h": "c",
         "console.h": "c",
-        "keyboard.h": "c"
+        "keyboard.h": "c",
+        "stdint.h": "c"
     },
 }

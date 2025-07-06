@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 21:07:04
+ * @LastEditTime : 2025-07-06 16:51:36
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "dev/console.h"
@@ -363,8 +363,7 @@ static void move_cursor(console_t *console)
  * @param         {char} c: 输出的字符
  * @return        {void}
  **/
-static void
-write_esc_square(console_t *console, char c)
+static void write_esc_square(console_t *console, char c)
 {
     if ((c >= '0') && (c <= '9')) // 参数形式正确
     {
@@ -407,8 +406,7 @@ write_esc_square(console_t *console, char c)
  * @param         {console_t} *console: 需要清空的控制台指针
  * @return        {void}
  **/
-static void
-clear_display(console_t *console)
+static void clear_display(console_t *console)
 {
     int size = console->display_cols * console->display_rows; // 清空的大小
     disp_char_t *disp_start = console->disp_base;             // 起始地址
@@ -481,6 +479,6 @@ int console_write(int console_id, char *data, int size)
  * @param         {int} console_id: 控制台id
  * @return        {*}
  **/
-void console_console(int console_id)
+void console_close(int console_id)
 {
 }

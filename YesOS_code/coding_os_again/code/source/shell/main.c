@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 21:08:29
+ * @LastEditTime : 2025-07-06 17:03:12
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "lib_syscall.h"
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     printf("abcd\x7F:fg\n");
     while (1)
     {
-        printf("shell pid=%d\n", getpid());
+        // printf("shell pid=%d\n", getpid());
         msleep(10000);
     }
     return 0;
