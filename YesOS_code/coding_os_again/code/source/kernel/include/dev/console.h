@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 15:08:40
+ * @LastEditTime : 2025-07-05 20:29:28
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef CONSOLE_H
@@ -16,7 +16,8 @@
 #define CONSOLE_ROW_MAX 25                     // 最大行数
 #define CONSOLE_COL_MAX 80                     // 最大列数
 #define CONSOLE_NR 1                           // 控制台的数量
-
+#define ASCII_ESC 0x1b
+#define ESC_PARAM_MAX  10// esc参数的个数
 // 各种颜色
 typedef enum _cclor_t
 {
@@ -56,13 +57,23 @@ typedef union _disp_char_t
  */
 typedef struct _console_t
 {
-    disp_char_t *disp_base; // 起始地址
-    int display_rows;       // 行数
-    int display_cols;       // 列数
-    int cursor_row;         // 光标所在行
-    int cursor_col;         // 关标所在列
-    cclor_t foreground;     // 前景色
-    cclor_t background;     // 后景色
+    enum
+    {
+        CONSOLE_WRITE_NORMAL, // 写普通字符
+        CONSOLE_WRITE_ESC,    // 写ESC字符
+        CONSOLE_WRITE_SQUARE, // esc方括号
+    } write_state;
+    disp_char_t *disp_base;       // 起始地址
+    int display_rows;             // 行数
+    int display_cols;             // 列数
+    int cursor_row;               // 光标所在行
+    int cursor_col;               // 光标所在列
+    cclor_t foreground;           // 前景色
+    cclor_t background;           // 后景色
+    int old_cursor_col;           // 之前光标的行
+    int old_cursor_row;           // 之前关标的列
+    int esc_param[ESC_PARAM_MAX]; // ESC [ ;;参数数量
+    int curr_param_index;         // esc参数索引
 } console_t;
 
 /**

@@ -33,7 +33,8 @@
 #define IRQ19_XM 19 //
 #define IRQ20_VE 20 //
 
-#define IRQ0_TIMER 0x20
+#define IRQ0_TIMER 0x20    // 定时器
+#define IRQ1_KEYBOARD 0x21 // 键盘中断
 
 // PIC控制器相关的寄存器及位2配置
 #define PIC0_ICW1 0x20

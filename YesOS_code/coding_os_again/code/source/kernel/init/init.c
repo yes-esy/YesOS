@@ -21,6 +21,7 @@
 #include "ipc/sem.h"
 #include "core/memory.h"
 #include "dev/console.h"
+#include "dev/keyboard.h"
 static boot_info_t *init_boot_info; // 启动信息
 
 static sem_t sem;
@@ -41,6 +42,7 @@ void kernel_init(boot_info_t *boot_info)
     irq_init(); // 中断初始化
     time_init();
     task_manager_init();
+    kbd_init(); // 键盘初始化
 }
 
 static task_t init_task; // 初始任务

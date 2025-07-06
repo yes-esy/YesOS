@@ -28,6 +28,7 @@
         "syscall.h": "c",
         "fs.h": "c",
         "elf.h": "c",
-        "console.h": "c"
+        "console.h": "c",
+        "keyboard.h": "c"
     },
 }
