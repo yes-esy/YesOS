@@ -4,12 +4,14 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-06 16:51:36
+ * @LastEditTime : 2025-07-08 15:44:34
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "dev/console.h"
 #include "tools/klib.h"
 #include "comm/cpu_instr.h"
+#include "cpu/irq.h"
+static int curr_console_index;             // 当前控制台索引
 static console_t console_buff[CONSOLE_NR]; // 控制台
 /**
  * @brief        : 读取光标的位置
@@ -17,11 +19,13 @@ static console_t console_buff[CONSOLE_NR]; // 控制台
  **/
 static int read_cursor_pos(void)
 {
-    int pos;
+    int pos;                                    // 记录关标位置
+    irq_state_t state = irq_enter_protection(); // 开中断保护
     outb(0x3D4, 0xF);
     pos = inb(0x3D5);
     outb(0x3D4, 0xE);
     pos |= inb(0x3D5) << 8;
+    irq_leave_protection(state); // 关中断返回
     return pos;
 }
 
@@ -31,12 +35,14 @@ static int read_cursor_pos(void)
  **/
 static int update_cursor_pos(console_t *console)
 {
-    uint16_t pos = console->cursor_row * console->display_cols + console->cursor_col; // 获取光标位置
-
+    uint16_t pos = (console - console_buff) * console->display_cols * console->display_rows; // 用于记录关标位置
+    pos += console->cursor_row * console->display_cols + console->cursor_col;                // 获取光标位置
+    irq_state_t state = irq_enter_protection();                                              // 开中断保护
     outb(0x3D4, 0xF);
     outb(0x3D5, (uint8_t)(pos & 0xFF));
     outb(0x3D4, 0xE);
     outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
+    irq_leave_protection(state); // 关中断返回
     return pos;
 }
 /**
@@ -193,8 +199,9 @@ static void write_normal(console_t *console, char ch)
         break;
     case '\r':
         move_to_col0(console); // 回车
-    case '\n':                 // 换行
-        move_to_col0(console);
+        break;
+    case '\n': // 换行
+        // move_to_col0(console);
         move_next_line(console);
         break;
     default:
@@ -419,42 +426,57 @@ static void clear_display(console_t *console)
 }
 /**
  * @brief        : 初始化控制台
+ * @param         {int} index : 初始化控制台的索引
  * @return        {int} :返回0
  **/
-int console_init(void)
+int console_init(int index)
 {
-    for (int i = 0; i < CONSOLE_NR; i++)
+
+    console_t *console = console_buff + index; // 第几个控制台
+    console->display_cols = CONSOLE_COL_MAX;   // 行数
+    console->display_rows = CONSOLE_ROW_MAX;   // 列数
+    console->foreground = COLOR_White;
+    console->background = COLOR_Black;
+    console->disp_base = (disp_char_t *)CONSOLE_DISP_ADDR + index * (CONSOLE_COL_MAX * CONSOLE_ROW_MAX);
+    if (index == 0) // 第0块屏幕
     {
-        console_t *console = console_buff + i;   // 第几个控制台
-        console->display_cols = CONSOLE_COL_MAX; // 行数
-        console->display_rows = CONSOLE_ROW_MAX; // 列数
-        console->foreground = COLOR_White;
-        console->background = COLOR_Black;
         int cursor_pos = read_cursor_pos();                       // 读取光标位置
         console->cursor_row = cursor_pos / console->display_cols; // 当前关标行号
         console->cursor_col = cursor_pos % console->display_cols; // 当前光标列号
-        console->disp_base = (disp_char_t *)CONSOLE_DISP_ADDR + i * (CONSOLE_COL_MAX * CONSOLE_ROW_MAX);
-        console->old_cursor_col = console->cursor_col, console->old_cursor_row = console->cursor_row; // 保存关标的位置
-        console->write_state = CONSOLE_WRITE_NORMAL;                                                  // 初始状态写普通字符
-        // clear_display(console);
     }
+    else
+    {
+        // 从头开始
+        console->cursor_row = 0;
+        console->cursor_col = 0;
+        clear_display(console); // 清空屏幕
+        // update_cursor_pos(console); // 更新光标位置
+    }
+    console->old_cursor_col = console->cursor_col;
+    console->old_cursor_row = console->cursor_row; // 保存关标的位置
+    console->write_state = CONSOLE_WRITE_NORMAL;   // 初始状态写普通字符
+    // clear_display(console);
     return 0;
 }
 /**
  * @brief        : 往控制台写数据
- * @param         {int} console: 哪一个控制台
- * @param         {char *} data: 要写的数据
- * @param         {int} size: 大小
+ * @param         {tty_t *} tty: tty设备的指针
  * @return        {int} 返回写入的长度
  **/
-int console_write(int console_id, char *data, int size)
+int console_write(tty_t *tty)
 {
-    console_t *console = console_buff + console_id; // 获取当前控制台;
+    console_t *console = console_buff + tty->console_index; // 获取当前控制台;
 
-    int len;
-    for (len = 0; len < size; len++)
+    int len = 0; // 记录写出数据的长度
+    do
     {
-        char ch = *data++;
+        char ch;                                   // 记录读取数据
+        int err = tty_fifo_get(&tty->O_fifo, &ch); // 从输出缓冲队列读取数据
+        if (err < 0)                               // 读取失败
+        {
+            break;
+        }
+        sem_signal(&tty->o_sem); //  取完了,发信号量
         switch (console->write_state)
         {
         case CONSOLE_WRITE_NORMAL: // 写普通字符
@@ -468,11 +490,36 @@ int console_write(int console_id, char *data, int size)
         default:
             break;
         }
-
+        len++;
         // @todo
+    } while (1);
+    if (tty->console_index == curr_console_index)
+    {
+        update_cursor_pos(console); // 更新光标位置
     }
-    update_cursor_pos(console); // 更新光标位置
     return len;
+}
+/**
+ * @brief        : 切换特定显示数据
+ * @param         {int} tty_index: 指定tty设备索引
+ * @return        {void}
+ **/
+void console_select(int tty_index)
+{
+    console_t *console = console_buff + tty_index; // 获取当前的tty显示设备
+    if (console->disp_base == 0)                   // 当前设备还未打开
+    {
+        console_init(tty_index); // 打开并初始化当前tty设备
+    }
+    uint16_t pos = tty_index * console->display_rows * console->display_cols; // 当前控制台显示的地址
+    irq_state_t state = irq_enter_protection();                               // 开启中断保护
+    outb(0x3D4, 0xC);                                                         // 往0x3D4写入数据
+    outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));                                // 往0x3D5先写入高8位
+    outb(0x3D4, 0xD);                                                         // 往0x3D4写入数据
+    outb(0x3D5, (uint8_t)(pos & 0xFF));                                       // 往0x3D5写入低8位
+    irq_leave_protection(state);
+    curr_console_index = tty_index;
+    update_cursor_pos(console); // 更新光标到当前屏幕
 }
 /**
  * @brief        : 关闭控制台

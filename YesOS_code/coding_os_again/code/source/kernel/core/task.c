@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 13:22:39
+ * @LastEditTime : 2025-07-07 14:35:36
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -192,18 +192,20 @@ int task_init(task_t *task, const char *name, int flag, uint32_t entry, uint32_t
 
     kernel_memcpy((void *)task->name, (void *)name, TASK_NAME_SIZE);
 
-    task->state = TASK_CREATED;
+    task->state = TASK_CREATED; // 创建态
 
     task->time_ticks = TASK_TIME_SLICE_DEFAULT;
-    task->slice_ticks = task->time_ticks;
-    task->sleep_ticks = 0; // 没有延时
+    task->slice_ticks = task->time_ticks; // 最小时间片
+    task->sleep_ticks = 0;                // 没有延时
     task->parent = (task_t *)0;
-    task->heap_start = 0;
+    task->heap_start = 0; // 堆地址为0,大小为0；
     task->heap_end = 0;
     task->pid = (uint32_t)task; // 设置为当前的数量
     list_node_init(&task->all_node);
     list_node_init(&task->run_node);
     list_node_init(&task->wait_node);
+
+    kernel_memset((void *)task->file_table, 0, sizeof(task->file_table)); // 清空打开文件表
 
     irq_state_t state = irq_enter_protection();
 
@@ -284,7 +286,7 @@ static uint32_t idle_task_stack[IDLE_TASK_SIZE]; // 空闲进程栈空间
  **/
 static void idle_task_entry()
 {
-    log_printf("idle task running");
+    log_printf("idle task running\n");
     for (;;)
     {
         hlt();
@@ -340,7 +342,7 @@ void task_first_init(void)
               0, first_start,
               first_start + alloc_size); // 指定起始地址,first_start + alloc_size为栈低(由高向低增长)
     // 设置堆
-    task_manager.first_task.heap_start = (uint32_t) e_first_task;
+    task_manager.first_task.heap_start = (uint32_t)e_first_task;
     task_manager.first_task.heap_end = (uint32_t)e_first_task;
     write_tr(task_manager.first_task.tss_sel);
     task_manager.curr_task = &task_manager.first_task;
@@ -459,12 +461,12 @@ int load_phdr(int file, Elf32_Phdr *phdr, uint32_t page_dir)
     int err = memory_alloc_page_for_dir(page_dir, phdr->p_vaddr, phdr->p_memsz, PTE_P | PTE_U | PTE_W);
     if (err < 0) // 分配失败
     {
-        log_printf("memory_alloc_page_for_dir err.");
+        log_printf("memory_alloc_page_for_dir err.\n");
         return -1;
     }
     if (sys_lseek(file, phdr->p_offset, 0) < 0) // 调整文件读写指针值偏移量的位置
     {
-        log_printf("read file failed");
+        log_printf("read file failed\n");
         return -1;
     }
     uint32_t vaddr = phdr->p_vaddr; // 起始地址
@@ -476,7 +478,7 @@ int load_phdr(int file, Elf32_Phdr *phdr, uint32_t page_dir)
 
         if (sys_read(file, (char *)paddr, curr_size) < curr_size) // 读取到实际的物理地址中
         {
-            log_printf("read file failed.");
+            log_printf("read file failed.\n");
             return -1;
         }
         size -= curr_size;  //
@@ -498,48 +500,48 @@ static uint32_t load_elf_file(task_t *task, const char *path, uint32_t page_dir)
     int file = sys_open(path, 0); // 只读方式打开文件
     if (file < 0)                 // 打开失败
     {
-        log_printf("open failed.path = %s", path);
+        log_printf("open failed.path = %s\n", path);
         goto load_failed; // 错误处理
     }
     int cnt = sys_read(file, (char *)&elf_hdr, sizeof(elf_hdr)); // 读取文件头
     if (cnt < sizeof(Elf32_Ehdr))                                // 读取失败
     {
-        log_printf("elf hdr too small.");
+        log_printf("elf hdr too small.\n");
         goto load_failed;
     }
     // 是否为elf文件
     if ((elf_hdr.e_ident[0] != ELF_MAGIC || elf_hdr.e_ident[1] != 'E') ||
         (elf_hdr.e_ident[2] != 'L') || (elf_hdr.e_ident[3] != 'F'))
     {
-        log_printf("check elf ident failed.");
+        log_printf("check elf ident failed.\n");
         goto load_failed;
     }
     // 必须是可执行文件和针对386处理器的类型，且有入口
     if ((elf_hdr.e_type != ET_EXEC) || (elf_hdr.e_machine != ET_386) || (elf_hdr.e_entry == 0))
     {
-        log_printf("check elf type or entry failed.");
+        log_printf("check elf type or entry failed.\n");
         goto load_failed;
     }
     // 必须有程序头部
     if ((elf_hdr.e_phentsize == 0) || (elf_hdr.e_phoff == 0))
     {
-        log_printf("none programe header");
+        log_printf("none programe header\n");
         goto load_failed;
     }
 
     uint32_t e_phoff = elf_hdr.e_phoff;
 
-    for (int i = 0; i < elf_hdr.e_phnum; i++, e_phoff += elf_hdr.e_ehsize) // 遍历表项
+    for (int i = 0; i < elf_hdr.e_phnum; i++, e_phoff += elf_hdr.e_phentsize) // 遍历表项
     {
         if (sys_lseek(file, e_phoff, 0) < 0) // 调整读写指针
         {
-            log_printf("read file failed");
+            log_printf("read file failed\n");
             goto load_failed;
         }
         cnt = sys_read(file, (char *)&elf_phdr, sizeof(elf_phdr)); // 读到elf_phdr中
         if (cnt < sizeof(elf_phdr))
         {
-            log_printf("read file failed");
+            log_printf("read file failed\n");
             goto load_failed;
         }
 
@@ -551,12 +553,12 @@ static uint32_t load_elf_file(task_t *task, const char *path, uint32_t page_dir)
         int err = load_phdr(file, &elf_phdr, page_dir); // 加载当前程序头到新页表中
         if (err < 0)                                    // 加载失败
         {
-            log_printf("load program hdr failed");
+            log_printf("load program hdr failed\n");
             goto load_failed;
         }
         // task->heap_start最终指向bss区末端地址
         task->heap_start = elf_phdr.p_vaddr + elf_phdr.p_memsz;
-        task->heap_end = task->heap_start; // 堆大小为0 
+        task->heap_end = task->heap_start; // 堆大小为0
     }
     sys_close(file);
     return elf_hdr.e_entry;
@@ -730,4 +732,49 @@ exce_failed:
         memory_destory_uvm(new_page_dir); // 释放新创建的页表
     }
     return -1;
+}
+/**
+ * @brief        : 分配一个文件描述符
+ * @param         {file_t} *file: 对应文件指针
+ * @return        {int} : 成功则返回进程文件表分配给文件描述符的表项对应的索引,否则返回-1
+ **/
+int task_alloc_fd(file_t *file)
+{
+    task_t *task = task_current();              // 获取当前进程
+    for (int i = 0; i < TASK_OPEN_FILE_NR; i++) // 扫描当前进程文件表
+    {
+        file_t *cur_file = task->file_table[i]; // 对应文件描述符
+        if (cur_file == (file_t *)0)            // 空闲表项
+        {
+            task->file_table[i] = file; // 将该表项分配给该文件描述符
+            return i;
+        }
+    }
+    return -1; // 失败返回-1
+}
+/**
+ * @brief        : 释放进程文件表中的文件
+ * @param         {int} fd: 对应文件的索引
+ * @return        {void}
+ **/
+void task_remove_fd(int fd)
+{
+    if ((fd >= 0) && (fd < TASK_OPEN_FILE_NR)) // 索引合法
+    {
+        task_current()->file_table[fd] = (file_t *)0; // 清空该表项
+    }
+}
+/**
+ * @brief        : 返回表项对应的指针
+ * @param         {int} fd: 文件描述索引
+ * @return        {file_t *} : 文件描述符指针(成功),失败返回0.
+ **/
+file_t *task_file(int fd)
+{
+    file_t *file = (file_t *)0;                // 记录当前
+    if ((fd >= 0) && (fd < TASK_OPEN_FILE_NR)) // 索引合法
+    {
+        file = task_current()->file_table[fd]; // 取当前文件指针
+    }
+    return file;
 }

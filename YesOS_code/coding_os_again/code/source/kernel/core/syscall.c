@@ -43,7 +43,7 @@ static const sys_handler_t sys_table[] = {
     [SYS_isatty] = (sys_handler_t)sys_isatty,
     [SYS_sbrk] = (sys_handler_t)sys_sbrk,
     [SYS_fstat] = (sys_handler_t)sys_fstat,
-
+    [SYS_dup] = (sys_handler_t)sys_dup,
 };
 /**
  * @brief        : 通用系统调用处理函数
@@ -64,7 +64,7 @@ void do_handler_syscall(syscall_frame_t *frame)
         }
     }
     task_t *task = task_current();
-    log_printf("task %s, Unknown syscall : %d", task->name, frame->func_id);
+    log_printf("task %s, Unknown syscall : %d\n", task->name, frame->func_id);
     frame->eax = -1; // 出错
 }
 /* 中断的方式实现系统调用 */
@@ -88,6 +88,6 @@ void do_handler_syscall(syscall_frame_t *frame)
 //         }
 //     }
 //     task_t *task = task_current();
-//     log_printf("task %s, Unknown syscall : %d", task->name, func_id);
+//     log_printf("task %s, Unknown syscall : %d\n", task->name, func_id);
 //     frame->eax = -1;
 // }

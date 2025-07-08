@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-01 17:12:41
+ * @LastEditTime : 2025-07-07 10:36:12
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "cpu/irq.h"
@@ -62,8 +62,8 @@ static void dump_core_regs(exception_frame_t *frame)
  **/
 static void do_default_handler(exception_frame_t *frame, const char *msg)
 {
-    log_printf("----------------------------------------");
-    log_printf("IRQ/EXCEPTION HAPPEND: %s", msg);
+    log_printf("----------------------------------------\n");
+    log_printf("IRQ/EXCEPTION HAPPEND: %s\n", msg);
     dump_core_regs(frame);
     for (;;)
     {
@@ -154,28 +154,28 @@ void do_handler_stack_segment_fault(exception_frame_t *frame)
  **/
 void do_handler_general_protection(exception_frame_t *frame)
 {
-    log_printf("--------------------------------");
-    log_printf("IRQ/Exception happend: General Protection.");
+    log_printf("--------------------------------\n");
+    log_printf("IRQ/Exception happend: General Protection.\n");
     if (frame->error_code & ERR_EXT)
     {
         log_printf("the exception occurred during delivery of an "
                    "event external to the program, such as an interrupt"
-                   "or an earlier exception.");
+                   "or an earlier exception.\n");
     }
     else
     {
         log_printf("the exception occurred during delivery of a"
-                   "software interrupt (INT n, INT3, or INTO).");
+                   "software interrupt (INT n, INT3, or INTO).\n");
     }
 
     if (frame->error_code & ERR_IDT)
     {
         log_printf("the index portion of the error code refers "
-                   "to a gate descriptor in the IDT");
+                   "to a gate descriptor in the IDT\n");
     }
     else
     {
-        log_printf("the index refers to a descriptor in the GDT");
+        log_printf("the index refers to a descriptor in the GDT\n");
     }
 
     log_printf("segment index: %d", frame->error_code & 0xFFF8);
@@ -193,11 +193,11 @@ void do_handler_general_protection(exception_frame_t *frame)
  **/
 void do_handler_page_fault(exception_frame_t *frame)
 {
-    log_printf("--------------------------------");
-    log_printf("IRQ/Exception happend: Page fault.");
+    log_printf("--------------------------------\n");
+    log_printf("IRQ/Exception happend: Page fault.\n");
     if (frame->error_code & ERR_PAGE_P)
     {
-        log_printf("\tpage-level protection violation: 0x%x.", read_cr2());
+        log_printf("\tpage-level protection violation: 0x%x.\n", read_cr2());
     }
     else
     {
@@ -206,20 +206,20 @@ void do_handler_page_fault(exception_frame_t *frame)
 
     if (frame->error_code & ERR_PAGE_WR)
     {
-        log_printf("\tThe access causing the fault was a read.");
+        log_printf("\tThe access causing the fault was a read.\n");
     }
     else
     {
-        log_printf("\tThe access causing the fault was a write.");
+        log_printf("\tThe access causing the fault was a write.\n");
     }
 
     if (frame->error_code & ERR_PAGE_US)
     {
-        log_printf("\tA supervisor-mode access caused the fault.");
+        log_printf("\tA supervisor-mode access caused the fault.\n");
     }
     else
     {
-        log_printf("\tA user-mode access caused the fault.");
+        log_printf("\tA user-mode access caused the fault.\n");
     }
 
     dump_core_regs(frame);

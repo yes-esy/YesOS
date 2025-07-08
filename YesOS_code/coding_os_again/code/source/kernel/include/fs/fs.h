@@ -6,7 +6,7 @@
  * @LastEditors  : ys 2900226123@qq.com
  * @LastEditTime : 2025-07-06 15:26:08
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
-**/
+ **/
 #ifndef FS_H
 #define FS_H
 
@@ -18,7 +18,7 @@ struct stat;
  * @param         {int} flags: 标志
  * @return        {int} : 文件id
  **/
-int sys_open(const char * path, int flags,...);
+int sys_open(const char *path, int flags, ...);
 /**
  * @brief        : 读取文件
  * @param         {int} file: 哪一个文件
@@ -26,7 +26,7 @@ int sys_open(const char * path, int flags,...);
  * @param         {int} len: 读取长度
  * @return        {int} 读取成功返回读取长度,失败返回-1
  **/
-int sys_read(int file,char *ptr , int len);
+int sys_read(int file, char *ptr, int len);
 /**
  * @brief        : 写文件
  * @param         {int} file: 写入的文件
@@ -34,7 +34,7 @@ int sys_read(int file,char *ptr , int len);
  * @param         {int} len: 写入长度
  * @return        {int} : 返回-1
  **/
-int sys_write(int file,char *ptr , int len);
+int sys_write(int file, char *ptr, int len);
 /**
  * @brief        : 调整读写指针
  * @param         {int} file: 操作文件
@@ -42,7 +42,7 @@ int sys_write(int file,char *ptr , int len);
  * @param         {int} dir: 文件所在目录
  * @return        {int} 成功返回 1, 失败返回 -1
  **/
-int sys_lseek(int file,int ptr , int dir);
+int sys_lseek(int file, int ptr, int dir);
 /**
  * @brief        : 关闭某个打开的文件
  * @param         {int} file: 操作的文件
@@ -60,5 +60,16 @@ int sys_isatty(int file);
  * @param         {stat} *st:
  * @return        {*}
  **/
-int sys_fstat(struct stat * st);
+int sys_fstat(struct stat *st);
+/**
+ * @brief        : 复制文件描述符
+ * @param         {int} file: 要复制的文件描述符
+ * @return        {int} 新的文件描述符，失败返回-1
+ **/
+int sys_dup(int file);
+/**
+ * @brief        : 文件系统初始化
+ * @return        {void}
+ **/
+void fs_init(void);
 #endif

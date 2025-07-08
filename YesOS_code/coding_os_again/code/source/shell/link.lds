@@ -3,19 +3,20 @@ SECTIONS
 {
     . = 0x81000000;
     .text : {
-        *(.text)
+        *(*.text)
     }
     .rodata :{
-        *(.rodata)
+        *(*.rodata)
     }
     .data : {
-        *(.data)
+        *(*.data)
     }
     .bss : {
         /*bss起始地址*/
-        PROVIDE(__bss__start__ = .);
-        *(.bss)
+        __bss__start__ = .;
+        *(*.bss)
         /*bss结束地址*/
-        PROVIDE(__bss__end__ = .);
+        __bss__end__ = .;
+        
     }
 }

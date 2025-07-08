@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 21:21:18
+ * @LastEditTime : 2025-07-08 15:06:30
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "lib_syscall.h"
@@ -77,7 +77,7 @@ int execve(const char *name, char *const *argv, char *const *env)
 }
 
 /**
- * @brief        : 进程放弃CPU
+ * @brief        : 进程放弃CPU系统调用接口
  * @return        {int} : 返回0
  **/
 int yield()
@@ -86,6 +86,12 @@ int yield()
     args.id = SYS_yield;
     return sys_call(&args);
 }
+/**
+ * @brief        : 打开文件系统调用接口
+ * @param         {char} *name: 文件名
+ * @param         {int} flags: 标志(只读,可写)
+ * @return        {int} : 返回0
+ **/
 int open(const char *name, int flags, ...)
 {
     syscall_args_t args;
@@ -94,6 +100,13 @@ int open(const char *name, int flags, ...)
     args.arg1 = (int)flags;
     return sys_call(&args);
 }
+/**
+ * @brief        : 读取文件系统调用
+ * @param         {int} file: 对应文件
+ * @param         {char} *ptr: 读取数据存放区域
+ * @param         {int} len: 读取长度
+ * @return        {int} : 读取的数据长度
+ **/
 int read(int file, char *ptr, int len)
 {
     syscall_args_t args;
@@ -103,6 +116,13 @@ int read(int file, char *ptr, int len)
     args.arg2 = (int)len;
     return sys_call(&args);
 }
+/**
+ * @brief        : 写文件系统调用
+ * @param         {int} file: 文件
+ * @param         {char} *ptr: 写入数据的指针
+ * @param         {int} len: 写入文件长度
+ * @return        {int} : 成功写入的数据长度
+ **/
 int write(int file, char *ptr, int len)
 {
     syscall_args_t args;
@@ -112,6 +132,11 @@ int write(int file, char *ptr, int len)
     args.arg2 = (int)len;
     return sys_call(&args);
 }
+/**
+ * @brief        : 关闭文件系统调用
+ * @param         {int} file: 对应文件
+ * @return        {int} : 返回0
+ **/
 int close(int file)
 {
     syscall_args_t args;
@@ -119,6 +144,13 @@ int close(int file)
     args.arg0 = file;
     return sys_call(&args);
 }
+/**
+ * @brief        : 调整文件读写指针的位置
+ * @param         {int} file: 文件描述符
+ * @param         {int} ptr: 指针偏移量（要移动的字节数）
+ * @param         {int} dir: 移动方向/基准位置（通常是 SEEK_SET、SEEK_CUR、SEEK_END）
+ * @return        {int} 调整后的文件的指针
+ **/
 int lseek(int file, int ptr, int dir)
 {
     syscall_args_t args;
@@ -128,7 +160,11 @@ int lseek(int file, int ptr, int dir)
     args.arg2 = dir;
     return sys_call(&args);
 }
-
+/**
+ * @brief        : 判断设备是否为tty设备
+ * @param         {int} file: 文件
+ * @return        {int} : 若文件为tty设备返回1,否则返回0
+ **/
 int isatty(int file)
 {
     syscall_args_t args;
@@ -136,6 +172,12 @@ int isatty(int file)
     args.arg0 = file;
     return sys_call(&args);
 }
+/**
+ * @brief        : 用于获取文件状态信息
+ * @param         {int} file: 文件描述符（标识要查询的文件）
+ * @param         {stat} *st: 指向 struct stat 结构体的指针，用于存储文件状态信息
+ * @return        {int} : 成功时返回 0 , 失败时返回 -1（
+ **/
 int fstat(int file, struct stat *st)
 {
     syscall_args_t args;
@@ -144,10 +186,27 @@ int fstat(int file, struct stat *st)
     args.arg1 = (int)st;
     return sys_call(&args);
 }
+/**
+ * @brief        : 增加或减少程序的数据段（堆）大小
+ * @param         {ptrdiff_t} incr:  增量值
+ * @return        {void *} 成功时返回调整前的堆顶指针,失败时返回 (void *)-1
+ **/
 void *sbrk(ptrdiff_t incr)
 {
     syscall_args_t args;
     args.id = SYS_sbrk;
     args.arg0 = (int)incr;
     return (void *)sys_call(&args);
+}
+/**
+ * @brief        : 复制文件描述符
+ * @param         {int} file: 要复制的文件描述符
+ * @return        {int} 新的文件描述符，失败返回-1
+ **/
+int dup(int file)
+{
+    syscall_args_t args;
+    args.id = SYS_dup;
+    args.arg0 = file;
+    return sys_call(&args);
 }

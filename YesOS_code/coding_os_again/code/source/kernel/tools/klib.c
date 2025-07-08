@@ -348,7 +348,7 @@ void kernel_vsprintf(char *buffer, const char *fmt, va_list args)
  **/
 void pannic(const char *file, int line, const char *func, const char *cond)
 {
-    log_printf("ASSERT FAILED! %s", cond);
+    log_printf("ASSERT FAILED! %s\n", cond);
     log_printf("File is : %s \nLine is : %d\nFunc is : %s\n", file, line, func);
     for (;;)
     {

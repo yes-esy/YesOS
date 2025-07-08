@@ -4,14 +4,15 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-06 17:03:12
+ * @LastEditTime : 2025-07-08 15:46:36
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "lib_syscall.h"
 #include <stdio.h>
+char cmd_buf[256]; // 输入缓冲区
 int main(int argc, char **argv)
 {
-    printf("Hello from shell\n");
+#if 0
     printf("\0337Hello,word!\0338123\n"); // ESC 7,8 输出123lo,word!
     printf("\033[31;42mHello,word!\033[39;49m123\n"); // ESC [pn m, Hello,world红色，>其余绿色
     printf("123\033[2DHello,word!\n");                // 光标左移2，1Hello,word!
@@ -28,10 +29,19 @@ int main(int argc, char **argv)
     yield();
     printf("abef\b\b\b\bcd\n");
     printf("abcd\x7F:fg\n");
+    printf("this is a\n");
+    printf("this is b\n");
+#endif
+    open(argv[0],0); // int fd = 0 , stdin
+    dup(0);          // 标准输出
+    dup(0);          // 标准错误输出
+    printf("shell is %c\n",(argv[0][4] + 1 ));
     while (1)
     {
+        gets(cmd_buf);
+        puts(cmd_buf);
         // printf("shell pid=%d\n", getpid());
-        msleep(10000);
+        // msleep(10000);
     }
     return 0;
 }

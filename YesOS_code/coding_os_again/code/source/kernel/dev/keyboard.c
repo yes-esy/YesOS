@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-06 14:55:03
+ * @LastEditTime : 2025-07-07 10:37:19
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "dev/keyboard.h"
@@ -12,7 +12,7 @@
 #include "comm/cpu_instr.h"
 #include "tools/log.h"
 #include "tools/klib.h"
-
+#include "dev/tty.h"
 /**
  * 键盘映射表，分3类
  * normal是没有shift键按下，或者没有numlock按下时默认的键值
@@ -34,7 +34,7 @@ static const key_map_t map_table[] =
         [0x0B] = {'0', ')'},
         [0x0C] = {'-', '_'},
         [0x0D] = {'=', '+'},
-        [0x0E] = {'\b', '\b'},
+        [0x0E] = {0x7F, 0x7F},
         [0x0F] = {'\t', '\t'},
         [0x10] = {'q', 'Q'},
         [0x11] = {'w', 'W'},
@@ -172,6 +172,19 @@ static void do_e0_key(uint8_t raw_code)
     }
 }
 /**
+ * @brief        : 处理ctrl+f功能键
+ * @param         {int} key: f功能键键值f1-f8
+ * @return        {void}
+ **/
+void do_fx_key(int key)
+{
+    int index = key - KEY_F1;                           // 转换成tty设备(屏幕)索引
+    if (kbd_state.lctrl_press || kbd_state.rctrl_press) // ctrl键按下
+    {
+        tty_select(index);
+    }
+}
+/**
  * @brief        : 处理单字符的标准键
  * @param         {uint8_t} raw_code: 键盘原始值
  * @return        {void}
@@ -211,6 +224,8 @@ do_normal_key(uint8_t raw_code)
     case KEY_F6:
     case KEY_F7:
     case KEY_F8:
+        do_fx_key(key); // 特殊功能键
+        break;
     case KEY_F9:
     case KEY_F10:
     case KEY_F11:
@@ -239,7 +254,8 @@ do_normal_key(uint8_t raw_code)
                     key = key - 'a' + 'A';
                 }
             }
-            log_printf("press key is %c", key);
+            // log_printf("press key is %c\n", key);
+            tty_in( key); // 传递给tty设备
         }
         break;
     }
@@ -250,9 +266,14 @@ do_normal_key(uint8_t raw_code)
  **/
 void kbd_init(void)
 {
-    kernel_memset((void *)&kbd_state, 0, sizeof(kbd_state_t));
-    irq_install(IRQ1_KEYBOARD, (irq_handler_t)exception_handler_kbd); // 安装键盘处理程序
-    irq_enable(IRQ1_KEYBOARD);                                        // 打开键盘中断
+    static int inited = 0; // 是否已经被初始化
+    if (!inited)           // 已经初始化
+    {
+        kernel_memset((void *)&kbd_state, 0, sizeof(kbd_state_t));
+        irq_install(IRQ1_KEYBOARD, (irq_handler_t)exception_handler_kbd); // 安装键盘处理程序
+        irq_enable(IRQ1_KEYBOARD);                                        // 打开键盘中断
+        inited = 1;                                                       // 初始化次数为1
+    }
 }
 /**
  * @brief        : 中断服务子程序
@@ -274,7 +295,7 @@ void do_handler_kbd(exception_frame_t *frame)
     }
     uint8_t raw_code = inb(KBD_PORT_DATA); // 读取键盘的值
     // do_normal_key(raw_code);
-    // log_printf("key %d", raw_code);
+    // log_printf("key %d\n", raw_code);
     pic_send_eoi(IRQ1_KEYBOARD); // 读取完成之后，就可以发EOI，方便后续继续响应键盘中断
 
     if (raw_code == KEY_E0) // E0字符

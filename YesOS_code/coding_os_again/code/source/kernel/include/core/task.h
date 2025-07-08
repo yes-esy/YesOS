@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 11:28:10
+ * @LastEditTime : 2025-07-07 11:26:16
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef TASK_H
@@ -13,10 +13,12 @@
 #include "comm/types.h"
 #include "cpu/cpu.h"
 #include "tools/list.h"
+#include "fs/file.h"
 
 #define TASK_NAME_SIZE 64          // 进程名字
 #define TASK_TIME_SLICE_DEFAULT 10 // 定时中断
 #define TASK_FLAGS_SYSTEM (1 << 0) // 系统进程
+#define TASK_OPEN_FILE_NR 128      // 进程打开文件最大数量
 /**
  * 进程传递的参数
  */
@@ -43,6 +45,8 @@ typedef struct _task_t
 
     int pid;                // 进程ID号
     struct _task_t *parent; // 当前进程父进程
+
+    file_t *file_table[TASK_OPEN_FILE_NR]; // 当前进程打开的文件
 
     uint32_t heap_start; // 堆起始地址
     uint32_t heap_end;   // 堆结束地址
@@ -118,4 +122,7 @@ void task_set_ready(task_t *task);                   // 将进程状态设置为
 int sys_getpid(void);                                // 获取进程ID
 int sys_fork(void);                                  // 创建子进程
 int sys_execve(char *name, char **argv, char **env); // 创建空进程
+int task_alloc_fd(file_t *file);                     // 分配文件描述符
+void task_remove_fd(int fd);                         // 释放文件描述符
+file_t *task_file(int fd);                           // 返回当前文件
 #endif

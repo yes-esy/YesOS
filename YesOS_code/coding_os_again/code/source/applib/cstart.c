@@ -14,8 +14,7 @@ void cstart(int argc, char **argv)
 {
     // bss区域清空
     uint8_t *start = __bss__start__;
-    uint8_t *end = __bss__end__;
-    while (start < end)
+    while (start < __bss__end__)
     {
         *start++ = 0;
     }

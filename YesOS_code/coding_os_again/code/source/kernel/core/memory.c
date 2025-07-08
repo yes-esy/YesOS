@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 15:13:11
+ * @LastEditTime : 2025-07-08 15:47:58
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/memory.h"
@@ -72,7 +72,7 @@ static void addr_free_page(addr_alloc_t *alloc, uint32_t addr, int page_count)
  **/
 void show_mem_inifo(boot_info_t *boot_info)
 {
-    log_printf("memory region:");
+    log_printf("memory region:\n");
     for (int i = 0; i < boot_info->ram_region_count; i++)
     {
         log_printf("[%d]:0x%x-0x%x", i, boot_info->ram_region_cfg[i].start, boot_info->ram_region_cfg[i].size);
@@ -94,8 +94,8 @@ static uint32_t total_mem_size(boot_info_t *boot_info)
     return mem_size;
 }
 /**
- * @brief        : 寻找对应的页表
- * @param         {pde_t} *page_dir: 页目录表地址
+ * @brief        : 根据虚拟地址查找对应的页表项
+ * @param         {pde_t} *page_dir: 页目录表
  * @param         {uint32_t} vaddr: 虚拟地址
  * @param         {int} alloc: 如果未找到是否分配一个表项,1 是,0 否
  * @return        {pte_t *}: 页表的地址
@@ -272,13 +272,13 @@ int memory_alloc_page_for_dir(uint32_t page_dir, uint32_t vaddr, uint32_t size, 
         uint32_t paddr = addr_alloc_page(&paddr_alloc, 1); // 分配一页物理内存
         if (paddr == 0)                                    // 分配失败
         {
-            log_printf("mem alloc failed. non memory");
+            log_printf("mem alloc failed. non memory\n");
             return 0;
         }
         int err = memory_create_map((pde_t *)page_dir, curr_vaddr, paddr, 1, perm); // 建立映射关系
         if (err < 0)                                                                // 建立映射关系失败
         {
-            log_printf("create memory failed. err=%d", err);
+            log_printf("create memory failed. err=%d\n", err);
             // 释放全部已建立映射关系的页
             addr_free_page(&paddr_alloc, vaddr, i + 1);
             return -1;
@@ -458,7 +458,7 @@ copy_uvm_failed:
 void memory_init(boot_info_t *boot_info)
 {
     extern uint8_t *mem_free_start; // 指定外部符号,放在bss后面
-    log_printf("memory init...");
+    log_printf("memory init...\n");
 
     show_mem_inifo(boot_info); // 打印启动信息
 
@@ -468,7 +468,7 @@ void memory_init(boot_info_t *boot_info)
 
     mem_up1MB_free = down2(mem_up1MB_free, MEM_PAGE_SIZE); // 对齐到4KB, 4KB页大小的整数倍
 
-    log_printf("free memory:0x%x,size:0x%x", MEM_EXT_START, mem_up1MB_free); // 打印内存信息
+    log_printf("free memory:0x%x,size:0x%x\n", MEM_EXT_START, mem_up1MB_free); // 打印内存信息
 
     addr_alloc_init(&paddr_alloc, mem_free, MEM_EXT_START, mem_up1MB_free, MEM_PAGE_SIZE); // 初始化地址分配结构,再kernel之后
 
@@ -479,7 +479,7 @@ void memory_init(boot_info_t *boot_info)
     create_kernel_table(); // 创建内核页表
 
     mmu_set_page_dir((uint32_t)kernel_page_dir); // 设置页目录表地址,打开分页机制
-    log_printf("memory success.");
+    log_printf("memory success.\n");
 }
 /**
  * @brief        : 为当前进程增长指定字节的堆空间
@@ -494,7 +494,7 @@ char *sys_sbrk(int incr)
     ASSERT(incr >= 0);
     if (incr == 0)
     {
-        log_printf("sbrk(0) : end=0x%x", pre_heap_end);
+        // log_printf("sbrk(0) : end=0x%x\n", pre_heap_end);
         return pre_heap_end;
     }
     uint32_t start = task->heap_end;      // 增长的起始地址
@@ -522,11 +522,11 @@ char *sys_sbrk(int incr)
         int err = memory_alloc_page_for(start, curr_size, PTE_P | PTE_U | PTE_W); // 分配内存
         if (err < 0)
         {
-            log_printf("sbrk: alloc memory failed.");
+            log_printf("sbrk: alloc memory failed.\n");
             return (char *)-1;
         }
     }
-    log_printf("sbrk(%d): end = 0x%x", pre_incr, end);
+    // log_printf("sbrk(%d): end = 0x%x\n", pre_incr, end);
     task->heap_end = end;        // 调整末端地址
     return (char *)pre_heap_end; // 返回之前的末端地址
 }

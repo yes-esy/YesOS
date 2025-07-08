@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-06-30 17:13:33
+ * @LastEditTime : 2025-07-07 11:15:51
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "init.h"
@@ -22,6 +22,7 @@
 #include "core/memory.h"
 #include "dev/console.h"
 #include "dev/keyboard.h"
+#include "fs/fs.h"
 static boot_info_t *init_boot_info; // 启动信息
 
 static sem_t sem;
@@ -35,14 +36,14 @@ void kernel_init(boot_info_t *boot_info)
 {
     init_boot_info = boot_info;
     cpu_init();
-    log_init();             // 打印初始化
-    console_init();         // 控制台初始化
-    memory_init(boot_info); // 内存初始化
-
     irq_init(); // 中断初始化
-    time_init();
-    task_manager_init();
-    kbd_init(); // 键盘初始化
+    log_init(); // 打印初始化
+    // console_init();         // 控制台初始化
+    memory_init(boot_info); // 内存初始化
+    fs_init();              // 文件系统初始化
+    time_init();            // 定时器初始化
+    task_manager_init();    // 任务管理器初始化
+    // kbd_init(); // 键盘初始化
 }
 
 static task_t init_task; // 初始任务
@@ -143,8 +144,8 @@ void move_to_first_task(void)
 void init_main()
 {
     // int a = 3 / 0;
-    log_printf("Kernel is running . . .");
-    log_printf("Version:%s", OS_VERSION);
+    log_printf("Version:%s\n", OS_VERSION);
+    log_printf("Kernel is running . . .\n");
     // task_init(&first_task, "init task", (uint32_t)first_task_entry, (uint32_t)&first_task_stack[1024]); // x86栈地址由高到低增长 ,同时init_task需要一个单独的栈空间。
     task_first_init();
     // list_test();

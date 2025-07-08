@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 16:17:07
+ * @LastEditTime : 2025-07-07 10:28:16
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -15,9 +15,11 @@
 #include "cpu/irq.h"
 #include "ipc/mutex.h"
 #include "dev/console.h"
-
+#include "dev/dev.h"
+#include "dev/tty.h"
 #define COM1_PORT 0x3F8
 #define LOG_USE_COM 0 // 是否使用串口输出0否1是
+static int log_dev_id;
 
 static mutex_t mutex;
 /**
@@ -27,6 +29,7 @@ static mutex_t mutex;
 void log_init(void)
 {
     mutex_init(&mutex);
+    log_dev_id = dev_open(DEV_TTY, 0, (void *)0);
 #if LOG_USE_COM
     outb(COM1_PORT + 1, 0x00); // 中断相关
     outb(COM1_PORT + 3, 0x80); // 发送速度
@@ -63,9 +66,12 @@ void log_printf(const char *fmt, ...)
     outb(COM1_PORT, '\r');
     outb(COM1_PORT, '\n');
 #else
-    console_write(0, str_buf, kernel_strlen(str_buf)); // 输出
-    char c = '\n';
-    console_write(0, &c, 1); // 换行
+    // console_write(0, str_buf, kernel_strlen(str_buf)); // 输出
+    dev_write(log_dev_id, 0, str_buf, kernel_strlen(str_buf)); // 使用tty设备输出数据
+    // char c = '\n';
+    // // // // console_write(0, &c, 1); // 换行
+    // dev_write(log_dev_id, 0, &c, 1); // 使用tty设备输出换行
+
 #endif
     // irq_leave_protection(state); // 退出临界区
     mutex_unlock(&mutex);

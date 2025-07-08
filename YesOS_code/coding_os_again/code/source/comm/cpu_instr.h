@@ -155,7 +155,7 @@ static inline void write_cr4(uint32_t v)
 static inline uint32_t read_cr4(void)
 {
     uint32_t cr4;
-    __asm__ __volatile__("mov %%cr3,%[v]" : [v] "=r"(cr4));
+    __asm__ __volatile__("mov %%cr4,%[v]" : [v] "=r"(cr4));
     return cr4;
 }
 /**

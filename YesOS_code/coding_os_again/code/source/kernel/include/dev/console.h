@@ -4,20 +4,21 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 20:29:28
+ * @LastEditTime : 2025-07-07 09:17:32
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
 #include "comm/types.h"
+#include "dev/tty.h"
 #define CONSOLE_DISP_ADDR 0xb8000              // 显存起始地址
 #define CONSOLE_DISP_END (0xb8000 + 32 * 1024) // 显存结束地址
 #define CONSOLE_ROW_MAX 25                     // 最大行数
 #define CONSOLE_COL_MAX 80                     // 最大列数
-#define CONSOLE_NR 1                           // 控制台的数量
+#define CONSOLE_NR 8                           // 控制台的数量
 #define ASCII_ESC 0x1b
-#define ESC_PARAM_MAX  10// esc参数的个数
+#define ESC_PARAM_MAX 10 // esc参数的个数
 // 各种颜色
 typedef enum _cclor_t
 {
@@ -78,22 +79,27 @@ typedef struct _console_t
 
 /**
  * @brief        : 初始化控制台
+ * @param         {int} index : 初始化控制台的索引
  * @return        {int} :返回0
  **/
-int console_init(void);
+int console_init(int index);
 
 /**
  * @brief        : 往控制台写数据
- * @param         {int} console: 哪一个控制台
- * @param         {char *} data: 要写的数据
- * @param         {int} size: 大小
- * @return        {int} 返回0
+ * @param         {tty_t *} tty: tty设备的指针
+ * @return        {int} 返回写入的长度
  **/
-int console_write(int console_id, char *data, int size);
+int console_write(tty_t *tty);
 /**
  * @brief        : 关闭控制台
  * @param         {int} console_id: 控制台id
  * @return        {*}
  **/
 void console_close(int console_id);
+/**
+ * @brief        : 切换特定显示数据
+ * @param         {int} tty_index: 指定tty设备索引
+ * @return        {void}
+**/
+void console_select(int tty_index);
 #endif
