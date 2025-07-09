@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-07 14:35:36
+ * @LastEditTime : 2025-07-09 13:15:16
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -20,6 +20,7 @@
 #include "core/syscall.h"
 #include "comm/elf.h"
 #include "fs/fs.h"
+#include "fs/file.h"
 
 static task_manager_t task_manager; // 全局任务管理器
 static task_t task_table[TASK_NR];  // 用户进程表
@@ -99,6 +100,104 @@ int sys_yield(void)
     irq_leave_protection(state);
     return 0;
 }
+/**
+ * @brief        : 回收当前进程的资源
+ * @param         {int *} satus: 传入的参数
+ * @return        {int} :   返回进程的pid
+ **/
+int sys_wait(int *status)
+{
+    task_t *curr_task = task_current(); // 当前进程
+    for (;;)
+    {
+        mutex_lock(&task_table_mutex);    // 上锁
+        for (int i = 0; i < TASK_NR; i++) // 遍历进程表
+        {
+            task_t *task = task_table + i; // 取出该进程
+            if (task->parent != curr_task) // 非当前进程子进程,跳过
+            {
+                continue;
+            }
+
+            if (task->state == TASK_ZOMBIE) // 僵尸进程
+            {
+                int pid = task->pid;                              // 取出进程id
+                *status = task->status;                           // 取出状态值
+                memory_destory_uvm(task->tss.cr3);                // 释放页表
+                memory_free_page(task->tss.esp0 - MEM_PAGE_SIZE); // 释放栈空间
+                kernel_memset(task, 0, sizeof(task_t));           // 清空进程
+                mutex_unlock(&task_table_mutex);                  // 解锁
+                return pid;                                       // 返回子进程pid
+            }
+        }
+        mutex_unlock(&task_table_mutex); // 没有找到,解锁
+        // 没有找到处于僵尸状态的子进程,当前进程等待，切换进程
+        irq_state_t irq_state = irq_enter_protection(); // 保护
+        task_set_block(curr_task);                      // 阻塞当前进程
+        curr_task->state = TASK_WAIT;                   // 设置为等待状态
+        task_dispatch();                                // 切换另一个进程运行
+        irq_leave_protection(irq_state);                // 退出保护
+    }
+
+    return 0;
+}
+/**
+ * @brief        : 退出当前进程
+ * @param         {int} status: 状态
+ * @return        {void}
+ **/
+void sys_exit(int status)
+{
+    task_t *curr_task = task_current(); // 获取当前进程
+
+    for (int fd = 0; fd < TASK_OPEN_FILE_NR; fd++) // 扫描进程文件表并清空
+    {
+        file_t *file = curr_task->file_table[fd]; // 取出文件指针
+        if (file != (file_t *)0)                  // 不为空
+        {
+            sys_close(fd);                           // 关闭当前文件
+            curr_task->file_table[fd] = (file_t *)0; // 清空
+        }
+    }
+    // 处理孤儿进程：将当前进程的所有子进程转交给 first_task 管理
+    int child_is_died = 0;         // 标记是否有子进程处于僵尸状态
+    mutex_lock(&task_table_mutex); // 访问进程表
+    for (int i = 0; i < TASK_NR; i++)
+    {
+        task_t *task = task_table + i; // 取出当前进程
+        if (task->parent == curr_task) // 当前进程的子进程
+        {
+            task->parent = &task_manager.first_task; // 将当前进程的子进程的父进程设置为first_task
+            if (task->state)                         // 当前进程子进程也处于僵死状态
+            {
+                child_is_died = 1; // 标记有僵尸子进程需要 first_task 回收
+            }
+        }
+    }
+    mutex_unlock(&task_table_mutex); // 解锁进程表
+
+    irq_state_t state = irq_enter_protection(); // 关中断保护
+    // 如果有僵尸子进程转交给了 first_task，且当前进程的父进程不是 first_task
+    task_t *parent_task = curr_task->parent;                        // 取父进程
+    if (child_is_died && (parent_task != &task_manager.first_task)) // 子进程处于僵死状态且父进程不为first_task
+    {
+        if (task_manager.first_task.state == TASK_WAIT) // first_task 正在等待子进程
+        {
+            task_set_ready(&task_manager.first_task); // 唤醒 first_task 去回收僵尸子进程
+        }
+    }
+    if (parent_task->state == TASK_WAIT) // 如果父进程正在等待当前进程结束7
+    {
+        task_set_ready(curr_task->parent); // 唤醒父进程
+    }
+
+    curr_task->state = TASK_ZOMBIE; // 当前进程濒死
+    curr_task->status = status;     // 保存传递的status
+    task_set_block(curr_task);      // 将当前进程阻塞
+    task_dispatch();                // 切换进程
+    irq_leave_protection(state);    // 关中断返回
+}
+
 /**
  * @brief        : 阻塞当前进程，将当前进程从就绪队列中移除
  * @param         {task_t} *task:
@@ -200,7 +299,8 @@ int task_init(task_t *task, const char *name, int flag, uint32_t entry, uint32_t
     task->parent = (task_t *)0;
     task->heap_start = 0; // 堆地址为0,大小为0；
     task->heap_end = 0;
-    task->pid = (uint32_t)task; // 设置为当前的数量
+    task->pid = (uint32_t)task; // 设置为当前进程的地址
+    task->status = 0;
     list_node_init(&task->all_node);
     list_node_init(&task->run_node);
     list_node_init(&task->wait_node);
@@ -286,7 +386,7 @@ static uint32_t idle_task_stack[IDLE_TASK_SIZE]; // 空闲进程栈空间
  **/
 static void idle_task_entry()
 {
-    log_printf("idle task running\n");
+    // log_printf("idle task running\n");
     for (;;)
     {
         hlt();
@@ -625,6 +725,24 @@ int sys_getpid(void)
 {
     return task_current()->pid;
 }
+/**
+ * @brief        : 子进程复制当前进程打开的文件
+ * @param         {task_t *} child_task: 子进程
+ * @return        {void}
+ **/
+static void copy_opened_files(task_t *child_task)
+{
+    task_t *parent_task = task_current();
+    for (int i = 0; i < TASK_OPEN_FILE_NR; i++) // 扫描父进程的进程文件表
+    {
+        file_t *file = parent_task->file_table[i]; // 取出该文件
+        if (file != (file_t *)0)                   // 不为空
+        {
+            file_incr_ref(file);               // 子进程打开该文件增加文件使用次数
+            child_task->file_table[i] = file; // 复制到子进程
+        }
+    }
+}
 
 /**
  * @brief        : 为当前进程创建一个子进程
@@ -640,9 +758,9 @@ int sys_fork(void)
     }
     syscall_frame_t *frame = (syscall_frame_t *)(parent_task->tss.esp0 - sizeof(syscall_frame_t));                          // 父进程的栈信息(寄存器)
     int err = task_init(child_task, parent_task->name, 0, frame->eip, frame->esp + sizeof(uint32_t) * SYSCALL_PARAM_COUNT); // 初始化子进程
-
-    tss_t *tss = &child_task->tss; // 子进程的tss
-    tss->eax = 0;                  // 子进程返回值
+    copy_opened_files(child_task);                                                                                          // 子进程复制父进程文件表
+    tss_t *tss = &child_task->tss;                                                                                          // 子进程的tss
+    tss->eax = 0;                                                                                                           // 子进程返回值
     tss->ebx = frame->ebx;
     tss->ecx = frame->ecx;
     tss->edx = frame->edx;

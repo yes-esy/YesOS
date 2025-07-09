@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-07 11:26:16
+ * @LastEditTime : 2025-07-08 21:55:45
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef TASK_H
@@ -41,6 +41,7 @@ typedef struct _task_t
         TASK_SLEEP,   // 延时
         TASK_READY,   // 就绪
         TASK_WAIT,    // 等待
+        TASK_ZOMBIE,  // 濒死
     } state;
 
     int pid;                // 进程ID号
@@ -54,6 +55,7 @@ typedef struct _task_t
     int time_ticks;            // 进程运行时间片
     int slice_ticks;           // 进程已运行时间
     int sleep_ticks;           // 进程睡眠时间
+    int status;                // 进程退出状态？
     char name[TASK_NAME_SIZE]; // 任务名
 
     list_node_t run_node;  // 运行相关结点
@@ -125,4 +127,6 @@ int sys_execve(char *name, char **argv, char **env); // 创建空进程
 int task_alloc_fd(file_t *file);                     // 分配文件描述符
 void task_remove_fd(int fd);                         // 释放文件描述符
 file_t *task_file(int fd);                           // 返回当前文件
+void sys_exit(int status);                           // 退出当前进程
+int sys_wait(int *status);                           // 回收进程资源
 #endif

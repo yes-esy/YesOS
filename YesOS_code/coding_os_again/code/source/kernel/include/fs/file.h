@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-07 11:03:30
+ * @LastEditTime : 2025-07-09 13:19:31
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef FILE_H
@@ -51,5 +51,10 @@ file_t *file_alloc(void);
  * @return        {void}
  **/
 void file_free(file_t *file);
-
+/**
+ * @brief        : 增加文件的使用次数
+ * @param         {file_t *} file: 需要增加的文件
+ * @return        {void}
+**/
+void file_incr_ref(file_t * file);
 #endif

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-08 15:44:34
+ * @LastEditTime : 2025-07-09 13:26:33
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "dev/console.h"
@@ -455,6 +455,7 @@ int console_init(int index)
     console->old_cursor_col = console->cursor_col;
     console->old_cursor_row = console->cursor_row; // 保存关标的位置
     console->write_state = CONSOLE_WRITE_NORMAL;   // 初始状态写普通字符
+    mutex_init(&console->mutex);                   // 初始化互斥锁
     // clear_display(console);
     return 0;
 }
@@ -467,7 +468,8 @@ int console_write(tty_t *tty)
 {
     console_t *console = console_buff + tty->console_index; // 获取当前控制台;
 
-    int len = 0; // 记录写出数据的长度
+    int len = 0;                 // 记录写出数据的长度
+    mutex_lock(&console->mutex); // 上锁,只允许一个进程访问
     do
     {
         char ch;                                   // 记录读取数据
@@ -497,6 +499,7 @@ int console_write(tty_t *tty)
     {
         update_cursor_pos(console); // 更新光标位置
     }
+    mutex_unlock(&console->mutex);
     return len;
 }
 /**

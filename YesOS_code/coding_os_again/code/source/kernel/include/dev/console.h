@@ -12,6 +12,7 @@
 
 #include "comm/types.h"
 #include "dev/tty.h"
+#include "ipc/mutex.h"
 #define CONSOLE_DISP_ADDR 0xb8000              // 显存起始地址
 #define CONSOLE_DISP_END (0xb8000 + 32 * 1024) // 显存结束地址
 #define CONSOLE_ROW_MAX 25                     // 最大行数
@@ -75,6 +76,7 @@ typedef struct _console_t
     int old_cursor_row;           // 之前关标的列
     int esc_param[ESC_PARAM_MAX]; // ESC [ ;;参数数量
     int curr_param_index;         // esc参数索引
+    mutex_t mutex;                // 互斥锁
 } console_t;
 
 /**
@@ -100,6 +102,6 @@ void console_close(int console_id);
  * @brief        : 切换特定显示数据
  * @param         {int} tty_index: 指定tty设备索引
  * @return        {void}
-**/
+ **/
 void console_select(int tty_index);
 #endif

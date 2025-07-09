@@ -26,6 +26,8 @@
 #define SYS_sbrk            56
 #define SYS_fstat           57
 #define SYS_dup             58
+#define SYS_exit            59
+#define SYS_wait            60
 #define SYS_print_msg       100
 #define SYSCALL_PARAM_COUNT 5 // 系统调用参数数量
 

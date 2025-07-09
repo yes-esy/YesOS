@@ -4,10 +4,12 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-06 16:14:11
+ * @LastEditTime : 2025-07-08 21:58:50
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include <stdint.h>
+#include "lib_syscall.h"
+#include <stdlib.h>
 int main(int argc, char **argv);
 extern uint8_t __bss__start__[], __bss__end__[];
 void cstart(int argc, char **argv)
@@ -18,5 +20,5 @@ void cstart(int argc, char **argv)
     {
         *start++ = 0;
     }
-    main(argc, argv); // 跳转至应用程序运行
+    exit(main(argc, argv)); // 跳转至应用程序运行,应用程序执行完毕后结束结束当前进程
 }

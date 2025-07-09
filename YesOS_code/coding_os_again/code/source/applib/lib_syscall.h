@@ -105,4 +105,6 @@ int isatty(int file);
 int fstat(int file ,struct stat * st);
 void * sbrk(ptrdiff_t incr);
 int dup(int file); // 复制文件
+void _exit(int status); // 退出当前进程
+int wait(int * status); // 负责进程资源回收
 #endif

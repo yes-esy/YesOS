@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-07 10:37:19
+ * @LastEditTime : 2025-07-08 17:16:24
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "dev/keyboard.h"
@@ -189,8 +189,7 @@ void do_fx_key(int key)
  * @param         {uint8_t} raw_code: 键盘原始值
  * @return        {void}
  **/
-static void
-do_normal_key(uint8_t raw_code)
+static void do_normal_key(uint8_t raw_code)
 {
     char key = get_key(raw_code); // 去掉最高位
     int is_make = is_make_code(raw_code);

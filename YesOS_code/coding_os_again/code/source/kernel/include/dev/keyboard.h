@@ -25,7 +25,7 @@
 
 #define KEY_E0 0xE0 // E0开头的键的值
 #define KEY_E1 0xE1 // E1开头的键的值
-
+#define ASCII_DEL 0x7F
 #define KEY_CTRL 0x1D   // CTRL键
 #define KEY_ALT 0x38    // ALT键
 #define KEY_FUNC 0x8000 //

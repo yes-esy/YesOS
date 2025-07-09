@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-07 11:08:44
+ * @LastEditTime : 2025-07-09 13:20:23
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -48,6 +48,17 @@ void file_free(file_t *file)
     {
         file->ref--;
     }
+    mutex_unlock(&file_alloc_mutex); // 解锁
+}
+/**
+ * @brief        : 增加文件的使用次数
+ * @param         {file_t *} file: 需要增加的文件
+ * @return        {void}
+ **/
+void file_incr_ref(file_t *file)
+{
+    mutex_lock(&file_alloc_mutex);   // 上锁
+    file->ref++;                     // 打开次数增加
     mutex_unlock(&file_alloc_mutex); // 解锁
 }
 /**

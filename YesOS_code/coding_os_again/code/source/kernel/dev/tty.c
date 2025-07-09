@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-07 17:26:41
+ * @LastEditTime : 2025-07-08 21:00:25
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -184,7 +184,7 @@ int tty_write(device_t *dev, int addr, char *buf, int size)
         // }
         console_write(tty);
     }
-    return size;
+    return len;
 }
 /**
  * @brief        : 读取设备的数据
@@ -211,10 +211,19 @@ int tty_read(device_t *dev, int addr, char *buf, int size)
         tty_fifo_get(&tty->I_fifo, &ch); // 取数据
         switch (ch)
         {
+        case ASCII_DEL:
+            if (len == 0)
+            {
+                continue;
+            }
+            len--;
+            pbuf--;
+            break;
         case '\n':
             if ((tty->i_flags & TTY_INCLR) && (len < size - 1)) // 检查输入设置
             {
                 *pbuf++ = '\r'; // 添加换行
+                len++;
             }
             *pbuf++ = '\n'; // 添加回车
             len++;

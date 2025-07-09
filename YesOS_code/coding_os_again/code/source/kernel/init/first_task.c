@@ -53,8 +53,10 @@ int first_task_main(void)
     while (1)
     {
         // log_printf("first task is running . Now cnt is %d",cnt++);
-        msleep(10000);
+        // msleep(10000);
         // print_msg("cnt = %d\n", cnt++);
+        int status;
+        wait(&status);
     }
 
     return 0;

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-08 15:06:30
+ * @LastEditTime : 2025-07-09 11:31:58
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "lib_syscall.h"
@@ -208,5 +208,32 @@ int dup(int file)
     syscall_args_t args;
     args.id = SYS_dup;
     args.arg0 = file;
+    return sys_call(&args);
+}
+/**
+ * @brief        : 退出当前进程
+ * @param         {int} status: 状态值
+ * @return        {void}
+ **/
+void _exit(int status)
+{
+    syscall_args_t args;
+    args.id = SYS_exit;
+    args.arg0 = status;
+    sys_call(&args);
+    while (1)
+        ;
+}
+
+/**
+ * @brief        : 回收当前进程资源
+ * @param         {int *} status: 状态值
+ * @return        {void}
+ **/
+int wait(int *status)
+{
+    syscall_args_t args;
+    args.id = SYS_wait;
+    args.arg0 = (int)status;
     return sys_call(&args);
 }
