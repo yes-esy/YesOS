@@ -32,7 +32,7 @@ int first_task_main(void)
         print_msg("parent process executing, child process pid is %d\n", pid);
         cnt += 1;
     }
-#endif  
+#endif
     for (int i = 0; i < TTY_NR; i++)
     {
         int pid = fork();
@@ -43,8 +43,8 @@ int first_task_main(void)
         }
         else if (pid == 0) // 子进程
         {
-            char tty_num[5] = "tty:?";
-            tty_num[4] = i + '0';
+            char tty_num[] = "/dev/tty?";
+            tty_num[sizeof(tty_num) - 2] = i + '0';
             char *argv[] = {tty_num, (char *)0};
             execve("/shell.elf", argv, (char **)0);
             print_msg("create shell proc failed\n", 0);

@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-08 17:19:45
+ * @LastEditTime : 2025-07-09 15:03:29
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef TTY_H
@@ -12,14 +12,14 @@
 
 #include "ipc/sem.h"
 
-#define TTY_NR 8          // tty设备数量
+#define TTY_NR 1          // tty设备数量
 #define TTY_O_BUF_SIZE 512 // 输入队列大小
 #define TTY_I_BUF_SIZE 512 // 输出队列大小
 #define TTY_OCRLF (1 << 0) // 将回车转换为换行
 #define TTY_INCLR (1 << 0) // 
 #define TTY_IECHO (1 << 1) // 是否输入回显
 /**
- * tty队列
+ * tty读写队列
  */
 typedef struct _tty_fifo_t
 {
@@ -29,7 +29,9 @@ typedef struct _tty_fifo_t
     int wirte; // 写的位置
     int count; // 有效数据量
 } tty_fifo_t;
-
+/**
+ * tty设备的输入输出描述符
+ */
 typedef struct _tty_t
 {
     char o_buf[TTY_O_BUF_SIZE]; // 具体存放输出数据

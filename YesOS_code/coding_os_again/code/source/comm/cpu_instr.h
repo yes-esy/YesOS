@@ -62,7 +62,7 @@ static inline uint8_t inb(uint16_t port)
 }
 
 /**
- * @brief        : 往指定端口写数据
+ * @brief        : 往指定端口写一个字节数据
  * @param         {uint16_t} port:端口号
  * @param         {uint8_t} data:要写的数据
  * @return        {*}
@@ -74,7 +74,19 @@ static inline void outb(uint16_t port, uint8_t data)
      */
     __asm__ __volatile__("outb %[v],%[p]" ::[p] "d"(port), [v] "a"(data));
 }
-
+/**
+ * @brief        : 往指定端口写一个字数据
+ * @param         {uint16_t} port:端口号
+ * @param         {uint16_t} data:要写的数据
+ * @return        {*}
+ **/
+static inline void outw(uint16_t port, uint16_t data)
+{
+    /**
+     * outb al,dx
+     */
+    __asm__ __volatile__("out %[v],%[p]" ::[p] "d"(port), [v] "a"(data));
+}
 /**
  * @brief        : 加载gdt表(全局描述符)
  * @param         {uint32_t} start: 起始地址

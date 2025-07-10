@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-09 13:19:31
+ * @LastEditTime : 2025-07-09 17:11:43
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef FILE_H
@@ -21,6 +21,7 @@ typedef enum _file_type_t
     FILE_UNKNOWN = 0,
     FILE_TTY,
 } file_type_t;
+struct _fs_t; // 文件系统前置声明
 /**
  * 文件描述结构
  */
@@ -33,6 +34,7 @@ typedef struct _file_t
     int dev_id;                     // 所属设备id
     int pos;                        // 读取到的位置
     int mode;                       // 读写模式
+    struct _fs_t *fs;               // 文件系统
 } file_t;
 
 /**
@@ -55,6 +57,6 @@ void file_free(file_t *file);
  * @brief        : 增加文件的使用次数
  * @param         {file_t *} file: 需要增加的文件
  * @return        {void}
-**/
-void file_incr_ref(file_t * file);
+ **/
+void file_incr_ref(file_t *file);
 #endif

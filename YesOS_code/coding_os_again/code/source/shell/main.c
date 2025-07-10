@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-09 11:12:57
+ * @LastEditTime : 2025-07-09 20:57:31
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "lib_syscall.h"
@@ -13,7 +13,7 @@
 #include <string.h>
 #include <getopt.h>
 #include "main.h"
-
+#include <sys/file.h>
 static cli_t cli;                   // 命令解释器
 static const char *promot = "sh>>"; // 提示符
 /**
@@ -233,7 +233,7 @@ static void cli_init(const char *promot, const cli_cmd_t *cmd_list, int size)
 int main(int argc, char **argv)
 {
 
-    open(argv[0], 0); // int fd = 0 , stdin
+    open(argv[0], O_RDWR); // int fd = 0 , stdin
     dup(0);           // 标准输出
     dup(0);           // 标准错误输出
     printf(ESC_CLEAR_SCREEN ESC_MOVE_CURSOR(0, 0));
