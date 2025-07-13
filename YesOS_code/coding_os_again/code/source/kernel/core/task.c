@@ -686,7 +686,7 @@ static int copy_args(char *to, uint32_t page_dir, int argc, char **argv)
     task_args.argc = argc;
     task_args.argv = (char **)(to + sizeof(task_args_t)); // 指向指针数组的起始位置
 
-    char *dest_arg = to + sizeof(task_args_t) + sizeof(char *) * argc;                              // 计算字符串存储区的起始位置
+    char *dest_arg = to + sizeof(task_args_t) + sizeof(char *) * (argc + 1);// 最后一项必须为0                              // 计算字符串存储区的起始位置
     char **dest_arg_tb = (char **)memory_get_paddr(page_dir, (uint32_t)(to + sizeof(task_args_t))); // 获取指针数组在目标页表中的物理地址
     for (int i = 0; i < argc; i++)
     {
@@ -696,6 +696,11 @@ static int copy_args(char *to, uint32_t page_dir, int argc, char **argv)
         ASSERT(err >= 0);
         dest_arg_tb[i] = dest_arg; // 在指针数组中记录这个字符串的虚拟地址
         dest_arg += len;           // 移动到下一个位置
+    }
+
+    if (argc)
+    {
+        dest_arg_tb[argc] = '\0'; // 写入0
     }
     return memory_copy_uvm_data((uint32_t)to, page_dir, (uint32_t)&task_args, sizeof(task_args_t)); // 将数据拷贝到page_dir中对应to的物理地址处
 }

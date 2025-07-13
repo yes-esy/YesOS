@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 20:06:17
+ * @LastEditTime : 2025-07-11 15:17:58
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef LIB_SYSCALL_H
@@ -13,6 +13,26 @@
 #include "os_cfg.h"
 #include "core/syscall.h"
 #include <sys/stat.h>
+/**
+ *
+ */
+struct dirent
+{
+    int index;
+    int type;       // 类型
+    char name[256]; // 名称
+    int size;       // 大小
+};
+/**
+ * 文件目录描述符
+ */
+typedef struct _DIR
+{
+    int index;            // 记录扫描到哪一个文件的索引
+    struct dirent dirent; // 目录项缓存，用于存储readdir读取的目录项
+
+} DIR;
+
 /**
  * 系统调用传递的参数,用结构体传输
  */
@@ -95,16 +115,49 @@ int execve(const char *name, char *const *argv, char *const *env);
  * @return        {int} : 返回0
  **/
 int yield();
-int open(const char * name,int flags,...);
-int read(int file,char *ptr,int len);
-int write(int file,char *ptr,int len);
+int open(const char *name, int flags, ...);
+int read(int file, char *ptr, int len);
+int write(int file, char *ptr, int len);
 int close(int file);
-int lseek(int file,int ptr,int dir);
+int lseek(int file, int ptr, int dir);
 
 int isatty(int file);
-int fstat(int file ,struct stat * st);
-void * sbrk(ptrdiff_t incr);
-int dup(int file); // 复制文件
+int fstat(int file, struct stat *st);
+void *sbrk(ptrdiff_t incr);
+int dup(int file);      // 复制文件
 void _exit(int status); // 退出当前进程
-int wait(int * status); // 负责进程资源回收
+int wait(int *status);  // 负责进程资源回收
+/**
+ * @brief        打开目录
+ * @param         {char} *path: 要打开的目录的路径
+ * @return        {*} 成功则返回一个指向DIR结构的指针，失败则返回NULL
+ **/
+DIR *opendir(const char *path); // 打开文件目录
+/**
+ * @brief        读取目录
+ * @param         {DIR} *dir: 目录结构指针
+ * @return        {struct dirent *} 成功则返回一个指向dirent结构的指针，失败则返回NULL
+ **/
+struct dirent *readdir(DIR *dir); // 读文件目录
+/**
+ * @brief        关闭目录
+ * @param         {DIR} *dir: 要关闭的目录的指针
+ * @return        {int} 成功返回0
+ **/
+int closedir(DIR *dir); // 关闭文件夹
+/**
+ * @brief        : 输入输出控制
+ * @param         {int} file: 输入输出文件
+ * @param         {int} cmd: 输入输出命令
+ * @param         {int} arg0: 参数0
+ * @param         {int} arg1: 参数1
+ * @return        {void}
+ **/
+void ioctl(int file, int cmd, int arg0, int arg1);
+/**
+ * @brief        : 从磁盘中删除文件
+ * @param         {const char * } pathname: 文件路径
+ * @return        {int} : 成功返回0,失败返回-1
+ **/
+int unlink(const char * pathname);
 #endif

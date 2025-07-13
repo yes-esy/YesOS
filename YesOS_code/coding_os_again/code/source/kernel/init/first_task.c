@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-08 09:48:32
+ * @LastEditTime : 2025-07-11 16:31:41
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "applib/lib_syscall.h"
@@ -46,7 +46,7 @@ int first_task_main(void)
             char tty_num[] = "/dev/tty?";
             tty_num[sizeof(tty_num) - 2] = i + '0';
             char *argv[] = {tty_num, (char *)0};
-            execve("/shell.elf", argv, (char **)0);
+            execve("shell.elf", argv, (char **)0);
             print_msg("create shell proc failed\n", 0);
         }
     }

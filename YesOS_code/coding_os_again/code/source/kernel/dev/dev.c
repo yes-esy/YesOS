@@ -4,19 +4,22 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-06 20:27:05
+ * @LastEditTime : 2025-07-10 15:48:55
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "dev/dev.h"
 #include "cpu/irq.h"
 #include "tools/klib.h"
-#define DEV_TABLE_SIZE 128      // 设备数量
-extern dev_desc_t dev_tty_desc; // 外部tty设备
+#define DEV_TABLE_SIZE 128       // 设备数量
+extern dev_desc_t dev_tty_desc;  // 外部tty设备
+extern dev_desc_t dev_disk_desc; // 外部磁盘设备
+
 /**
  * 静态设备类型表
  */
 static dev_desc_t *dev_desc_table[] = {
     &dev_tty_desc,
+    &dev_disk_desc,
 };
 /**
  * 设备实例表
@@ -157,7 +160,7 @@ void dev_close(int dev_id)
 {
     if (is_dev_id_bad(dev_id)) // 设备id是否合法
     {
-        return ;
+        return;
     }
     device_t *dev = dev_table + dev_id;         // 具体的设备
     irq_state_t state = irq_enter_protection(); // 进入临界区

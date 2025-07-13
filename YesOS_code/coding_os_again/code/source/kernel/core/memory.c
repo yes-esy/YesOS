@@ -75,9 +75,8 @@ void show_mem_inifo(boot_info_t *boot_info)
     log_printf("memory region:\n");
     for (int i = 0; i < boot_info->ram_region_count; i++)
     {
-        log_printf("[%d]:0x%x-0x%x", i, boot_info->ram_region_cfg[i].start, boot_info->ram_region_cfg[i].size);
+        log_printf("[%d]:0x%x-0x%x\n", i, boot_info->ram_region_cfg[i].start, boot_info->ram_region_cfg[i].size);
     }
-    log_printf("\n");
 }
 /**
  * @brief        : 计算整个内存区域大小

@@ -33,6 +33,8 @@
 #define IRQ19_XM 19 //
 #define IRQ20_VE 20 //
 
+#define IRQ14_HARD_DISK_PRIMARY (0x20 + 14) // 硬盘中断
+
 #define IRQ0_TIMER 0x20    // 定时器
 #define IRQ1_KEYBOARD 0x21 // 键盘中断
 

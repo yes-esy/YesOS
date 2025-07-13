@@ -4,11 +4,10 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-12 09:21:01
+ * @LastEditTime : 2025-07-10 20:53:06
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
-#include "lib_syscall.h"
-#include <stdlib.h>
+#include "applib/lib_syscall.h"
 
 /**
  * @brief        : 延时系统调用接口
@@ -236,98 +235,5 @@ int wait(int *status)
     syscall_args_t args;
     args.id = SYS_wait;
     args.arg0 = (int)status;
-    return sys_call(&args);
-}
-/**
- * @brief        打开目录
- * @param         {char} *path: 要打开的目录的路径
- * @return        {*} 成功则返回一个指向DIR结构的指针，失败则返回NULL
- **/
-DIR *opendir(const char *path)
-{
-
-    DIR *dir = malloc(sizeof(DIR)); // 为DIR结构体分配内存空间
-    if (dir == (DIR *)0)            // 检查内存分配是否成功
-    {
-        return (DIR *)0; // 分配失败，返回NULL
-    }
-    // 准备系统调用参数
-    syscall_args_t args;
-    args.id = SYS_opendir;     // 指定系统调用号为 opendir
-    args.arg0 = (int)path;     // 第一个参数：目录路径
-    args.arg1 = (int)dir;      // 第二个参数：传递给内核用于填充的DIR结构指针
-    int err = sys_call(&args); // 执行系统调用
-    if (err < 0)               // 出错
-    {
-        free(dir);       // 如果发生错误，释放之前分配的内存
-        return (DIR *)0; // 返回NULL表示失败
-    }
-
-    // 成功打开目录，返回DIR指针
-    return dir;
-}
-/**
- * @brief        读取目录
- * @param         {DIR} *dir: 目录结构指针
- * @return        {struct dirent *} 成功则返回一个指向dirent结构的指针，失败则返回NULL
- **/
-struct dirent *readdir(DIR *dir)
-{
-    // 准备系统调用参数
-    syscall_args_t args;
-    args.id = SYS_readdir;           // 指定系统调用号为 readdir
-    args.arg0 = (int)dir;            // 第一个参数：目录结构指针
-    args.arg1 = (int)(&dir->dirent); // 第二个参数：用于接收目录项信息的dirent结构指针
-    int err = sys_call(&args);       // 执行系统调用
-    if (err < 0)                     // 检查系统调用是否出错
-    {
-        return (struct dirent *)0; // 出错或到达目录末尾，返回NULL
-    }
-    return &dir->dirent; // 成功，返回填充好的dirent结构指针
-}
-/**
- * @brief        关闭目录
- * @param         {DIR} *dir: 要关闭的目录的指针
- * @return        {int} 成功返回0
- **/
-int closedir(DIR *dir)
-{
-    // 准备系统调用参数
-    syscall_args_t args;
-    args.id = SYS_closedir; // 指定系统调用号为 closedir
-    args.arg0 = (int)dir;   // 第一个参数：目录结构指针
-    sys_call(&args);        // 执行系统调用，通知内核关闭目录
-    free(dir);              // 释放opendir时分配的DIR结构内存
-    return 0;               // 成功返回0
-}
-
-/**
- * @brief        : 输入输出控制
- * @param         {int} file: 输入输出文件
- * @param         {int} cmd: 输入输出命令
- * @param         {int} arg0: 参数0
- * @param         {int} arg1: 参数1
- * @return        {void}
- **/
-void ioctl(int file, int cmd, int arg0, int arg1)
-{
-    syscall_args_t args;
-    args.id = SYS_ioctl;
-    args.arg0 = file;
-    args.arg1 = cmd;
-    args.arg2 = arg0;
-    args.arg3 = arg1;
-    sys_call(&args);
-}
-/**
- * @brief        : 从磁盘中删除文件
- * @param         {char} *pathname: 文件路径名
- * @return        {int} : 成功返回0,失败返回-1
- **/
-int unlink(const char *pathname)
-{
-    syscall_args_t args;
-    args.id = SYS_unlink;
-    args.arg0 = (int)pathname;
     return sys_call(&args);
 }

@@ -13,6 +13,7 @@
 #include "os_cfg.h"
 #include "tools/log.h"
 #include "core/syscall.h"
+#include "core/task.h"
 
 #define IDT_TABLE_NR 256 // 表项数量为128
 
@@ -65,9 +66,17 @@ static void do_default_handler(exception_frame_t *frame, const char *msg)
     log_printf("----------------------------------------\n");
     log_printf("IRQ/EXCEPTION HAPPEND: %s\n", msg);
     dump_core_regs(frame);
-    for (;;)
+    if (frame->cs & 0x3) // 应用进程
     {
-        hlt();
+        sys_exit(frame->error_code);
+    }
+    else
+    {
+        while (1)
+        {
+
+            hlt();
+        }
     }
 }
 /**
@@ -178,12 +187,20 @@ void do_handler_general_protection(exception_frame_t *frame)
         log_printf("the index refers to a descriptor in the GDT\n");
     }
 
-    log_printf("segment index: %d", frame->error_code & 0xFFF8);
+    log_printf("segment index: %d\n", frame->error_code & 0xFFF8);
 
     dump_core_regs(frame);
-    while (1)
+    if (frame->cs & 0x3) // 应用进程
     {
-        hlt();
+        sys_exit(frame->error_code);
+    }
+    else
+    {
+        while (1)
+        {
+
+            hlt();
+        }
     }
 }
 /**
@@ -201,7 +218,7 @@ void do_handler_page_fault(exception_frame_t *frame)
     }
     else
     {
-        log_printf("\tPage doesn't present 0x%x", read_cr2());
+        log_printf("\tPage doesn't present 0x%x\n", read_cr2());
     }
 
     if (frame->error_code & ERR_PAGE_WR)
@@ -221,11 +238,18 @@ void do_handler_page_fault(exception_frame_t *frame)
     {
         log_printf("\tA user-mode access caused the fault.\n");
     }
-
     dump_core_regs(frame);
-    while (1)
+    if (frame->cs & 0x3) // 应用进程
     {
-        hlt();
+        sys_exit(frame->error_code);
+    }
+    else
+    {
+        while (1)
+        {
+
+            hlt();
+        }
     }
 }
 void do_handler_fpu_error(exception_frame_t *frame)

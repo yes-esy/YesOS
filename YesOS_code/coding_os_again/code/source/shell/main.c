@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-09 20:57:31
+ * @LastEditTime : 2025-07-12 12:27:19
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "lib_syscall.h"
@@ -14,6 +14,8 @@
 #include <getopt.h>
 #include "main.h"
 #include <sys/file.h>
+#include "fs/file.h"
+#include "dev/tty.h"
 static cli_t cli;                   // 命令解释器
 static const char *promot = "sh>>"; // 提示符
 /**
@@ -127,6 +129,170 @@ static int do_exit(int argc, char **argv)
     return 0;
 }
 /**
+ * @brief        : 列出当前目录下的文件
+ * @param         {int} argc: 参数个数
+ * @param         {char} *: 传递的参数
+ * @return        {int} : 退出的状态
+ **/
+static int do_ls(int argc, char **argv)
+{
+    DIR *p_dir = opendir("temp"); // 打开文件目录
+    if (p_dir == NULL)            // 打开失败
+    {
+
+        printf("dir not exist.\n");
+        return -1;
+    }
+
+    // 打印表头
+    printf("Type  %-20s %10s\n", "Name", "Size");
+    printf("----  %-20s %10s\n", "--------------------", "----------");
+
+    struct dirent *entry;
+    while ((entry = readdir(p_dir)) != NULL)
+    {
+        char type_char = entry->type == FILE_DIR ? 'D' : 'F';
+        printf(" %c    %-20s %10d\n",
+               type_char,
+               strlwr(entry->name),
+               entry->size);
+    }
+
+    closedir(p_dir); // 记得关闭目录
+    return 0;
+}
+static int do_less(int argc, char **argv)
+{
+    int line_mode = 0;
+    int ch;
+    while ((ch = getopt(argc, argv, "lh")) != -1)
+    {
+        switch (ch)
+        {
+        case 'h':
+            // puts("echo message");
+            // puts("echo [-n count] message -- echo some message");
+            printf(ESC_COLOR_HELP "Usage: show file content\n");
+            printf("       less [-l] file -- show file content\n" ESC_COLOR_DEFAULT);
+            optind = 1; // getopt需要多次调用，需要重置
+            return 0;
+        case 'l':
+            line_mode = 1;
+            break;
+        case '?':
+            if (optarg)
+            {
+                fprintf(stderr, ESC_COLOR_ERROR "Unknown option: %s\n" ESC_COLOR_DEFAULT, cli.curr_input);
+            }
+            optind = 1; // getopt需要多次调用，需要重置
+            return -1;
+        default:
+            break;
+        }
+    }
+    if (optind > argc - 1)
+    {
+        fprintf(stderr, ESC_COLOR_ERROR "no  file: %s\n" ESC_COLOR_DEFAULT);
+        optind = 1; // getopt需要多次调用，需要重置
+        return -1;
+    }
+    FILE *file = fopen(argv[optind], "r"); // 打开该文件
+    if (NULL == file)                      // 打开失败
+    {
+        fprintf(stderr, ESC_COLOR_WARNING "open file failed,file : %s\n" ESC_COLOR_DEFAULT, argv[argc - 1]);
+        optind = 1;
+        return -1;
+    }
+    char *buf = (char *)malloc(255); // 申请缓冲区空间
+    if (!line_mode)
+    {
+        while ((fgets(buf, 255, file)) != NULL) // 读取文件
+        {
+            fputs(buf, stdout);
+        }
+    }
+    else
+    {
+        // 不使用缓存，这样能直接立即读取到输入而不用等回车
+        setvbuf(stdin, NULL, _IONBF, 0);
+        ioctl(0, TTY_CMD_ECHO, 0, 0);
+        while (1)
+        {
+            char *b = fgets(buf, 255, file);
+            if (b == NULL)
+            {
+                break;
+            }
+            fputs(buf, stdout);
+
+            int ch;
+            while ((ch = fgetc(stdin)) != 'n')
+            {
+                if (ch == 'q')
+                {
+                    goto less_quit;
+                }
+            }
+        }
+    less_quit:
+        // 恢复为行缓存
+        setvbuf(stdin, NULL, _IOLBF, BUFSIZ);
+        ioctl(0, TTY_CMD_ECHO, 1, 0);
+    }
+    free(buf);    // 释放缓冲区
+    fclose(file); // 关闭文件
+    return 0;
+}
+static int do_cp(int argc, char **argv)
+{
+    if (argc < 3) // 参数没有三个
+    {
+        printf(ESC_COLOR_ERROR "no [from] or no [to]\n" ESC_COLOR_DEFAULT);
+        return -1;
+    }
+    FILE *from, *to;             // 源文件指针与目的文件指针
+    from = fopen(argv[1], "rb"); // 打开源文件以二进制形式
+    to = fopen(argv[2], "wb");   // 打开目标文件
+    if (!from || !to)
+    {
+        printf(ESC_COLOR_ERROR "open file [from] or [to] file failed.\n" ESC_COLOR_DEFAULT);
+        goto cp_failed;
+    }
+    char *buf = (char *)malloc(255); // 申请255字节空间
+    int size;
+    while ((size = fread(buf, 1, 255, from)) > 0) // 读取文件内容
+    {
+        fwrite(buf, 1, size, to); // 将内容从buf中写入目的文件
+    }
+    free(buf); // 释放缓冲区
+    return 0;
+cp_failed:
+    if (from)
+    {
+        fclose(from);
+    }
+    if (to)
+    {
+        fclose(to);
+    }
+    return -1;
+}
+static int do_rm(int argc,char **argv)
+{
+    if(argc < 2)
+    {
+        printf(ESC_COLOR_ERROR"no select file\n"ESC_COLOR_DEFAULT);
+        return -1;
+    }
+    int err = unlink(argv[1]);
+    if(err <0)
+    {
+        printf(ESC_COLOR_ERROR"rm file failed.\n"ESC_COLOR_DEFAULT);
+        return -1;
+    }
+    return 0;
+}
+/**
  * 命令表
  */
 static const cli_cmd_t cmd_list[] = {
@@ -150,6 +316,26 @@ static const cli_cmd_t cmd_list[] = {
         .usage = "exit from current task",
         .do_func = do_exit,
     },
+    {
+        .name = "ls",
+        .usage = "ls --list director",
+        .do_func = do_ls,
+    },
+    {
+        .name = "less",
+        .usage = "less [-l] file -- show file content",
+        .do_func = do_less,
+    },
+    {
+        .name = "cp",
+        .usage = "copy src dest -- copy file",
+        .do_func = do_cp,
+    },
+    {
+        .name = "rm",
+        .usage="rm file -- remove file from disk",
+        .do_func = do_rm
+    },
 };
 /**
  * @brief        : 执行可执行的程序
@@ -157,7 +343,7 @@ static const cli_cmd_t cmd_list[] = {
  * @param         {int} argc: 参数个数
  * @param         {char} *: 参数
  * @return        {int} : 返回0
-**/
+ **/
 static int run_exec_file(const char *path, int argc, char **argv)
 {
     int pid = fork(); // 创建子进程
@@ -167,22 +353,21 @@ static int run_exec_file(const char *path, int argc, char **argv)
     }
     else if (pid == 0) // 子进程
     {
-        for (int i = 0; i < argc; i++)
+        int err = execve(path, argv, (char *const *)0); // 执行可执行程序
+        if (err < 0)
         {
-            msleep(1000);
-            printf("argc %d = %s\n", i, argv[i]);
+            printf(ESC_COLOR_WARNING "exec failed.\n" ESC_COLOR_DEFAULT);
         }
-        exit(-1); // 结束子进程
+        exit(-1); // 执行失败退出
     }
     else
     {
         int status;
         int pid = wait(&status); // 返回释放的子进程pid
-        printf(ESC_COLOR_WARNING "cmd %s result: %d, pid = %d\n" ESC_COLOR_DEFAULT, path, status, pid);
+        printf(ESC_COLOR_WARNING "task execute finish %s result: %d, pid = %d\n" ESC_COLOR_DEFAULT, path, status, pid);
     }
     return 0;
 }
-
 /**
  * @brief        : 查找内置的cmd命令
  * @param         {char} *name: 命令名称
@@ -228,14 +413,29 @@ static void cli_init(const char *promot, const cli_cmd_t *cmd_list, int size)
     memset((void *)cli.curr_input, 0, CLI_INPUT_SIZE);
     cli.cmd_start = cmd_list;
     cli.cmd_end = cmd_list + size;
+    
 }
-
+/**
+ * @brief        : 查找可执行文件的路径
+ * @param         {char *} filename: 文件名
+ * @return        {const char *} : 可执行文件路径
+ **/
+static const char *find_exec_path(const char *filename)
+{
+    int fd = open(filename, 0);
+    if (fd < 0)
+    {
+        return (const char *)0;
+    }
+    close(fd);
+    return filename;
+}
 int main(int argc, char **argv)
 {
 
     open(argv[0], O_RDWR); // int fd = 0 , stdin
-    dup(0);           // 标准输出
-    dup(0);           // 标准错误输出
+    dup(0);                // 标准输出
+    dup(0);                // 标准错误输出
     printf(ESC_CLEAR_SCREEN ESC_MOVE_CURSOR(0, 0));
     printf(ESC_COLOR_SUCCESS ESC_COLOR_BOLD "Launched successfully, Welcome to YOS!\n" ESC_COLOR_RESET);
     printf(ESC_COLOR_INFO "Build date: %s\n" ESC_COLOR_DEFAULT, __DATE__);
@@ -284,9 +484,12 @@ int main(int argc, char **argv)
             run_builtin(cmd, argc, argv);
             continue;
         }
-
-        run_exec_file("", argc, argv);
-
+        const char *path = find_exec_path(argv[0]); // 查找可执行程序路径
+        if (path)
+        {
+            run_exec_file(path, argc, argv); // 执行可执行程序
+            continue;
+        }
         fprintf(stderr, ESC_COLOR_ERROR "Unknown command: %s\n" ESC_COLOR_DEFAULT, cli.curr_input);
     }
     return 0;

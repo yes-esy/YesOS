@@ -28,6 +28,11 @@
 #define SYS_dup             58
 #define SYS_exit            59
 #define SYS_wait            60
+#define SYS_opendir         61
+#define SYS_readdir         62
+#define SYS_closedir        63
+#define SYS_ioctl           64
+#define SYS_unlink          65
 #define SYS_print_msg       100
 #define SYSCALL_PARAM_COUNT 5 // 系统调用参数数量
 

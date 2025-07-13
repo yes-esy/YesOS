@@ -20,5 +20,6 @@
 #define IDLE_TASK_SIZE 1024          // 空闲进程占空间大小
 #define SELECTOR_SYSCALL (3 * 8)     // 系统调用
 #define TASK_NR 128                  // 系统中最多存在的进程
+#define ROOT_DEV DEV_DISK, 0xb1      // 根文件系统主次设备号
 
 #endif

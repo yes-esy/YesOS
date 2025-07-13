@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-09 21:20:34
+ * @LastEditTime : 2025-07-10 18:54:45
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "fs/devfs/devfs.h"
@@ -39,7 +39,7 @@ int devfs_mount(struct _fs_t *fs, int major, int minor)
  * @param         {_fs_t} *fs: 指定的文件系统的指针
  * @return        {void}
  **/
-void devfs_unmont(struct _fs_t *fs)
+void devfs_unmount(struct _fs_t *fs)
 {
     return;
 }
@@ -67,7 +67,7 @@ int devfs_open(struct _fs_t *fs, const char *path, file_t *file)
                 break;
             }
             int dev_id = dev_open(dev_type->dev_type, minor, (void *)0); // 打开该设备
-            if (dev_id < 0) // 打开失败
+            if (dev_id < 0)                                              // 打开失败
             {
                 log_printf("open device failed.\n");
                 break;
@@ -135,14 +135,27 @@ int devfs_stat(file_t *file, struct stat *st)
 {
     return 0;
 }
+/**
+ * @brief        : 控制文件输入输出方式
+ * @param         {file_t} *file:操作的文件
+ * @param         {int} cmd: 控制命令
+ * @param         {int} arg0: 参数1
+ * @param         {int} arg1: 参数2
+ * @return        {int} : 若成功发挥0,失败返回-1
+ **/
+int devfs_ioctl(file_t *file, int cmd, int arg0, int arg1)
+{
+    return dev_control(file->dev_id,cmd,arg0,arg1);
+}
 
 fs_op_t devfs_op = {
     .mount = devfs_mount,
-    .unmount = devfs_unmont,
+    .unmount = devfs_unmount,
     .open = devfs_open,
     .read = devfs_read,
     .write = devfs_write,
     .close = devfs_close,
     .seek = devfs_seek,
     .stat = devfs_stat,
+    .ioctl = devfs_ioctl,
 };

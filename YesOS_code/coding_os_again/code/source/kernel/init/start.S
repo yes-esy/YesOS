@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-05 21:23:41
+ * @LastEditTime : 2025-07-10 16:16:54
  * Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  */
 
@@ -110,6 +110,7 @@ exception_handler control_exception  ,  21   , 1 #
 exception_handler timer              ,  0x20 , 0 #
 exception_handler kbd                ,  0x21 , 0 # 键盘中断处理函数
 # exception_handler syscall            ,  0x80 , 0 # 系统调用
+exception_handler ide_primary        ,  0x2E , 0 # 磁盘中断
 
     .text
     .global simple_switch

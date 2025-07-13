@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-04 20:16:54
+ * @LastEditTime : 2025-07-12 10:04:26
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "core/syscall.h"
@@ -46,6 +46,12 @@ static const sys_handler_t sys_table[] = {
     [SYS_dup] = (sys_handler_t)sys_dup,
     [SYS_exit] = (sys_handler_t)sys_exit,
     [SYS_wait] = (sys_handler_t)sys_wait,
+    [SYS_opendir] = (sys_handler_t)sys_opendir,
+    [SYS_readdir] = (sys_handler_t)sys_readdir,
+    [SYS_closedir] = (sys_handler_t)sys_closedir,
+    [SYS_ioctl] = (sys_handler_t)sys_ioctl,
+    [SYS_unlink] = (sys_handler_t)sys_unlink,
+
 };
 /**
  * @brief        : 通用系统调用处理函数

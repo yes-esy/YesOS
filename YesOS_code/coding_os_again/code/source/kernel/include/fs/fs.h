@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-09 20:41:10
+ * @LastEditTime : 2025-07-12 10:06:46
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef FS_H
@@ -14,6 +14,8 @@
 #include "fs/file.h"
 #include "ipc/mutex.h"
 #include "tools/list.h"
+#include "fs/fatfs/fatfs.h"
+#include "applib/lib_syscall.h"
 #define FS_TABLE_SIZE 15
 #define FS_MOUNT_POINT_SIZE 512 // 挂载点大小
 struct stat;
@@ -83,10 +85,50 @@ typedef struct _fs_op_t
      * @return        {int} : 成功返回0，失败返回负数错误码
      **/
     int (*stat)(file_t *file, struct stat *st);
+    /**
+     * @brief        : 打开目录
+     * @param         {struct _fs_t} *fs: 文件系统对象指针
+     * @param         {const char} *name: 要打开的目录名称
+     * @param         {DIR} *dir: 用于存储目录信息的DIR结构体指针
+     * @return        {int} : 成功返回0，失败返回负数错误码
+     **/
+    int (*opendir)(struct _fs_t *fs, const char *name, DIR *dir);
+    /**
+     * @brief        : 读取目录项
+     * @param         {struct _fs_t} *fs: 文件系统对象指针
+     * @param         {DIR} *dir: 已打开的目录对象指针
+     * @param         {struct dirent} *dirent: 用于存储目录项信息的结构体指针
+     * @return        {int} : 成功返回0，失败返回负数错误码
+     **/
+    int (*readdir)(struct _fs_t *fs, DIR *dir, struct dirent *dirent);
+    /**
+     * @brief        : 关闭目录
+     * @param         {struct _fs_t} *fs: 文件系统对象指针
+     * @param         {DIR} *dir: 要关闭的目录对象指针
+     * @return        {int} : 成功返回0，失败返回负数错误码
+     **/
+    int (*closedir)(struct _fs_t *fs, DIR *dir);
+    /**
+     * @brief        : 控制文件输入输出方式
+     * @param         {file_t} *file:操作的文件
+     * @param         {int} cmd: 控制命令
+     * @param         {int} arg0: 参数1
+     * @param         {int} arg1: 参数2
+     * @return        {int} : 若成功发挥0,失败返回-1
+     **/
+    int (*ioctl)(file_t *file, int cmd, int arg0, int arg1);
+    /**
+     * @brief        : 从磁盘中删除文件
+     * @param         {_fs_t} *fs: 文件系统描述符的指针
+     * @param         {char *} pathname: 路径名称
+     * @return        {int} : 成功返回0,失败返回-1
+     **/
+    int (*unlink)(struct _fs_t *fs, const char *pathname);
 } fs_op_t;
 typedef enum _fs_type_t
 {
     FS_DEVFS, // 设备文件系统
+    FS_FAT16, // fat16文件系统
 } fs_type_t;
 /**
  * 文件系统描述符
@@ -101,6 +143,11 @@ typedef struct _fs_t
     list_node_t node;                      // 使用链表链接
     mutex_t *mutex;                        // 互斥锁
     fs_type_t type;                        // 文件类型
+    // 临时使用
+    union
+    {
+        fat_t fat_data;
+    };
 } fs_t;
 
 /**
@@ -177,4 +224,14 @@ int sys_dup(int file);
  * @return        {void}
  **/
 void fs_init(void);
+
+int sys_opendir(const char *path, DIR *dir);
+
+int sys_readdir(DIR *dir, struct dirent *dirent);
+
+int sys_closedir(DIR *dir);
+
+void sys_ioctl(int file, int cmd, int arg0, int arg1); // 输入输出控制
+int sys_unlink(const char *pathname);
+
 #endif

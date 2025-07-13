@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-08 21:00:25
+ * @LastEditTime : 2025-07-11 15:55:14
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 
@@ -233,7 +233,7 @@ int tty_read(device_t *dev, int addr, char *buf, int size)
             len++;
             break;
         }
-        if (tty->i_flags && TTY_IECHO) // 回显
+        if (tty->i_flags & TTY_IECHO) // 回显
         {
             tty_write(dev, 0, &ch, 1);
         }
@@ -254,6 +254,22 @@ int tty_read(device_t *dev, int addr, char *buf, int size)
  **/
 int tty_control(device_t *dev, int cmd, int arg0, int arg1)
 {
+    tty_t *tty = get_tty(dev); // 获取tty设备
+    switch (cmd)
+    {
+    case TTY_CMD_ECHO:
+        if (arg0)
+        {
+            tty->i_flags |= TTY_IECHO;
+        }
+        else
+        {
+            tty->i_flags &= ~TTY_IECHO;
+        }
+        break;
+    default:
+        break;
+    }
     return 0;
 }
 /**

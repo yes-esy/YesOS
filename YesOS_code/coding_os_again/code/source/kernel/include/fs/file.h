@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-09 17:11:43
+ * @LastEditTime : 2025-07-10 21:15:07
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #ifndef FILE_H
@@ -20,6 +20,8 @@ typedef enum _file_type_t
 {
     FILE_UNKNOWN = 0,
     FILE_TTY,
+    FILE_DIR,
+    FILE_NORMAL,
 } file_type_t;
 struct _fs_t; // 文件系统前置声明
 /**
@@ -35,6 +37,9 @@ typedef struct _file_t
     int pos;                        // 读取到的位置
     int mode;                       // 读写模式
     struct _fs_t *fs;               // 文件系统
+    int f_index;                    // 文件在目录中的索引
+    int start_block;                // 起始簇(块)号
+    int current_block;              // 当前簇(块)号
 } file_t;
 
 /**

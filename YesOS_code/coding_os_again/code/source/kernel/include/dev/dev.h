@@ -27,8 +27,9 @@ typedef struct _device_t
  */
 enum
 {
-    DEV_UNKNOWN = 0,// 未知设备
+    DEV_UNKNOWN = 0, // 未知设备
     DEV_TTY,         // tty设备类型
+    DEV_DISK,        // disk(磁盘)设备类型
 };
 
 /**
@@ -52,7 +53,7 @@ typedef struct _dev_desc_t
      * @param         {int} size: 读取的数据量
      * @return        {int} : 返回0
      **/
-    int (*read)(device_t *dev, int addr, char *buf, int size); 
+    int (*read)(device_t *dev, int addr, char *buf, int size);
     /**
      * @brief        : 往设备写入数据
      * @param         {device_t} *dev: 写入数据的设备
@@ -61,7 +62,7 @@ typedef struct _dev_desc_t
      * @param         {int} size: 写入的数据量
      * @return        {int} : 返回0
      **/
-    int (*write)(device_t *dev, int addr, char *buf, int size); 
+    int (*write)(device_t *dev, int addr, char *buf, int size);
 
     /**
      * @brief        : 控制设备

@@ -15,9 +15,9 @@
  */
 typedef struct _devfs_type_t
 {
-    const char *name;
-    int dev_type;
-    int file_type;
+    const char *name; // 名称
+    int dev_type;     // 设备类型
+    int file_type;    // 文件类型
 } devfs_type_t;
 
 #endif

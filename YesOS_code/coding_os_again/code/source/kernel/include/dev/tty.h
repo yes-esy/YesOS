@@ -12,12 +12,13 @@
 
 #include "ipc/sem.h"
 
-#define TTY_NR 1          // tty设备数量
+#define TTY_NR 1           // tty设备数量
 #define TTY_O_BUF_SIZE 512 // 输入队列大小
 #define TTY_I_BUF_SIZE 512 // 输出队列大小
 #define TTY_OCRLF (1 << 0) // 将回车转换为换行
-#define TTY_INCLR (1 << 0) // 
-#define TTY_IECHO (1 << 1) // 是否输入回显
+#define TTY_INCLR (1 << 0) // 输入控制
+#define TTY_IECHO (1 << 2) // 是否输入回显
+#define TTY_CMD_ECHO 0x1   // 开启回显
 /**
  * tty读写队列
  */
@@ -63,12 +64,12 @@ int tty_fifo_get(tty_fifo_t *tty_fifo, char *c);
  * @brief        : tty设备读入数据
  * @param         {char} ch: 读入的数据
  * @return        {void}
-**/
-void tty_in( char ch);
+ **/
+void tty_in(char ch);
 /**
  * @brief        : 选择哪一个tty设备输出数据
  * @param         {int} tty: tty设备的序号
  * @return        {void}
-**/
+ **/
 void tty_select(int tty);
 #endif

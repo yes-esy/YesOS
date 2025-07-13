@@ -4,7 +4,7 @@
  * @Author       : ys 2900226123@qq.com
  * @Version      : 0.0.1
  * @LastEditors  : ys 2900226123@qq.com
- * @LastEditTime : 2025-07-10 13:57:36
+ * @LastEditTime : 2025-07-11 20:13:25
  * @Copyright    : G AUTOMOBILE RESEARCH INSTITUTE CO.,LTD Copyright (c) 2025.
  **/
 #include "fs/fs.h"
@@ -19,13 +19,16 @@
 #include "cpu/irq.h"
 #include <sys/file.h>
 #include "dev/disk.h"
-#define TEMP_FILE_ID 100
-#define TEMP_ADDR (8 * 1024 * 1024)  // 在0x800000处缓存原始
+#include "os_cfg.h"
+// #define TEMP_FILE_ID 100
+// #define TEMP_ADDR (8 * 1024 * 1024)  // 在0x800000处缓存原始
+// static uint8_t *temp_pos;            // 文件读写位置
 static list_t mounted_list;          // 已挂载的文件系统的链表
 static fs_t fs_table[FS_TABLE_SIZE]; // 文件系统数组
 static list_t free_list;             // 空闲的的结点的文件系统链表
-static uint8_t *temp_pos;            // 文件读写位置
 extern fs_op_t devfs_op;             // 外部设备文件系统
+extern fs_op_t fatfs_op;             // 外部fat文件系统
+static fs_t *root_fs;                // 根文件系统
 /**
  * @brief        : 使用LBA48模式读取磁盘
  * @param         {uint32_t} sector: 扇区号
@@ -173,15 +176,17 @@ static void fs_unprotect(fs_t *fs)
  **/
 int sys_open(const char *path, int flags, ...)
 {
-    // 判断是否为shell.elf
-    if (kernel_strncmp(path, "/shell.elf", 4) == 0)
-    {
-        // log_printf("Opening file: %s\n", path);
-        // 暂时直接从扇区5000上读取, 读取大概40KB，足够了
-        read_disk(5000, 80, (uint8_t *)TEMP_ADDR);
-        temp_pos = (uint8_t *)TEMP_ADDR;
-        return TEMP_FILE_ID;
-    }
+    // // 判断是否为shell.elf
+    // if (kernel_strncmp(path, "/shell.elf", 4) == 0)
+    // {
+    //     // log_printf("Opening file: %s\n", path);
+    //     // 暂时直接从扇区5000上读取, 读取大概40KB，足够了
+    //     // read_disk(5000, 80, (uint8_t *)TEMP_ADDR);
+    //     int dev_id = dev_open(DEV_DISK, 0xA0, (void *)0);
+    //     dev_read(dev_id, 5000, (uint8_t *)TEMP_ADDR, 80);
+    //     temp_pos = (uint8_t *)TEMP_ADDR;
+    //     return TEMP_FILE_ID;
+    // }
     if (!is_path_valid(path)) // 路径是否有效
     {
         log_printf("path(%s) is not valid.\n", path);
@@ -217,6 +222,8 @@ int sys_open(const char *path, int flags, ...)
     }
     else // 没有找到
     {
+        fs = root_fs; // 根文件系统作为默认文件系统
+        name = path;
     }
     // 相关字段初始化
     file->mode = flags;                                                   // 打开模式
@@ -249,16 +256,16 @@ sys_open_failed:
  **/
 int sys_read(int file, char *ptr, int len)
 {
-    if (file == TEMP_FILE_ID) // 读取shell.elf
-    {
-        kernel_memcpy(ptr, temp_pos, len);
-        temp_pos += len;
-        return len;
-    }
+    // if (file == TEMP_FILE_ID) // 读取shell.elf
+    // {
+    //     kernel_memcpy(ptr, temp_pos, len);
+    //     temp_pos += len;
+    //     return len;
+    // }
     if (is_fd_bad(file) || !ptr || !len) // 参数不合法
     {
         log_printf("read param valid.\n");
-        return 0;
+        return -1;
     }
 
     file_t *cur_file = task_file(file); // 获取当前文件在进程中的文件描述符
@@ -301,7 +308,7 @@ int sys_write(int file, char *ptr, int len)
     if (is_fd_bad(file) || !ptr || !len) // 参数不合法
     {
         log_printf("write param valid.\n");
-        return 0;
+        return -1;
     }
     file_t *cur_file = task_file(file); // 获取当前文件在进程中的文件描述符
     if (cur_file == (file_t *)0)        // 获取为空
@@ -329,14 +336,14 @@ int sys_write(int file, char *ptr, int len)
  **/
 int sys_lseek(int file, int ptr, int dir)
 {
-    if (file == TEMP_FILE_ID)
-    {
-        temp_pos = (uint8_t *)(TEMP_ADDR + ptr); // 调整指针
-        return 0;
-    }
+    // if (file == TEMP_FILE_ID)
+    // {
+    //     temp_pos = (uint8_t *)(TEMP_ADDR + ptr); // 调整指针
+    //     return 0;
+    // }
     if (is_fd_bad(file)) // 参数不合法
     {
-        return 0;
+        return -1;
     }
     file_t *cur_file = task_file(file); // 获取当前文件在进程中的文件描述符
     if (cur_file == (file_t *)0)        // 获取为空
@@ -357,10 +364,10 @@ int sys_lseek(int file, int ptr, int dir)
  **/
 int sys_close(int file)
 {
-    if (file == TEMP_FILE_ID)
-    {
-        return 0;
-    }
+    // if (file == TEMP_FILE_ID)
+    // {
+    //     return 0;
+    // }
     if (is_fd_bad(file)) // 参数不合法
     {
         log_printf("close param valid\n");
@@ -459,6 +466,44 @@ int sys_dup(int file)
     return fd;
 }
 /**
+ * @brief        : 打开目录的系统调用接口
+ * @param         {const char} *path: 要打开的目录路径
+ * @param         {DIR} *dir: 用于存储目录信息的DIR结构体指针
+ * @return        {int} : 成功返回0，失败返回负数错误码
+ **/
+int sys_opendir(const char *path, DIR *dir)
+{
+    fs_protect(root_fs);                                // 进入保护状态
+    int err = root_fs->op->opendir(root_fs, path, dir); // 调用文件系统获取文件信息接口
+    fs_unprotect(root_fs);
+    return err;
+}
+/**
+ * @brief        : 读取目录项的系统调用接口
+ * @param         {DIR} *dir: 已打开的目录对象指针
+ * @param         {struct dirent} *dirent: 用于存储目录项信息的结构体指针
+ * @return        {int} : 成功返回0，失败返回负数错误码
+ **/
+int sys_readdir(DIR *dir, struct dirent *dirent)
+{
+    fs_protect(root_fs);                                  // 进入保护状态
+    int err = root_fs->op->readdir(root_fs, dir, dirent); // 调用文件系统获取文件信息接口
+    fs_unprotect(root_fs);
+    return err;
+}
+/**
+ * @brief        : 关闭目录的系统调用接口
+ * @param         {DIR} *dir: 要关闭的目录对象指针
+ * @return        {int} : 成功返回0，失败返回负数错误码
+ **/
+int sys_closedir(DIR *dir)
+{
+    fs_protect(root_fs);                           // 进入保护状态
+    int err = root_fs->op->closedir(root_fs, dir); // 调用文件系统获取文件信息接口
+    fs_unprotect(root_fs);
+    return err;
+}
+/**
  * @brief        : 根据文件系统类型获取回调函数表
  * @param         {fs_type_t} type: 文件系统类型
  * @param         {int} major: 文件系统设备号
@@ -468,8 +513,11 @@ static fs_op_t *get_fs_op(fs_type_t type, int major)
 {
     switch (type)
     {
-    case FS_DEVFS:
+    case FS_DEVFS: // 设备文件系统
         return &(devfs_op);
+        break;
+    case FS_FAT16: // fat16文件系统
+        return &(fatfs_op);
         break;
     default:
         return (fs_op_t *)0;
@@ -547,6 +595,49 @@ static void mount_list_init(void)
     list_init(&mounted_list); // 初始化挂载链表
 }
 /**
+ * @brief        : 输入输出控制
+ * @param         {int} file: 输入输出文件
+ * @param         {int} cmd: 输入输出命令
+ * @param         {int} arg0: 参数0
+ * @param         {int} arg1: 参数1
+ * @return        {void}
+ **/
+void sys_ioctl(int file, int cmd, int arg0, int arg1)
+{
+    if (is_fd_bad(file)) // 参数不合法
+    {
+        log_printf("isatty param valid\n");
+        return;
+    }
+    file_t *curr_file = task_file(file); // 获取当前文件
+    if (curr_file == (file_t *)0)
+    {
+        log_printf("get file error.\n");
+        return;
+    }
+    fs_t *fs = curr_file->fs; // 获取文件系统描述符指针
+    fs_protect(fs);
+    int err = fs->op->ioctl(curr_file, cmd, arg0, arg1);
+    if (err < 0)
+    {
+        log_printf("ioctl execute failed.\n");
+    }
+    fs_unprotect(fs);
+}
+
+int sys_unlink(const char *pathname)
+{
+    fs_protect(root_fs);                     // 进入保护
+    int err = root_fs->op->unlink(root_fs,pathname); // 调用删除
+    if (err < 0)                             // 删除失败
+    {
+        fs_unprotect(root_fs);
+        return -1;
+    }
+    fs_unprotect(root_fs); // 退出保护
+    return 0;              // 删除成功
+}
+/**
  * @brief        : 文件系统初始化
  * @return        {void}
  **/
@@ -554,7 +645,10 @@ void fs_init(void)
 {
     mount_list_init();
     file_table_init();                        // 文件表初始化
-    disk_init(); // 初始化磁盘
+    disk_init();                              // 初始化磁盘
     fs_t *fs = mount(FS_DEVFS, "/dev", 0, 0); // 挂载设备文件系统
     ASSERT(fs != (fs_t *)0);
+
+    root_fs = mount(FS_FAT16, "/home", ROOT_DEV); // 挂载FAT16文件系统
+    ASSERT(root_fs != (fs_t *)0);
 }
